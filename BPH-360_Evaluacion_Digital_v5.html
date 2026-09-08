@@ -277,7 +277,10 @@ button:disabled{opacity:.5;cursor:not-allowed}
   <div class="notice" style="margin-top:18px">Uso recomendado: integrar estos resultados con entrevista estructurada, evaluación técnica, referencias y requisitos del puesto.</div>
 
   <div class="sendPanel" id="sendPanel"></div>
-  <div class="actions"><button class="secondary" onclick="window.print()">Imprimir / Guardar PDF</button><button class="primary" onclick="exportJSON()">Descargar resultado (JSON)</button></div>
+  <!-- El candidato ya no ve botones de imprimir/descargar: el resultado
+       llega automáticamente a RH, y el reporte "oficial" para archivo o
+       impresión vive en el Panel de RH, no en la pantalla del candidato. -->
+  <p class="muted" style="text-align:center;margin-top:22px">Gracias por completar la evaluación. Puedes cerrar esta ventana.</p>
 </div>
 
 <div class="footer">BPH-360 · Evaluación laboral hospitalaria · Versión digital 5.0</div>
@@ -961,17 +964,7 @@ function renderSendPanel() {
   }
 }
 
-function exportJSON() {
-  const data = JSON.stringify(window.__BPH_RESULT, null, 2);
-  const blob = new Blob([data], { type: "application/json" });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  const safe = (window.__BPH_RESULT.nombre || "candidato").replace(/[^a-z0-9áéíóúñ_-]/gi, "_");
-  const datePart = new Date().toISOString().slice(0, 10);
-  a.download = "BPH360_" + safe + "_" + datePart + ".json";
-  a.click();
-  URL.revokeObjectURL(a.href);
-}
+
 
 </script>
 </body></html>
