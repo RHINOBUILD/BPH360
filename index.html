@@ -113,15 +113,17 @@ tr.clickable{cursor:pointer}
       <p>Resultados, confiabilidad, baremos y seguimiento de desempeño</p>
     </div>
   </div>
-  <button class="logoutBtn hidden" id="logoutBtn" onclick="logout()">Cerrar sesión</button>
+  <div style="display:flex;align-items:center;gap:10px"><span id="currentUserLabel" style="font-size:12px;opacity:.85"></span><button class="logoutBtn hidden" id="logoutBtn" onclick="logout()">Cerrar sesión</button></div>
 </div>
 
 <!-- Login -->
 <div class="card loginBox" id="screenLogin">
   <h2>Acceso de Recursos Humanos</h2>
-  <label class="small">Clave de acceso</label>
-  <input type="password" id="tokenInput" placeholder="Clave proporcionada por sistemas">
-  <div class="errText" id="loginErr">Clave incorrecta o no se pudo conectar con el backend.</div>
+  <label class="small">Usuario</label>
+  <input id="userInput" autocomplete="username" placeholder="Ej. director.rh">
+  <label class="small" style="margin-top:12px">Contraseña</label>
+  <input type="password" id="passwordInput" autocomplete="current-password" placeholder="Contraseña" onkeydown="if(event.key==='Enter') login()">
+  <div class="errText" id="loginErr">Usuario o contraseña incorrectos.</div>
   <div style="margin-top:14px"><button class="primary" onclick="login()" style="width:100%">Entrar</button></div>
 </div>
 
@@ -134,6 +136,7 @@ tr.clickable{cursor:pointer}
     <div class="tab" data-tab="confiabilidad" onclick="switchTab('confiabilidad')">Confiabilidad y baremos</div>
     <div class="tab" data-tab="seguimiento" onclick="switchTab('seguimiento')">Seguimiento</div>
     <div class="tab" data-tab="validez" onclick="switchTab('validez')">Validez de criterio</div>
+    <div class="tab hidden" id="usersTabButton" data-tab="usuarios" onclick="switchTab('usuarios')">Usuarios</div>
   </div>
 
   <!-- Tab: Mis candidatos -->
@@ -195,7 +198,7 @@ tr.clickable{cursor:pointer}
   </div>
 
   <!-- Tab: Resultados -->
-  <div class="tabPanel active" id="tab-resultados">
+  <div class="tabPanel" id="tab-resultados">
     <div class="card">
       <div class="filters">
         <div>
@@ -343,6 +346,24 @@ tr.clickable{cursor:pointer}
     </div>
   </div>
 
+  <div class="tabPanel" id="tab-usuarios">
+    <div class="card">
+      <h3 style="margin:0 0 14px;color:var(--navy)">Crear cuenta individual</h3>
+      <div class="grid2">
+        <div><label class="small">Nombre completo *</label><input id="usrNombre" placeholder="Nombre de la persona"></div>
+        <div><label class="small">Usuario *</label><input id="usrUsuario" placeholder="Ej. reclutamiento.rh"></div>
+        <div><label class="small">Rol *</label><select id="usrRol"><option value="RH">RH · Operación</option><option value="CONSULTA">Consulta</option><option value="ADMIN">Administrador</option></select></div>
+        <div><label class="small">Contraseña temporal *</label><input type="password" id="usrPassword" minlength="10" placeholder="Mínimo 10 caracteres"></div>
+      </div>
+      <div class="errText" id="usrErr"></div>
+      <div style="margin-top:14px"><button class="primary" onclick="createUser()">Crear usuario</button></div>
+    </div>
+    <div class="card">
+      <h3 style="margin:0 0 14px;color:var(--navy)">Cuentas registradas</h3>
+      <div class="tableWrap"><table><thead><tr><th>Nombre</th><th>Usuario</th><th>Rol</th><th>Estatus</th><th>Último acceso</th><th>Acciones</th></tr></thead><tbody id="usersBody"></tbody></table></div>
+    </div>
+  </div>
+
 </div>
 
 <div class="footerNote">Panel RH · BPH-360 · Uso interno de Capital Humano</div>
@@ -355,10 +376,10 @@ tr.clickable{cursor:pointer}
    ============================================================ */
 const CONFIG = {
   API_URL: "https://script.google.com/macros/s/AKfycbx50VUNHbufvQSbv3ZkVpCr2qfpe4uri9M4eIaI-3MEUs_LN0SKzUclk6wOLsuTwvjwTw/exec",
-  // URL pública donde publicaste BPH-360_Evaluacion_Digital_v4.html
+  // URL pública donde publicaste BPH360_Evaluacion_Digital_v6.html
   // (para armar el link que se le manda a cada candidato).
   CANDIDATE_TEST_URL: "https://rhinobuild.github.io/evaluacionBPH360/",
-  TOKEN_STORAGE_KEY: "bph360_admin_session_v3"
+  TOKEN_STORAGE_KEY: "bph360_user_session_v4"
 };
 
 /* ============================================================
@@ -442,6 +463,7 @@ function buildCategorizedSection(scores) {
 }
 
 let TOKEN = null;
+let CURRENT_USER = null;
 let resultadosCache = [];
 let candidatosCache = [];
 let vacantesCache = [];
@@ -460,14 +482,19 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 async function login() {
-  const val = document.getElementById('tokenInput').value.trim();
-  if (!val) return;
-  TOKEN = val;
-  const ok = await verifyAndEnter();
-  if (!ok) {
-    document.getElementById('loginErr').classList.add('show');
-    TOKEN = null;
-  }
+  const usuario = document.getElementById('userInput').value.trim();
+  const password = document.getElementById('passwordInput').value;
+  if (!usuario || !password) return;
+  const err = document.getElementById('loginErr');
+  err.classList.remove('show');
+  try {
+    const res = await apiPost({ __action:'login', usuario, password });
+    if (!res.ok) { err.textContent = res.error || 'No fue posible iniciar sesión.'; err.classList.add('show'); return; }
+    TOKEN = res.token;
+    CURRENT_USER = res.user;
+    sessionStorage.setItem(CONFIG.TOKEN_STORAGE_KEY, TOKEN);
+    await enterPanel();
+  } catch (e) { err.textContent = 'No se pudo conectar con el servidor.'; err.classList.add('show'); }
 }
 
 async function verifyAndEnter() {
@@ -477,29 +504,45 @@ async function verifyAndEnter() {
     return false;
   }
   try {
-    const res = await apiGet('list');
+    const res = await apiPost({ __action:'session_info', token:TOKEN });
     if (!res.ok) return false;
-    sessionStorage.setItem(CONFIG.TOKEN_STORAGE_KEY, TOKEN);
-    document.getElementById('screenLogin').classList.add('hidden');
-    document.getElementById('screenPanel').classList.remove('hidden');
-    document.getElementById('logoutBtn').classList.remove('hidden');
-    resultadosCache = res.data;
-    renderResultadosTable();
-    await Promise.all([loadCandidatos(), loadVacantes()]);
-    loadSeguimiento();
+    CURRENT_USER = res.user;
+    await enterPanel();
     return true;
   } catch (e) {
     return false;
   }
 }
 
-function logout() {
+async function enterPanel() {
+  sessionStorage.setItem(CONFIG.TOKEN_STORAGE_KEY, TOKEN);
+  document.getElementById('screenLogin').classList.add('hidden');
+  document.getElementById('screenPanel').classList.remove('hidden');
+  document.getElementById('logoutBtn').classList.remove('hidden');
+  document.getElementById('currentUserLabel').textContent = CURRENT_USER.nombre + ' · ' + CURRENT_USER.rol;
+  document.getElementById('usersTabButton').classList.toggle('hidden', CURRENT_USER.rol !== 'ADMIN');
+  applyRolePermissions();
+  const res = await apiGet('list');
+  if (res.ok) { resultadosCache = res.data; renderResultadosTable(); }
+  await Promise.all([loadCandidatos(), loadVacantes()]);
+  loadSeguimiento();
+}
+
+function applyRolePermissions() {
+  const readOnly = CURRENT_USER && CURRENT_USER.rol === 'CONSULTA';
+  document.querySelectorAll('#tab-candidatos .primary,#tab-vacantes .primary,#tab-seguimiento .primary').forEach(el => el.classList.toggle('hidden', readOnly));
+}
+
+async function logout() {
+  try { if (TOKEN) await apiPost({ __action:'logout', token:TOKEN }); } catch (e) {}
   sessionStorage.removeItem(CONFIG.TOKEN_STORAGE_KEY);
   TOKEN = null;
+  CURRENT_USER = null;
   document.getElementById('screenPanel').classList.add('hidden');
   document.getElementById('logoutBtn').classList.add('hidden');
   document.getElementById('screenLogin').classList.remove('hidden');
-  document.getElementById('tokenInput').value = '';
+  document.getElementById('passwordInput').value = '';
+  document.getElementById('currentUserLabel').textContent = '';
 }
 
 /* ============================================================
@@ -514,7 +557,12 @@ async function apiPost(body) {
     headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // evita preflight CORS
     body: JSON.stringify(body)
   });
-  return res.json();
+  const data = await res.json();
+  if (data && data.code === 'SESSION_EXPIRED' && body.__action !== 'session_info') {
+    sessionStorage.removeItem(CONFIG.TOKEN_STORAGE_KEY);
+    TOKEN = null;
+  }
+  return data;
 }
 
 /* ============================================================
@@ -525,6 +573,7 @@ function switchTab(name) {
   document.querySelectorAll('.tabPanel').forEach(p => p.classList.remove('active'));
   document.getElementById('tab-' + name).classList.add('active');
   if (name === 'confiabilidad') loadConfiabilidadYBaremos();
+  if (name === 'usuarios') loadUsers();
 }
 
 /* ============================================================
@@ -1056,6 +1105,48 @@ async function loadValidezCriterio() {
   const wrap = document.getElementById('scatterWrap');
   if (d.n_pares >= 2 && window.__lastPares) { /* placeholder si se agrega endpoint de pares crudos */ }
   wrap.innerHTML = '';
+}
+
+async function loadUsers() {
+  const res = await apiPost({ __action:'usuarios_list', token:TOKEN });
+  if (!res.ok) return;
+  const body = document.getElementById('usersBody');
+  body.innerHTML = res.data.map(u => {
+    const active = u.estatus === 'Activo';
+    const last = u.ultimo_acceso ? new Date(u.ultimo_acceso).toLocaleString('es-MX') : 'Nunca';
+    return '<tr><td>' + esc(u.nombre) + '</td><td>' + esc(u.usuario) + '</td><td><span class="badge mid">' + esc(u.rol) + '</span></td>' +
+      '<td><span class="badge ' + (active ? 'good' : 'bad') + '">' + esc(u.estatus) + '</span></td><td>' + esc(last) + '</td><td>' +
+      '<button class="secondary" onclick="toggleUser(\'' + esc(u.id) + '\',\'' + (active ? 'Inactivo' : 'Activo') + '\')">' + (active ? 'Desactivar' : 'Activar') + '</button> ' +
+      '<button class="secondary" onclick="resetUserPassword(\'' + esc(u.id) + '\')">Cambiar contraseña</button></td></tr>';
+  }).join('') || '<tr><td colspan="6" class="muted">No hay usuarios registrados.</td></tr>';
+}
+
+async function createUser() {
+  const nombre = document.getElementById('usrNombre').value.trim();
+  const usuario = document.getElementById('usrUsuario').value.trim().toLowerCase();
+  const rol = document.getElementById('usrRol').value;
+  const password = document.getElementById('usrPassword').value;
+  const err = document.getElementById('usrErr');
+  err.classList.remove('show');
+  if (!nombre || !usuario || password.length < 10) { err.textContent = 'Completa los datos y usa una contraseña de al menos 10 caracteres.'; err.classList.add('show'); return; }
+  const res = await apiPost({ __action:'usuario_crear', token:TOKEN, nombre, usuario, rol, password });
+  if (!res.ok) { err.textContent = res.error; err.classList.add('show'); return; }
+  ['usrNombre','usrUsuario','usrPassword'].forEach(id => document.getElementById(id).value = '');
+  await loadUsers();
+}
+
+async function toggleUser(id, estatus) {
+  const res = await apiPost({ __action:'usuario_estado', token:TOKEN, id, estatus });
+  if (!res.ok) { alert(res.error || 'No fue posible actualizar la cuenta.'); return; }
+  await loadUsers();
+}
+
+async function resetUserPassword(id) {
+  const password = prompt('Escribe la nueva contraseña temporal (mínimo 10 caracteres):');
+  if (password === null) return;
+  if (password.length < 10) { alert('La contraseña debe tener al menos 10 caracteres.'); return; }
+  const res = await apiPost({ __action:'usuario_password', token:TOKEN, id, password });
+  alert(res.ok ? 'Contraseña actualizada.' : (res.error || 'No fue posible actualizarla.'));
 }
 
 function guardMissingConfig() {
