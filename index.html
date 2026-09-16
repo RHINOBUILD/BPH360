@@ -375,10 +375,13 @@ tr.clickable{cursor:pointer}
    evaluación, que termina en /exec).
    ============================================================ */
 const CONFIG = {
-  API_URL: "https://script.google.com/macros/s/AKfycbx6F3P6I5wl-KE7O56YD4gXMUiwyrxxZrYEA-rDxkSNGiJwGU5R_chC9EtJUbUOR2qf-g/exec",
+  API_URL: "https://script.google.com/macros/s/AKfycbz_VAvi7M4m8KupRy15y0w5yklJiXSimgzwDpFKKAgqqeQ4wCF0dEvl-mu5_WeciukQEw/exec",
   // URL pública donde publicaste BPH360_Evaluacion_Digital_v6.html
   // (para armar el link que se le manda a cada candidato).
-  CANDIDATE_TEST_URL: "https://rhinobuild.github.io/evaluacionBPH360/",
+  TEST_URLS: {
+    BPH360: "https://rhinobuild.github.io/evaluacionBPH360/",
+    IPIPNEO120: "https://rhinobuild.github.io/PRUEBA-IPIP-NEO-120/"
+  },
   TOKEN_STORAGE_KEY: "bph360_user_session_v4"
 };
 
@@ -630,6 +633,7 @@ function switchCandEstatus(estatus) {
 }
 function testBadgeClass(p) {
   if (!p.resultado) return 'mid';
+  if (p.prueba_codigo === 'IPIPNEO120') return p.resultado.bandera === 'Bandera roja' ? 'bad' : p.resultado.bandera === 'Bandera amarilla' ? 'mid' : 'good';
   return p.resultado.puntaje_global >= 65 ? 'good' : p.resultado.puntaje_global >= 50 ? 'mid' : 'bad';
 }
 function renderCandidatosTable() {
@@ -708,6 +712,7 @@ function showCandidatoDetail(id) {
 
   const pruebasHtml = (c.pruebas || []).map(p => {
     if (p.estatus === 'Completada' && p.resultado) {
+      if (p.prueba_codigo === 'IPIPNEO120') return buildIpipResultCard(c, p);
       window.__reportLookup[p.id] = { candidato: c, prueba: p };
       const r = p.resultado;
       const cc = r.puntaje_global >= 65 ? 'good' : r.puntaje_global >= 50 ? 'mid' : 'bad';
@@ -723,14 +728,15 @@ function showCandidatoDetail(id) {
         '<div class="detailGrid" style="margin-top:12px"><div style="display:flex;justify-content:center">' + buildMiniRadar(r.competencias || {}) + '</div>' +
         '<div><div class="metrics">' + metricsHtml + '</div></div></div></div>';
     }
-    const link = p.link_token && CONFIG.CANDIDATE_TEST_URL ? CONFIG.CANDIDATE_TEST_URL + '?t=' + p.link_token : null;
+    const testUrl = CONFIG.TEST_URLS && CONFIG.TEST_URLS[p.prueba_codigo];
+    const link = p.link_token && testUrl ? testUrl + '?t=' + p.link_token : null;
     const inputId = 'linkInput_' + esc(p.id);
     const linkRow = link
       ? '<div style="display:flex;gap:8px;align-items:center;flex:1;min-width:260px">' +
           '<input type="text" readonly value="' + esc(link) + '" onclick="this.select()" id="' + inputId + '" style="flex:1;font-size:12.5px;color:var(--navy)">' +
           '<button class="secondary" onclick="copyLinkInput(this,\'' + inputId + '\')">Copiar</button>' +
         '</div>'
-      : '<span class="muted" style="font-size:12.5px">Configura CONFIG.CANDIDATE_TEST_URL para generar el link</span>';
+      : '<span class="muted" style="font-size:12.5px">Configura la URL de esta prueba para generar el enlace</span>';
     return '<div class="card" style="box-shadow:none;border:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">' +
       '<div><strong>' + esc(p.prueba_nombre) + '</strong> <span class="badge mid">Pendiente</span></div>' +
       linkRow +
@@ -738,6 +744,7 @@ function showCandidatoDetail(id) {
   }).join('') || '<p class="muted">Aún no se le ha asignado ninguna prueba.</p>';
 
   const puedeAsignarBph = !(c.pruebas || []).some(p => p.prueba_codigo === 'BPH360' && p.estatus !== 'Completada');
+  const puedeAsignarIpip = !(c.pruebas || []).some(p => p.prueba_codigo === 'IPIPNEO120' && p.estatus !== 'Completada');
 
   card.innerHTML =
     '<div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px">' +
@@ -748,14 +755,137 @@ function showCandidatoDetail(id) {
       ? '<button class="ghost" onclick="archivarCandidato(\'' + esc(c.id) + '\',\'Archivado\')">Archivar</button>'
       : '<button class="ghost" onclick="archivarCandidato(\'' + esc(c.id) + '\',\'Activo\')">Reactivar</button>') +
     (puedeAsignarBph ? '<button class="primary" onclick="assignTest(\'' + esc(c.id) + '\',\'BPH360\')">Asignar BPH-360</button>' : '') +
+    (puedeAsignarIpip ? '<button class="primary" onclick="assignTest(\'' + esc(c.id) + '\',\'IPIPNEO120\')">Asignar IPIP-NEO-120 + SJT</button>' : '') +
     '</div></div>' +
     '<h4 style="color:var(--navy);margin:18px 0 10px">Pruebas</h4>' + pruebasHtml;
   card.scrollIntoView({ behavior: 'smooth' });
 }
 
+function buildIpipResultCard(candidato, prueba) {
+  window.__reportLookup = window.__reportLookup || {};
+  window.__reportLookup[prueba.id] = { candidato, prueba };
+  const r = prueba.resultado;
+  const flagClass = r.bandera === 'Bandera roja' ? 'bad' : r.bandera === 'Bandera amarilla' ? 'mid' : 'good';
+  const domains = Object.entries(r.dominios || {}).map(([name, value]) => {
+    const pct = Math.max(0, Math.min(100, Math.round((Number(value) - 24) / 96 * 100)));
+    return '<div class="metric"><div class="metricTop"><span>' + esc(name) + '</span><span>' + esc(value) + ' / 120</span></div><div class="bar"><span style="width:' + pct + '%"></span></div></div>';
+  }).join('');
+  return '<div class="card" style="box-shadow:none;border:1px solid var(--line)">' +
+    '<div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><h4 style="margin:0;color:var(--navy)">' + esc(prueba.prueba_nombre) + '</h4>' +
+    '<div><span class="badge ' + flagClass + '">' + esc(r.bandera || 'Sin bandera') + '</span> <span class="badge mid">SJT ' + esc(r.sjt_total) + ' / 4</span> ' +
+    '<button class="secondary" onclick="printIpipReport(\'' + esc(prueba.id) + '\')">Imprimir / guardar PDF</button></div></div>' +
+    '<div class="metrics" style="margin-top:14px">' + domains + '</div>' +
+    '<div class="notice-like" style="margin-top:14px"><strong>Interpretación SJT:</strong> ' + esc(r.sjt_interpretacion || '') + '<br><strong>Decisión orientativa:</strong> ' + esc(r.decision_sugerida || '') + '</div></div>';
+}
+
+function printIpipReport(pruebaId) {
+  const entry = (window.__reportLookup || {})[pruebaId];
+  if (!entry) return;
+  const c = entry.candidato, p = entry.prueba, r = p.resultado;
+  const nombre = (c.nombre + ' ' + c.apellido_paterno + ' ' + (c.apellido_materno || '')).trim();
+  const fecha = p.fecha_completado ? new Date(p.fecha_completado).toLocaleString('es-MX') : (r.fecha_registro ? new Date(r.fecha_registro).toLocaleString('es-MX') : 'No disponible');
+  const logo = (document.querySelector('.hospitalLogo') || {}).src || '';
+  const domainMeta = {
+    'Neuroticismo': { code:'N', color:'#7c3aed', title:'Estabilidad emocional', low:'Suele conservar la calma y recuperarse con rapidez ante la presión.', mid:'Presenta una respuesta emocional equilibrada; puede experimentar tensión sin que ésta domine habitualmente su conducta.', high:'Puede reaccionar con mayor intensidad ante presión, incertidumbre o crítica; conviene explorar recursos de afrontamiento.' },
+    'Extroversión': { code:'E', color:'#2563eb', title:'Energía e interacción', low:'Tiende a desenvolverse de forma reservada y puede preferir ambientes con menor estimulación social.', mid:'Alterna adecuadamente la interacción con el trabajo independiente según lo exige la situación.', high:'Suele mostrarse activa, expresiva y orientada al contacto; puede movilizar al grupo con facilidad.' },
+    'Apertura': { code:'O', color:'#0891b2', title:'Apertura a la experiencia', low:'Prefiere métodos conocidos, instrucciones concretas y cambios graduales.', mid:'Combina practicidad con disposición a considerar alternativas y aprender procedimientos nuevos.', high:'Muestra curiosidad, flexibilidad conceptual y facilidad para explorar ideas o métodos novedosos.' },
+    'Amabilidad': { code:'A', color:'#16a34a', title:'Colaboración interpersonal', low:'Puede adoptar una postura directa, competitiva o escéptica; conviene observar manejo de desacuerdos.', mid:'Suele colaborar sin perder criterio propio y ajusta su cooperación al contexto.', high:'Tiende a mostrarse empática, cooperativa y considerada con las necesidades de otras personas.' },
+    'Responsabilidad': { code:'C', color:'#d97706', title:'Organización y cumplimiento', low:'Puede requerir estructura externa, prioridades claras y seguimiento para sostener el orden y la constancia.', mid:'Mantiene una organización funcional y suele cumplir cuando los objetivos y plazos están definidos.', high:'Tiende a planificar, perseverar y cuidar el cumplimiento de compromisos y estándares.' }
+  };
+  const scoreInfo = (value) => {
+    const v = Number(value) || 0;
+    const pct = Math.max(0, Math.min(100, Math.round((v - 24) / 96 * 100)));
+    const level = v <= 56 ? 'Bajo' : v <= 87 ? 'Medio' : 'Alto';
+    return { value:v, pct, level };
+  };
+  const domains = Object.entries(r.dominios || {});
+  const domainBars = domains.map(([name,value]) => {
+    const meta = domainMeta[name] || { color:'#0d2d4a' }, s = scoreInfo(value);
+    return '<div class="ipipBarRow"><div class="ipipBarLabel"><strong>' + esc(name) + '</strong><span>' + s.level + '</span></div><div class="ipipTrack"><i style="width:' + s.pct + '%;background:' + meta.color + '"></i></div><b>' + s.value + '</b></div>';
+  }).join('');
+  const domainCards = domains.map(([name,value]) => {
+    const meta = domainMeta[name] || { title:name, low:'', mid:'', high:'' }, s = scoreInfo(value);
+    const text = s.level === 'Bajo' ? meta.low : s.level === 'Alto' ? meta.high : meta.mid;
+    const cls = s.level === 'Alto' ? 'levelHigh' : s.level === 'Bajo' ? 'levelLow' : 'levelMid';
+    return '<article class="traitCard"><div class="traitBand"><span>' + esc(meta.code || '') + '</span><div><small>' + esc(meta.title) + '</small><h3>' + esc(name) + '</h3></div><b class="' + cls + '">' + s.level + ' · ' + s.value + '/120</b></div><p>' + esc(text) + '</p><div class="traitScale"><i style="left:' + s.pct + '%;background:' + meta.color + '"></i></div><div class="scaleLabels"><span>Bajo</span><span>Medio</span><span>Alto</span></div></article>';
+  }).join('');
+  const facetsByDomain = {};
+  Object.entries(r.facetas || {}).forEach(([code,facet]) => {
+    const domain = (facet && facet.domain) || code.charAt(0);
+    (facetsByDomain[domain] = facetsByDomain[domain] || []).push({ code, name:(facet && facet.name) || code, score:Number(facet && facet.score) || 0 });
+  });
+  const facetGroups = domains.map(([name]) => {
+    const meta = domainMeta[name] || {};
+    const items = (facetsByDomain[meta.code] || []).map(f => {
+      const pct = Math.max(0, Math.min(100, Math.round((f.score - 4) / 16 * 100)));
+      const level = f.score <= 9 ? 'Bajo' : f.score <= 14 ? 'Medio' : 'Alto';
+      return '<div class="facetRow"><span>' + esc(f.name) + '</span><div class="facetTrack"><i style="width:' + pct + '%;background:' + (meta.color || '#0d2d4a') + '"></i></div><b>' + f.score + '/20</b><em>' + level + '</em></div>';
+    }).join('');
+    return '<section class="facetGroup"><h3 style="border-color:' + (meta.color || '#0d2d4a') + '">' + esc(name) + '</h3>' + (items || '<p class="muted">Sin datos de facetas.</p>') + '</section>';
+  }).join('');
+  const sortedDomains = domains.map(([name,value]) => ({name, ...scoreInfo(value)}));
+  const strengths = sortedDomains.filter(x => x.level === 'Alto' && x.name !== 'Neuroticismo').slice(0,3);
+  const watch = sortedDomains.filter(x => x.level === 'Bajo' || (x.name === 'Neuroticismo' && x.level === 'Alto')).slice(0,3);
+  const strengthsHtml = (strengths.length ? strengths : sortedDomains.slice().sort((a,b)=>b.pct-a.pct).slice(0,2)).map(x => '<li><strong>' + esc(x.name) + ':</strong> ' + esc((domainMeta[x.name] || {}).high || 'Rasgo relativamente destacado dentro del perfil.') + '</li>').join('');
+  const watchHtml = (watch.length ? watch : sortedDomains.slice().sort((a,b)=>a.pct-b.pct).slice(0,2)).map(x => '<li><strong>' + esc(x.name) + ':</strong> ' + esc(x.name === 'Neuroticismo' ? (domainMeta[x.name] || {}).high : (domainMeta[x.name] || {}).low) + '</li>').join('');
+  const sjtPct = Math.max(0, Math.min(100, Math.round((Number(r.sjt_total) || 0) / 4 * 100)));
+  const flagClass = r.bandera === 'Bandera roja' ? 'flagRed' : r.bandera === 'Bandera amarilla' ? 'flagAmber' : 'flagGreen';
+  const footer = '<div class="reportFooter">Reporte orientativo para selección. No constituye diagnóstico psicológico ni debe emplearse como criterio único de contratación. <span>Folio ' + esc(p.id || c.id || '') + '</span></div>';
+  const header = '<header class="ipipHeader"><img src="' + esc(logo) + '" alt="Saint Luke\'s Hospitals"><div><b>Capital Humano</b><span>Evaluación psicométrica integrada</span></div><aside><strong>' + esc(nombre) + '</strong><span>' + esc(fecha) + '</span></aside></header>';
+  const html = '<main class="ipipReport">' +
+    '<section class="reportPage">' + header + '<div class="titleRibbon"><span>IPIP-NEO-120 + SJT</span><b>Reporte de personalidad laboral</b></div>' +
+    '<div class="candidateGrid"><div><small>CANDIDATO</small><strong>' + esc(nombre) + '</strong></div><div><small>VACANTE</small><strong>' + esc(c.vacante_nombre || 'No especificada') + '</strong></div><div><small>ÁREA / SEDE</small><strong>' + esc(r.area_sjt || c.area || '') + (r.sede ? ' · ' + esc(r.sede) : '') + '</strong></div><div><small>FECHA DE APLICACIÓN</small><strong>' + esc(fecha) + '</strong></div></div>' +
+    '<h2 class="sectionRibbon">Perfil global de personalidad</h2><div class="domainChart">' + domainBars + '</div>' +
+    '<div class="twoCols"><section><h2 class="sectionRibbon">Características sobresalientes</h2><ul class="reportList strengths">' + strengthsHtml + '</ul></section><section><h2 class="sectionRibbon">Aspectos por explorar</h2><ul class="reportList watch">' + watchHtml + '</ul></section></div>' +
+    '<div class="summaryStrip"><div><span class="statusDot ' + flagClass + '"></span><small>LECTURA INTEGRADA</small><strong>' + esc(r.bandera || 'Sin bandera') + '</strong></div><div><small>JUICIO SITUACIONAL</small><strong>' + esc(r.sjt_total) + ' / 4</strong></div><div><small>DECISIÓN ORIENTATIVA</small><strong>' + esc(r.decision_sugerida || 'Complementar evaluación') + '</strong></div></div>' + footer + '</section>' +
+    '<section class="reportPage">' + header + '<div class="titleRibbon"><span>IPIP-NEO-120</span><b>Interpretación de los cinco dominios</b></div>' + domainCards + footer + '</section>' +
+    '<section class="reportPage facetPage">' + header + '<div class="titleRibbon"><span>IPIP-NEO-120</span><b>Detalle de facetas</b></div><p class="lead">Las facetas precisan cómo se expresa cada dominio. Los puntajes son directos (4 a 20) y deben interpretarse de forma conjunta, no como diagnósticos aislados.</p>' + facetGroups + footer + '</section>' +
+    '<section class="reportPage">' + header + '<div class="titleRibbon"><span>SJT</span><b>Juicio situacional y síntesis para entrevista</b></div>' +
+    '<div class="sjtHero"><div class="sjtGauge"><div style="--p:' + sjtPct + '"><span>' + esc(r.sjt_total) + '</span><small>de 4</small></div></div><div><span class="statusPill ' + flagClass + '">' + esc(r.bandera || 'Sin bandera') + '</span><h2>Resultado del juicio situacional</h2><p>' + esc(r.sjt_interpretacion || 'Sin interpretación registrada.') + '</p></div></div>' +
+    '<h2 class="sectionRibbon">Integración para la toma de decisión</h2><div class="decisionBox"><strong>' + esc(r.decision_sugerida || 'Complementar evaluación') + '</strong><p>Contrastar este resultado con entrevista por competencias, referencias laborales, experiencia, requisitos técnicos y condiciones específicas del puesto.</p></div>' +
+    '<h2 class="sectionRibbon">Preguntas sugeridas de profundización</h2><ol class="interviewQuestions"><li>Describa una situación de alta presión: ¿qué hizo para mantener la calidad y priorizar?</li><li>Cuéntenos sobre un desacuerdo con un compañero o usuario: ¿cómo lo resolvió?</li><li>Dé un ejemplo de una meta que exigió constancia y seguimiento durante varias semanas.</li><li>¿Qué hace cuando un procedimiento cambia y debe aprender una forma nueva de trabajar?</li></ol>' +
+    (r.notas_evaluador ? '<h2 class="sectionRibbon">Notas del evaluador</h2><div class="notesBox">' + esc(r.notas_evaluador) + '</div>' : '') +
+    '<div class="methodBox"><h3>Alcance y calidad de la aplicación</h3><p>El perfil refleja respuestas de autoinforme al momento de la aplicación. Esta versión registra los 120 reactivos del IPIP-NEO y dos escenarios SJT, pero no calcula una escala clínica de mentira, honestidad o validez. Cualquier inconsistencia debe revisarse mediante entrevista y evidencia adicional.</p><p><strong>Vigencia recomendada:</strong> interpretar dentro del contexto del proceso actual; si cambian sustancialmente el puesto o las circunstancias, considerar una nueva aplicación.</p></div>' + footer + '</section></main>';
+  const win = window.open('', '_blank');
+  if (!win) return alert('Permite ventanas emergentes para imprimir el reporte.');
+  win.document.write('<!doctype html><html lang="es"><head><meta charset="utf-8"><title>Reporte IPIP-NEO-120 · ' + esc(nombre) + '</title><style>' + REPORT_PRINT_CSS + IPIP_REPORT_CSS + '</style></head><body>' + html + '</body></html>');
+  win.document.close();
+  const doPrint = () => { try { win.focus(); win.print(); } catch (e) {} };
+  win.onload = doPrint;
+  setTimeout(doPrint, 700);
+}
+
 /* ============================================================
    REPORTE DE RESULTADOS — imprimir / descargar por candidato
    ============================================================ */
+const IPIP_REPORT_CSS = `
+@page{size:Letter;margin:0}
+body{padding:0;background:#eef2f5;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.ipipReport{font-family:Arial,Helvetica,sans-serif;color:#334155}
+.reportPage{position:relative;width:8.5in;min-height:11in;margin:18px auto;background:#fff;padding:.35in .35in .55in;box-shadow:0 8px 30px rgba(15,23,42,.12);overflow:hidden;page-break-after:always}
+.reportPage:last-child{page-break-after:auto}
+.ipipHeader{height:.56in;display:grid;grid-template-columns:1.55in 1fr 2.85in;align-items:center;gap:14px;border-bottom:1px solid #d7dee7;margin-bottom:12px;padding-bottom:8px}
+.ipipHeader img{max-width:1.42in;max-height:.42in;object-fit:contain;object-position:left center;filter:brightness(0) saturate(100%) invert(14%) sepia(19%) saturate(2136%) hue-rotate(167deg) brightness(91%) contrast(94%)}
+.ipipHeader>div{border-left:1px solid #cbd5e1;padding-left:14px;display:flex;flex-direction:column;color:#0d2d4a}
+.ipipHeader>div b{font-size:12px}.ipipHeader>div span{font-size:9px;color:#64748b;margin-top:2px}
+.ipipHeader aside{text-align:right;display:flex;flex-direction:column;gap:3px;font-size:9px;color:#64748b}.ipipHeader aside strong{font-size:10px;color:#0d2d4a;text-transform:uppercase}
+.titleRibbon,.sectionRibbon{background:linear-gradient(90deg,#f7e79d,#fff8c9);border-left:7px solid #c9a84c;color:#0d2d4a}
+.titleRibbon{display:flex;align-items:center;justify-content:space-between;padding:11px 15px;margin:10px 0 14px;border-radius:0 16px 16px 0}
+.titleRibbon span{font-weight:900;font-size:16px}.titleRibbon b{font-size:13px}
+.sectionRibbon{font-size:12px;text-align:center;padding:6px 10px;margin:14px 0 10px;border-left-width:4px;border-radius:0 12px 12px 0}
+.candidateGrid{display:grid;grid-template-columns:1.25fr 1.25fr 1fr 1fr;gap:8px;margin-bottom:12px}
+.candidateGrid>div{border:1px solid #dbe2ea;border-radius:8px;padding:8px 9px;min-height:48px}.candidateGrid small{display:block;font-size:7px;letter-spacing:.7px;color:#64748b}.candidateGrid strong{display:block;margin-top:4px;font-size:10px;color:#0d2d4a}
+.domainChart{border:1px solid #e2e8f0;border-radius:12px;padding:13px 16px;background:#fff}
+.ipipBarRow{display:grid;grid-template-columns:1.45in 1fr .42in;align-items:center;gap:10px;margin:10px 0}.ipipBarLabel{display:flex;justify-content:space-between;align-items:center;gap:5px;font-size:10px}.ipipBarLabel span{font-size:8px;color:#64748b}.ipipTrack,.facetTrack{height:13px;background:repeating-linear-gradient(90deg,#eef2f7 0,#eef2f7 calc(20% - 1px),#dbe2ea calc(20% - 1px),#dbe2ea 20%);border-radius:2px;overflow:hidden}.ipipTrack i,.facetTrack i{display:block;height:100%}.ipipBarRow>b{font-size:10px;color:#0d2d4a;text-align:right}
+.twoCols{display:grid;grid-template-columns:1fr 1fr;gap:14px}.reportList{margin:0;padding:0;list-style:none}.reportList li{font-size:9px;line-height:1.42;padding:8px 9px;border:1px solid #e2e8f0;border-left:4px solid #16a34a;border-radius:7px;margin-bottom:7px}.reportList.watch li{border-left-color:#d97706}.reportList strong{color:#0d2d4a}
+.summaryStrip{display:grid;grid-template-columns:1fr .58fr 1.25fr;gap:8px;margin-top:12px}.summaryStrip>div{border:1px solid #dbe2ea;border-radius:9px;padding:8px 10px;position:relative}.summaryStrip small{display:block;color:#64748b;font-size:7px;letter-spacing:.55px}.summaryStrip strong{display:block;color:#0d2d4a;font-size:10px;margin-top:4px}.statusDot{width:7px;height:7px;border-radius:50%;display:block;position:absolute;right:8px;top:8px}
+.traitCard{border:1px solid #dbe2ea;border-radius:11px;padding:10px 12px;margin-bottom:9px;break-inside:avoid}.traitBand{display:grid;grid-template-columns:.38in 1fr auto;align-items:center;gap:9px}.traitBand>span{display:grid;place-items:center;width:.34in;height:.34in;border-radius:50%;background:#0d2d4a;color:#fff;font-weight:900}.traitBand small{display:block;color:#64748b;font-size:8px}.traitBand h3{margin:2px 0 0;color:#0d2d4a;font-size:13px}.traitBand b{font-size:9px;padding:5px 8px;border-radius:999px}.levelHigh{color:#166534;background:#dcfce7}.levelMid{color:#92400e;background:#fef3c7}.levelLow{color:#991b1b;background:#fee2e2}.traitCard p{font-size:9.3px;line-height:1.42;margin:8px 0}.traitScale{position:relative;height:6px;margin:6px 2px 0;background:linear-gradient(90deg,#fee2e2 0 33%,#fef3c7 33% 67%,#dcfce7 67%);border-radius:99px}.traitScale i{position:absolute;top:-3px;width:3px;height:12px;border-radius:3px}.scaleLabels{display:flex;justify-content:space-between;font-size:7px;color:#94a3b8;margin-top:3px}
+.facetPage .lead{font-size:8.5px;line-height:1.4;color:#64748b;margin:0 2px 8px}.facetGroup{break-inside:avoid;margin-bottom:7px}.facetGroup h3{font-size:10px;color:#0d2d4a;border-left:5px solid;padding:4px 7px;margin:0 0 4px;background:#f8fafc}.facetRow{display:grid;grid-template-columns:1.35in 1fr .42in .42in;gap:7px;align-items:center;padding:3px 5px;border-bottom:1px solid #edf1f5;font-size:8px}.facetRow .facetTrack{height:7px}.facetRow>b{text-align:right;color:#0d2d4a}.facetRow em{text-align:right;color:#64748b;font-style:normal;font-size:7px}
+.sjtHero{display:grid;grid-template-columns:1.65in 1fr;gap:20px;align-items:center;border:1px solid #dbe2ea;border-radius:14px;padding:18px;margin:14px 0}.sjtGauge{display:grid;place-items:center}.sjtGauge>div{--p:0;display:grid;place-items:center;align-content:center;width:1.35in;height:1.35in;border-radius:50%;background:radial-gradient(circle closest-side,#fff 77%,transparent 78% 99%),conic-gradient(#c9a84c calc(var(--p)*1%),#e8edf2 0)}.sjtGauge span{font-size:28px;font-weight:900;color:#0d2d4a}.sjtGauge small{font-size:9px;color:#64748b}.sjtHero h2{font-size:16px;color:#0d2d4a;margin:9px 0 5px}.sjtHero p,.decisionBox p,.methodBox p{font-size:10px;line-height:1.5;margin:5px 0}.statusPill{display:inline-block;color:#fff;font-weight:800;font-size:9px;padding:5px 10px;border-radius:999px}.flagGreen{background:#16a34a}.flagAmber{background:#d97706}.flagRed{background:#dc2626}.decisionBox,.notesBox,.methodBox{border:1px solid #dbe2ea;border-radius:11px;padding:12px 14px;background:#f8fafc}.decisionBox strong{color:#0d2d4a;font-size:14px}.interviewQuestions{font-size:10px;line-height:1.5;margin:0;padding-left:22px}.interviewQuestions li{margin-bottom:7px;padding-left:3px}.notesBox{font-size:10px;line-height:1.5;white-space:pre-wrap}.methodBox{margin-top:16px}.methodBox h3{font-size:11px;color:#0d2d4a;margin:0 0 5px}
+.reportFooter{position:absolute;left:.35in;right:.35in;bottom:.17in;border-top:1px solid #dbe2ea;padding-top:5px;color:#94a3b8;font-size:6.7px;line-height:1.25}.reportFooter span{float:right;color:#64748b}
+@media print{body{background:#fff}.reportPage{margin:0;box-shadow:none}.ipipHeader img{filter:none}}
+`;
+
 function buildFullReportHtml(candidato, prueba) {
   const r = prueba.resultado;
   const nombreCompleto = (candidato.nombre + ' ' + candidato.apellido_paterno + ' ' + (candidato.apellido_materno || '')).trim();
@@ -1159,3 +1289,4 @@ guardMissingConfig();
 
 </script>
 </body></html>
+
