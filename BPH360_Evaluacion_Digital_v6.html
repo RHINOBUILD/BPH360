@@ -283,7 +283,7 @@ button:disabled{opacity:.5;cursor:not-allowed}
   <p class="muted" style="text-align:center;margin-top:22px">Gracias por completar la evaluación. Puedes cerrar esta ventana.</p>
 </div>
 
-<div class="footer">BPH-360 · Evaluación laboral hospitalaria · Versión digital 5.0</div>
+<div class="footer">BPH-360 · Evaluación institucional de competencias · Versión digital 6.0</div>
 </div>
 <script>
 const LIKERT=[{"id": 1, "dim": "Responsabilidad", "text": "Cumplo con mis tareas aunque nadie esté supervisando directamente mi trabajo.", "rev": false}, {"id": 2, "dim": "Responsabilidad", "text": "Si cometo un error laboral, procuro informarlo oportunamente.", "rev": false}, {"id": 3, "dim": "Responsabilidad", "text": "Me esfuerzo por terminar correctamente una tarea antes de darla por concluida.", "rev": false}, {"id": 4, "dim": "Responsabilidad", "text": "Cuando recibo una instrucción, confirmo los puntos que no me hayan quedado claros.", "rev": false}, {"id": 5, "dim": "Responsabilidad", "text": "Puedo mantener un buen nivel de cumplimiento incluso en jornadas exigentes.", "rev": false}, {"id": 6, "dim": "Integridad", "text": "Respeto las políticas institucionales aunque nadie esté vigilando.", "rev": false}, {"id": 7, "dim": "Integridad", "text": "Evito utilizar información o recursos de la institución para beneficio personal.", "rev": false}, {"id": 8, "dim": "Integridad", "text": "Si detecto una irregularidad importante, considero necesario comunicarla por el canal correspondiente.", "rev": false}, {"id": 9, "dim": "Integridad", "text": "Prefiero reconocer una equivocación antes que responsabilizar injustamente a otra persona.", "rev": false}, {"id": 10, "dim": "Integridad", "text": "Considero que la confidencialidad de la información debe respetarse incluso fuera del horario laboral.", "rev": false}, {"id": 11, "dim": "Orientación al paciente/servicio", "text": "Trato con respeto a las personas incluso cuando están molestas.", "rev": false}, {"id": 12, "dim": "Orientación al paciente/servicio", "text": "Procuro comprender la necesidad de una persona antes de responderle.", "rev": false}, {"id": 13, "dim": "Orientación al paciente/servicio", "text": "Me esfuerzo por ofrecer una atención cordial aun cuando tengo mucho trabajo.", "rev": false}, {"id": 14, "dim": "Orientación al paciente/servicio", "text": "Considero importante cuidar la dignidad de cada paciente y usuario.", "rev": false}, {"id": 15, "dim": "Orientación al paciente/servicio", "text": "Cuando no puedo resolver una solicitud, busco orientar a la persona hacia quien sí puede ayudarla.", "rev": false}, {"id": 16, "dim": "Trabajo en equipo", "text": "Puedo colaborar con personas que tienen formas de trabajo diferentes a la mía.", "rev": false}, {"id": 17, "dim": "Trabajo en equipo", "text": "Comparto información relevante con mis compañeros para evitar errores.", "rev": false}, {"id": 18, "dim": "Trabajo en equipo", "text": "Acepto recibir retroalimentación sobre mi trabajo.", "rev": false}, {"id": 19, "dim": "Trabajo en equipo", "text": "Cuando un compañero necesita apoyo y puedo ayudarlo, procuro hacerlo.", "rev": false}, {"id": 20, "dim": "Trabajo en equipo", "text": "Puedo mantener una relación profesional con alguien con quien no tengo afinidad personal.", "rev": false}, {"id": 21, "dim": "Manejo de presión", "text": "Puedo mantener la concentración cuando varias tareas llegan al mismo tiempo.", "rev": false}, {"id": 22, "dim": "Manejo de presión", "text": "Cuando aumenta la carga de trabajo, soy capaz de priorizar.", "rev": false}, {"id": 23, "dim": "Manejo de presión", "text": "Puedo tomar decisiones razonables aun cuando existe presión de tiempo.", "rev": false}, {"id": 24, "dim": "Manejo de presión", "text": "En situaciones tensas, procuro controlar mi reacción antes de responder.", "rev": false}, {"id": 25, "dim": "Manejo de presión", "text": "Los problemas laborales suelen afectar mi rendimiento durante el resto de la jornada.", "rev": true}, {"id": 26, "dim": "Estabilidad emocional", "text": "Puedo recibir una crítica sin reaccionar de manera impulsiva.", "rev": false}, {"id": 27, "dim": "Estabilidad emocional", "text": "Después de una situación difícil, puedo recuperar mi concentración.", "rev": false}, {"id": 28, "dim": "Estabilidad emocional", "text": "Cuando estoy molesto, puedo mantener una comunicación profesional.", "rev": false}, {"id": 29, "dim": "Estabilidad emocional", "text": "Las diferencias con un compañero pueden hacer que deje de colaborar con él.", "rev": true}, {"id": 30, "dim": "Estabilidad emocional", "text": "Puedo separar un problema personal de mis responsabilidades laborales.", "rev": false}, {"id": 31, "dim": "Apego a protocolos", "text": "Sigo los procedimientos establecidos aunque considere que existe una forma más rápida.", "rev": false}, {"id": 32, "dim": "Apego a protocolos", "text": "Si una regla de seguridad me parece innecesaria, puedo ignorarla cuando tengo experiencia.", "rev": true}, {"id": 33, "dim": "Apego a protocolos", "text": "Antes de realizar una actividad crítica, verifico que se cumplan los requisitos establecidos.", "rev": false}, {"id": 34, "dim": "Apego a protocolos", "text": "Si observo una práctica que puede generar un riesgo, considero importante comunicarla.", "rev": false}, {"id": 35, "dim": "Apego a protocolos", "text": "Considero que los protocolos deben aplicarse de manera consistente.", "rev": false}, {"id": 36, "dim": "Comunicación", "text": "Procuro expresar mis ideas de manera clara y respetuosa.", "rev": false}, {"id": 37, "dim": "Comunicación", "text": "Cuando una persona no comprende una explicación, intento explicarla de otra manera.", "rev": false}, {"id": 38, "dim": "Comunicación", "text": "Escucho antes de responder cuando existe un desacuerdo.", "rev": false}, {"id": 39, "dim": "Comunicación", "text": "Puedo comunicar una situación delicada sin generar conflictos innecesarios.", "rev": false}, {"id": 40, "dim": "Comunicación", "text": "Cuando tengo dudas sobre una instrucción, prefiero preguntar antes de asumir.", "rev": false}, {"id": 41, "dim": "Adaptabilidad", "text": "Puedo adaptarme cuando cambian procedimientos o prioridades.", "rev": false}, {"id": 42, "dim": "Adaptabilidad", "text": "Aprendo con relativa rapidez cuando se implementa una nueva herramienta de trabajo.", "rev": false}, {"id": 43, "dim": "Adaptabilidad", "text": "Un cambio inesperado suele desorganizar mi desempeño.", "rev": true}, {"id": 44, "dim": "Adaptabilidad", "text": "Puedo modificar mi forma de trabajar cuando una situación lo requiere.", "rev": false}, {"id": 45, "dim": "Adaptabilidad", "text": "Acepto que los procesos institucionales pueden cambiar para mejorar.", "rev": false}, {"id": 46, "dim": "Organización", "text": "Planifico mis actividades para evitar retrasos.", "rev": false}, {"id": 47, "dim": "Organización", "text": "Suelo llevar un control de pendientes y fechas importantes.", "rev": false}, {"id": 48, "dim": "Organización", "text": "Puedo distinguir entre una tarea urgente y una tarea importante.", "rev": false}, {"id": 49, "dim": "Toma de decisiones", "text": "Antes de decidir, procuro revisar la información disponible.", "rev": false}, {"id": 50, "dim": "Orientación a resultados", "text": "Me esfuerzo por alcanzar los objetivos asignados sin descuidar la calidad.", "rev": false}];
@@ -302,8 +302,8 @@ const CONFIG = {
   // persona con el enlace puede ejecutar" para registrar cada resultado
   // automáticamente en una hoja de Google Sheets. Déjalo vacío para
   // desactivar el envío automático (el candidato solo descarga el JSON).
-  WEBHOOK_URL: "https://script.google.com/macros/s/AKfycbxBX8ypNVp-g8nIhdAFb_lyq8rJK8sBqLIYQEfPw9hsqOuNCTY7eukXKU5MQlotDhOk/exec",
-  STORAGE_KEY: "bph360_progress_v2"
+  WEBHOOK_URL: "https://script.google.com/macros/s/AKfycbx50VUNHbufvQSbv3ZkVpCr2qfpe4uri9M4eIaI-3MEUs_LN0SKzUclk6wOLsuTwvjwTw/exec",
+  STORAGE_KEY: "bph360_progress_v3"
 };
 
 /* ============================================================
@@ -409,7 +409,8 @@ function buildSections(area) {
     return {
       id: item.id, dim: item.dim, text: item.text,
       options: order.map(idx => item.options[idx]),
-      key: order.indexOf(item.key)
+      values: order,
+      key: item.key
     };
   });
   const roleShuffled = shuffle(ROLE.filter(x => x.area === area));
@@ -467,18 +468,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     await initFromAssignment(token);
     return;
   }
-
-  const saved = loadState();
-  if (saved && !saved.finished && Object.keys(saved.answers).length > 0) {
-    const totalItems = saved.sections.reduce((n, s) => n + s.items.length, 0);
-    const answered = Object.keys(saved.answers).length;
-    document.getElementById('resumeInfo').textContent =
-      saved.name + " · " + saved.position + " — " + answered + " de " + totalItems + " preguntas respondidas.";
-    document.getElementById('screenResume').classList.remove('hidden');
-    state = saved; // se confirma con resumeProgress() o se descarta con discardProgress()
-  } else {
-    document.getElementById('screenIntro').classList.remove('hidden');
-  }
+  showLinkError("Para proteger tu evaluación, ingresa mediante el enlace individual enviado por Recursos Humanos.");
 });
 
 /* ============================================================
@@ -631,8 +621,9 @@ function render() {
       box.className = 'sitopts';
       item.options.forEach((opt, idx) => {
         const l = document.createElement('label');
-        l.className = 'sitopt' + (state.answers[item.id] === idx ? ' checked' : '');
-        l.innerHTML = '<input type="radio" name="q' + item.id + '" value="' + idx + '" ' + (state.answers[item.id] === idx ? 'checked' : '') + '><span><span class="letter">' + String.fromCharCode(65 + idx) + ')</span> ' + opt + '</span>';
+        const originalValue = item.values ? item.values[idx] : idx;
+        l.className = 'sitopt' + (state.answers[item.id] === originalValue ? ' checked' : '');
+        l.innerHTML = '<input type="radio" name="q' + item.id + '" value="' + originalValue + '" ' + (state.answers[item.id] === originalValue ? 'checked' : '') + '><span><span class="letter">' + String.fromCharCode(65 + idx) + ')</span> ' + opt + '</span>';
         l.querySelector('input').addEventListener('change', e => {
           state.answers[item.id] = +e.target.value;
           box.querySelectorAll('.sitopt').forEach(o => o.classList.remove('checked'));
@@ -867,6 +858,7 @@ function finish() {
   recordSectionTime();
   state.finished = true;
   const r = computeResults();
+  saveState();
 
   document.getElementById('globalScore').textContent = r.global;
   document.getElementById('candidateTitle').textContent = state.name + " · " + state.area;
@@ -895,18 +887,20 @@ function finish() {
     '<div class="validityItem"><div class="label">Cambios de pestaña/ventana durante la prueba</div><div class="val">' + focusLabel + '</div></div>';
 
   window.__BPH_RESULT = {
+    __action: 'resultado_enviar',
     token: state.linkToken || undefined,
     nombre: state.name, puesto: state.position, area: state.area, folio: state.folio,
     fecha: new Date().toISOString(),
     puntaje_global: r.global, competencias: r.scores, recomendacion: r.rec,
-    validez: {
+    validez_cliente: {
       consistencia_pct: r.consistencyPct,
       alertas_deseabilidad_social: r.infreqFlags,
       cambios_de_pestana: r.focusLossCount,
       segundos_por_reactivo: r.secondsPerItem,
       duracion_total_segundos: r.totalSeconds
     },
-    respuestas: state.answers
+    respuestas: state.answers,
+    version_instrumento: '6.0'
   };
 
   renderSendPanel();
@@ -914,7 +908,6 @@ function finish() {
   document.getElementById('screenTest').classList.add('hidden');
   document.getElementById('progressWrap').classList.add('hidden');
   document.getElementById('screenResult').classList.remove('hidden');
-  clearState();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -932,12 +925,13 @@ function renderSendPanel() {
       body: JSON.stringify(window.__BPH_RESULT)
     }).then(r => r.json()).then(r => {
       if (r && r.ok) {
+        clearState();
         panel.insertAdjacentHTML('beforeend', '<div class="notice info">Resultado enviado automáticamente a Recursos Humanos.</div>');
       } else {
-        panel.insertAdjacentHTML('beforeend', '<div class="notice error">No se pudo confirmar el envío automático. Descárgalo y envíalo por correo como respaldo.</div>');
+        showSendError(panel, 'No se pudo registrar el resultado: ' + ((r && r.error) || 'error de conexión') + '.');
       }
     }).catch(() => {
-      panel.insertAdjacentHTML('beforeend', '<div class="notice error">No se pudo enviar el resultado automáticamente. Descárgalo y envíalo por correo.</div>');
+      showSendError(panel, 'No se pudo enviar el resultado. Revisa tu conexión.');
     });
   } else {
     panel.insertAdjacentHTML('beforeend', '<div class="notice">Descarga tu resultado y envíalo a Recursos Humanos, o usa el botón de correo si está disponible.</div>');
@@ -964,6 +958,23 @@ function renderSendPanel() {
   }
 }
 
+function showSendError(panel, message) {
+  const box = document.createElement('div');
+  box.className = 'notice error';
+  box.textContent = message + ' Conserva esta ventana y contacta a Recursos Humanos si el problema continúa.';
+  panel.appendChild(box);
+  const retry = document.createElement('button');
+  retry.className = 'primary';
+  retry.style.marginTop = '10px';
+  retry.textContent = 'Reintentar envío';
+  retry.onclick = renderSendPanel;
+  panel.appendChild(retry);
+}
+
+
+
+</script>
+</body></html>
 
 
 </script>
