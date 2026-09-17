@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Evaluación Psicométrica de Ingreso | Saint Luke's Hospitals</title>
+<style>
+  :root{
+    --navy-950:#0a1a33;
+    --navy-900:#0e2647;
+    --navy-800:#153a68;
+    --navy-700:#1d4b86;
+    --gold-500:#c9a227;
+    --gold-400:#dab94a;
+    --gold-100:#f6ecc9;
+    --paper:#f7f5ef;
+    --ink:#182233;
+    --ink-soft:#4a5568;
+    --line:#dcd6c4;
+    --red-600:#a3312a;
+    --red-100:#f6dedb;
+    --amber-600:#a3721f;
+    --amber-100:#f6e9d0;
+    --green-700:#2f6d4f;
+    --green-100:#e0efe4;
+    --white-100:#f4f3ee;
+    --radius:3px;
+    --serif: 'Iowan Old Style','Palatino Linotype','Book Antiqua',Georgia,serif;
+    --sans: -apple-system,'Segoe UI',Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--sans);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--gold-400);color:var(--navy-950);}
+
+  header.top{
+    background:linear-gradient(180deg,var(--navy-950),var(--navy-900) 70%);
+    color:var(--white-100);
+    padding:28px 32px 22px;
+    border-bottom:3px solid var(--gold-500);
+  }
+  header.top .crest{
+    display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;
+  }
+  header.top .mark{
+    font-family:var(--serif);
+    font-size:13px;
+    letter-spacing:.14em;
+    color:var(--gold-400);
+    border:1px solid var(--gold-500);
+    padding:3px 9px;
+    border-radius:var(--radius);
+  }
+  header.top h1{
+    font-family:var(--serif);
+    font-weight:400;
+    font-size:26px;
+    margin:10px 0 4px;
+    letter-spacing:.01em;
+  }
+  header.top p{
+    margin:0;
+    color:#c7d4e8;
+    font-size:14.5px;
+    max-width:640px;
+  }
+
+  .wrap{max-width:760px;margin:0 auto;padding:36px 24px 90px;}
+  .card{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:30px 32px;
+    margin-bottom:22px;
+  }
+  h2.section-title{
+    font-family:var(--serif);
+    font-weight:400;
+    font-size:20px;
+    margin:0 0 6px;
+    color:var(--navy-900);
+  }
+  .subtle{color:var(--ink-soft);font-size:14px;margin:0 0 20px;}
+
+  label{display:block;font-size:13.5px;font-weight:600;color:var(--navy-900);margin-bottom:6px;}
+  input[type=text],select,textarea{
+    width:100%;
+    padding:10px 12px;
+    border:1px solid #c7c0a8;
+    border-radius:var(--radius);
+    font-size:15px;
+    font-family:var(--sans);
+    background:var(--white-100);
+    color:var(--ink);
+  }
+  input[type=text]:focus,select:focus,textarea:focus{outline:2px solid var(--gold-500);outline-offset:1px;}
+  .field{margin-bottom:18px;}
+  .field-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  @media(max-width:560px){.field-row{grid-template-columns:1fr;}}
+
+  button{
+    font-family:var(--sans);
+    font-weight:600;
+    font-size:15px;
+    padding:12px 26px;
+    border-radius:var(--radius);
+    border:1px solid transparent;
+    cursor:pointer;
+  }
+  .btn-primary{background:var(--navy-900);color:#fff;}
+  .btn-primary:hover{background:var(--navy-800);}
+  .btn-primary:disabled{background:#9aa5b4;cursor:not-allowed;}
+  .btn-ghost{background:transparent;color:var(--navy-900);border-color:var(--navy-900);}
+  .btn-ghost:hover{background:var(--white-100);}
+  .btn-gold{background:var(--gold-500);color:var(--navy-950);}
+  .btn-gold:hover{background:var(--gold-400);}
+  .btn-row{display:flex;justify-content:space-between;align-items:center;margin-top:26px;gap:12px;}
+
+  /* progress */
+  .progress-shell{background:var(--white-100);border:1px solid var(--line);border-radius:20px;height:8px;overflow:hidden;margin-bottom:6px;}
+  .progress-fill{background:linear-gradient(90deg,var(--gold-500),var(--navy-800));height:100%;transition:width .25s ease;}
+  .progress-label{font-size:12.5px;color:var(--ink-soft);display:flex;justify-content:space-between;margin-bottom:22px;}
+
+  /* items */
+  .domain-tag{
+    display:inline-block;font-family:var(--serif);font-size:13px;color:var(--navy-800);
+    border-bottom:2px solid var(--gold-500);padding-bottom:2px;margin-bottom:4px;
+  }
+  .item{
+    border-top:1px solid var(--line);
+    padding:20px 0;
+  }
+  .item:first-of-type{border-top:none;}
+  .item-num{font-size:12px;color:var(--ink-soft);margin-bottom:6px;}
+  .item-text{font-size:16px;margin:0 0 14px;color:var(--ink);}
+  .likert{display:flex;gap:8px;flex-wrap:wrap;}
+  .likert label.opt{
+    flex:1;min-width:96px;
+    display:flex;flex-direction:column;align-items:center;gap:6px;
+    border:1px solid #c7c0a8;border-radius:var(--radius);
+    padding:10px 4px;font-size:12px;text-align:center;color:var(--ink-soft);
+    cursor:pointer;font-weight:500;background:var(--white-100);
+    transition:border-color .15s,background .15s,color .15s;
+  }
+  .likert input{accent-color:var(--navy-900);width:16px;height:16px;}
+  .likert label.opt.checked{border-color:var(--navy-900);background:var(--navy-900);color:#fff;}
+  .likert label.opt.checked span.num{color:var(--gold-400);}
+  .likert span.num{font-family:var(--serif);font-size:17px;font-weight:600;color:var(--navy-900);}
+
+  /* SJT */
+  .scenario-box{
+    background:var(--white-100);
+    border:1px solid var(--line);
+    border-left:4px solid var(--navy-800);
+    border-radius:var(--radius);
+    padding:18px 20px;
+    margin-bottom:18px;
+  }
+  .scenario-box .sit-label{font-size:12px;letter-spacing:.04em;color:var(--navy-800);font-weight:700;margin-bottom:6px;}
+  .sjt-opt{
+    display:flex;gap:10px;align-items:flex-start;
+    padding:11px 12px;border:1px solid #c7c0a8;border-radius:var(--radius);
+    margin-bottom:9px;background:#fff;cursor:pointer;font-size:14.5px;
+  }
+  .sjt-opt.checked{border-color:var(--navy-900);background:var(--navy-900);color:#fff;}
+  .sjt-opt input{margin-top:3px;}
+  .sjt-letter{font-family:var(--serif);font-weight:700;flex-shrink:0;}
+
+  /* results */
+  .flag-banner{
+    padding:16px 20px;border-radius:var(--radius);margin-bottom:20px;
+    display:flex;gap:14px;align-items:flex-start;
+  }
+  .flag-banner .dot{width:14px;height:14px;border-radius:50%;flex-shrink:0;margin-top:3px;}
+  .flag-roja{background:var(--red-100);}
+  .flag-roja .dot{background:var(--red-600);}
+  .flag-amarilla{background:var(--amber-100);}
+  .flag-amarilla .dot{background:var(--amber-600);}
+  .flag-verde{background:var(--green-100);}
+  .flag-verde .dot{background:var(--green-700);}
+  .flag-blanca{background:var(--white-100);}
+  .flag-blanca .dot{background:#9aa5b4;}
+  .flag-banner h3{margin:0 0 4px;font-family:var(--serif);font-weight:600;font-size:16px;}
+  .flag-banner p{margin:0;font-size:13.5px;color:var(--ink-soft);}
+
+  table.domains{width:100%;border-collapse:collapse;margin-bottom:8px;font-size:14px;}
+  table.domains th,table.domains td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);}
+  table.domains th{color:var(--ink-soft);font-weight:600;font-size:12.5px;text-transform:uppercase;letter-spacing:.03em;}
+  .rango-pill{display:inline-block;padding:2px 9px;border-radius:20px;font-size:12px;font-weight:600;}
+  .rango-bajo{background:#e5edf7;color:var(--navy-800);}
+  .rango-medio{background:#eee7d0;color:#7a5f13;}
+  .rango-alto{background:#f0dfd6;color:#96401f;}
+  .bar-shell{background:var(--white-100);border-radius:10px;height:7px;width:120px;overflow:hidden;}
+  .bar-fill{height:100%;background:var(--navy-800);}
+
+  details{margin:16px 0;border:1px solid var(--line);border-radius:var(--radius);padding:0 16px;}
+  details summary{padding:12px 0;cursor:pointer;font-weight:600;color:var(--navy-900);font-size:14px;}
+  details[open] summary{border-bottom:1px solid var(--line);margin-bottom:12px;}
+  .facet-row{display:flex;justify-content:space-between;font-size:13px;padding:6px 0;border-bottom:1px dashed var(--line);}
+  .facet-row:last-child{border-bottom:none;}
+
+  .decision-box{
+    background:var(--navy-950);color:#fff;padding:22px 24px;border-radius:var(--radius);
+    margin:22px 0;border:1px solid var(--gold-500);
+  }
+  .decision-box h3{font-family:var(--serif);font-weight:400;font-size:18px;margin:0 0 8px;color:var(--gold-400);}
+  .decision-box p{margin:0;font-size:14.5px;color:#e3e8f0;}
+
+  .status-msg{font-size:13px;margin-top:10px;padding:8px 12px;border-radius:var(--radius);}
+  .status-ok{background:var(--green-100);color:var(--green-700);}
+  .status-err{background:var(--red-100);color:var(--red-600);}
+  .status-pending{background:var(--white-100);color:var(--ink-soft);}
+
+  footer.appfoot{text-align:center;color:var(--ink-soft);font-size:12px;padding:30px 0;}
+
+  @media print{
+    header.top,.btn-row,.no-print{display:none !important;}
+    body{background:#fff;}
+    .card{border:none;padding:0;}
+    .wrap{padding:0;max-width:100%;}
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="crest">
+    <span class="mark">SAINT LUKE'S HOSPITALS</span>
+    <span class="mark" style="border-color:transparent;color:#8ea3c4;">Capital Humano</span>
+  </div>
+  <h1>Evaluación Psicométrica de Ingreso</h1>
+  <p>IPIP-NEO-120 (rasgos de personalidad) + Escenarios de Juicio Situacional (SJT) por área hospitalaria. Uso interno y confidencial del equipo evaluador.</p>
+</header>
+
+<div class="wrap">
+
+  <!-- PANTALLA 0: DATOS -->
+  <section id="screen-intro" class="card">
+    <h2 class="section-title">Datos del candidato</h2>
+    <p class="subtle">Estos datos identifican el registro que se guardará junto con los resultados.</p>
+    <div id="assignment-status" class="subtle" style="margin-bottom:14px;color:var(--navy-700);">Verificando enlace individual…</div>
+
+    <div class="field-row">
+      <div class="field">
+        <label for="f-nombre">Nombre completo del candidato</label>
+        <input type="text" id="f-nombre" autocomplete="off" readonly>
+      </div>
+      <div class="field">
+        <label for="f-puesto">Puesto al que aplica</label>
+        <input type="text" id="f-puesto" autocomplete="off" readonly>
+      </div>
+    </div>
+
+    <label class="privacy-consent" style="display:flex;gap:10px;align-items:flex-start;margin:18px 0;padding:14px;border:1px solid #dbe2ea;border-radius:12px;background:#f8fafc;font-size:13px;line-height:1.45;">
+      <input type="checkbox" id="privacy-consent" style="margin-top:3px;flex:0 0 auto;">
+      <span>He leído y acepto el <a href="#privacy-summary" style="color:var(--navy-700);font-weight:700;">Aviso de Privacidad</a>. Autorizo el tratamiento de mis datos y respuestas exclusivamente para el proceso de reclutamiento y selección de Saint Luke's Hospitals.</span>
+    </label>
+    <div id="privacy-summary" class="subtle" style="padding:12px 14px;background:#fff8df;border-left:4px solid var(--gold);border-radius:8px;">Responsable: Saint Luke's Hospitals / Capital Humano. Finalidad: evaluar compatibilidad laboral y dar seguimiento al proceso de selección. Puedes solicitar acceso, rectificación, cancelación u oposición ante Recursos Humanos. Versión SLH-RH-PSICO-2026-09.</div>
+
+    <div class="field-row">
+      <div class="field">
+        <label for="f-area">Área hospitalaria (define los escenarios SJT)</label>
+        <select id="f-area">
+          <option value="">El enlace determinará las opciones disponibles…</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="f-sede">Sede / entidad</label>
+        <input type="text" id="f-sede" placeholder="Ej. VIE Hospital de México, San José del Cabo" autocomplete="off">
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label for="f-evaluador">Evaluador(a)</label>
+        <input type="text" id="f-evaluador" value="Recursos Humanos" autocomplete="off" readonly>
+      </div>
+      <div class="field">
+        <label for="f-fecha">Fecha de aplicación</label>
+        <input type="text" id="f-fecha" readonly>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <span class="subtle" style="margin:0;">Duración aproximada: 30–40 minutos.</span>
+      <button class="btn-primary" id="btn-start" onclick="goToItems()" disabled>Comenzar prueba →</button>
+    </div>
+  </section>
+
+  <!-- PANTALLA 1: IPIP-120 -->
+  <section id="screen-items" class="card" style="display:none;">
+    <div class="progress-shell"><div class="progress-fill" id="progress-fill-items" style="width:0%;"></div></div>
+    <div class="progress-label"><span id="progress-text-items">Bloque 1 de 5</span><span id="progress-count-items">0 / 120 respondidas</span></div>
+
+    <span class="domain-tag" id="domain-label">Neuroticismo</span>
+    <p class="subtle" id="domain-sub">Marca qué tan precisa es cada frase para describirte.</p>
+
+    <div id="items-container"></div>
+
+    <div class="btn-row">
+      <button class="btn-ghost" id="btn-back-block" onclick="prevBlock()">← Bloque anterior</button>
+      <button class="btn-primary" id="btn-next-block" onclick="nextBlock()">Siguiente bloque →</button>
+    </div>
+  </section>
+
+  <!-- PANTALLA 2: SJT -->
+  <section id="screen-sjt" class="card" style="display:none;">
+    <h2 class="section-title">Escenarios de Juicio Situacional</h2>
+    <p class="subtle" id="sjt-area-label">Área: —</p>
+    <div id="sjt-container"></div>
+    <h2 class="section-title" style="margin-top:26px;">Control de estilo de respuesta</h2>
+    <p class="subtle">Responde con la misma sinceridad. Estas afirmaciones ayudan a detectar patrones de respuesta excesivamente idealizados.</p>
+    <div id="control-container"></div>
+    <div class="btn-row">
+      <button class="btn-ghost" onclick="backToItemsFromSjt()">← Volver a los ítems</button>
+      <button class="btn-primary" id="btn-finish" onclick="finishTest()">Finalizar y enviar a RH →</button>
+    </div>
+  </section>
+
+  <section id="screen-complete" class="card" style="display:none;text-align:center;">
+    <div style="width:68px;height:68px;border-radius:50%;display:grid;place-items:center;margin:0 auto 16px;background:#e7f6ef;color:#16805c;font-size:34px;font-weight:800;">✓</div>
+    <h2 class="section-title">Evaluación enviada correctamente</h2>
+    <p class="subtle">Tus respuestas fueron registradas. Los resultados son confidenciales y estarán disponibles únicamente para el personal autorizado de Recursos Humanos.</p>
+    <div id="complete-status" class="status-msg status-pending">Enviando información…</div>
+  </section>
+
+  <!-- PANTALLA 3: RESULTADOS -->
+  <section id="screen-results" class="card" style="display:none;">
+    <h2 class="section-title">Resultados de la evaluación</h2>
+    <p class="subtle" id="res-subtitle"></p>
+
+    <div id="res-flag-banner"></div>
+
+    <table class="domains" id="res-domains-table"></table>
+
+    <details>
+      <summary>Ver desglose por facetas (30)</summary>
+      <div id="res-facets"></div>
+    </details>
+
+    <h2 class="section-title" style="margin-top:26px;">Juicio Situacional (SJT)</h2>
+    <table class="domains" id="res-sjt-table"></table>
+    <p id="res-sjt-interp" class="subtle" style="margin-top:-6px;"></p>
+
+    <div class="decision-box">
+      <h3>Sugerencia de decisión</h3>
+      <p id="res-decision-text"></p>
+    </div>
+
+    <div class="field no-print">
+      <label for="f-notas">Notas del evaluador (entrevista, justificación, decisión final)</label>
+      <textarea id="f-notas" rows="4" placeholder="Observaciones de la entrevista conductual, decisión final y justificación…"></textarea>
+    </div>
+
+    <div class="btn-row no-print">
+      <button class="btn-ghost" onclick="window.print()">Imprimir / Exportar PDF</button>
+      <button class="btn-gold" id="btn-save" onclick="saveResults()">Guardar en Google Sheets</button>
+    </div>
+    <div id="save-status"></div>
+  </section>
+
+  <footer class="appfoot">Saint Luke's Hospitals · Capital Humano · Resultados orientativos, no diagnósticos. Complementar siempre con entrevista.</footer>
+</div>
+
+<script>
+/* ============================================================
+   CONFIGURACIÓN — pega aquí la URL de tu Web App de Apps Script
+   (ver codigo-apps-script.gs). Déjalo vacío para usar la prueba
+   sin backend (solo verás/imprimirás el resultado).
+   ============================================================ */
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxBX8ypNVp-g8nIhdAFb_lyq8rJK8sBqLIYQEfPw9hsqOuNCTY7eukXKU5MQlotDhOk/exec";
+let ASSIGNMENT_TOKEN = "";
+
+/* ============================================================
+   BANCO DE ÍTEMS — IPIP-NEO-120
+   30 facetas (6 por dominio) x 4 ítems = 120 ítems.
+   rev:true => la respuesta se invierte al calificar (6 - respuesta)
+   ============================================================ */
+const FACETS = [
+  // NEUROTICISMO
+  {domain:'N', code:'N1', name:'Ansiedad', items:[
+    {t:'Me preocupo por cosas que podrían salir mal.', rev:false},
+    {t:'Me pongo nervioso/a con facilidad ante situaciones de presión.', rev:false},
+    {t:'Mantengo la calma incluso en situaciones tensas.', rev:true},
+    {t:'Rara vez me siento inquieto/a sin motivo aparente.', rev:true},
+  ]},
+  {domain:'N', code:'N2', name:'Hostilidad', items:[
+    {t:'Me irrito con facilidad cuando las cosas no salen como espero.', rev:false},
+    {t:'A veces siento resentimiento hacia compañeros o pacientes difíciles.', rev:false},
+    {t:'Puedo mantener la paciencia incluso cuando alguien me contradice.', rev:true},
+    {t:'Rara vez pierdo la calma con otras personas.', rev:true},
+  ]},
+  {domain:'N', code:'N3', name:'Depresión', items:[
+    {t:'Hay días en los que me cuesta encontrar motivación para trabajar.', rev:false},
+    {t:'A veces me siento desanimado/a sin una razón clara.', rev:false},
+    {t:'En general me siento optimista sobre el futuro.', rev:true},
+    {t:'Rara vez me siento triste por periodos prolongados.', rev:true},
+  ]},
+  {domain:'N', code:'N4', name:'Ansiedad Social', items:[
+    {t:'Me siento incómodo/a cuando soy el centro de atención.', rev:false},
+    {t:'Me preocupa lo que otros piensen de mi desempeño.', rev:false},
+    {t:'Me siento seguro/a hablando frente a un grupo.', rev:true},
+    {t:'No me afecta si alguien critica mi trabajo en público.', rev:true},
+  ]},
+  {domain:'N', code:'N5', name:'Impulsividad', items:[
+    {t:'A veces actúo antes de pensar bien las consecuencias.', rev:false},
+    {t:'Me cuesta resistir la tentación de responder de forma impulsiva.', rev:false},
+    {t:'Prefiero pensar bien antes de actuar.', rev:true},
+    {t:'Controlo mis impulsos incluso bajo presión.', rev:true},
+  ]},
+  {domain:'N', code:'N6', name:'Vulnerabilidad', items:[
+    {t:'Me siento abrumado/a cuando tengo varias tareas urgentes a la vez.', rev:false},
+    {t:'Me cuesta manejar situaciones de crisis o emergencia.', rev:false},
+    {t:'Manejo bien el estrés incluso en situaciones difíciles.', rev:true},
+    {t:'Confío en mi capacidad para resolver problemas bajo presión.', rev:true},
+  ]},
+  // EXTROVERSIÓN
+  {domain:'E', code:'E1', name:'Cordialidad', items:[
+    {t:'Disfruto generar un ambiente cálido con pacientes y compañeros.', rev:false},
+    {t:'Me resulta fácil mostrar cercanía hacia los demás.', rev:false},
+    {t:'Prefiero mantener distancia emocional con las personas que trato.', rev:true},
+    {t:'Me cuesta mostrar calidez hacia personas que no conozco.', rev:true},
+  ]},
+  {domain:'E', code:'E2', name:'Gregarismo', items:[
+    {t:'Disfruto trabajar rodeado/a de otras personas.', rev:false},
+    {t:'Busco oportunidades para socializar con mis compañeros.', rev:false},
+    {t:'Prefiero trabajar solo/a la mayor parte del tiempo.', rev:true},
+    {t:'Evito situaciones donde tengo que convivir con mucha gente.', rev:true},
+  ]},
+  {domain:'E', code:'E3', name:'Asertividad', items:[
+    {t:'Expreso mi opinión con claridad aunque no sea popular.', rev:false},
+    {t:'Tomo la iniciativa cuando el grupo necesita dirección.', rev:false},
+    {t:'Prefiero que otros tomen la iniciativa antes que yo.', rev:true},
+    {t:'Me cuesta expresar desacuerdo directamente.', rev:true},
+  ]},
+  {domain:'E', code:'E4', name:'Actividad', items:[
+    {t:'Mantengo un ritmo de trabajo activo durante todo el turno.', rev:false},
+    {t:'Me gusta mantenerme ocupado/a en todo momento.', rev:false},
+    {t:'Prefiero un ritmo de trabajo tranquilo y pausado.', rev:true},
+    {t:'Me cuesta mantener energía durante turnos largos.', rev:true},
+  ]},
+  {domain:'E', code:'E5', name:'Búsqueda de Emociones', items:[
+    {t:'Disfruto los retos y la variedad en mi trabajo.', rev:false},
+    {t:'Me atraen las situaciones nuevas o imprevistas.', rev:false},
+    {t:'Prefiero rutinas predecibles a situaciones cambiantes.', rev:true},
+    {t:'Evito actividades que impliquen riesgo o incertidumbre.', rev:true},
+  ]},
+  {domain:'E', code:'E6', name:'Emociones Positivas', items:[
+    {t:'Suelo mantener una actitud positiva en el trabajo.', rev:false},
+    {t:'Contagio entusiasmo a quienes me rodean.', rev:false},
+    {t:'Rara vez me siento entusiasmado/a con mi trabajo.', rev:true},
+    {t:'Me cuesta mostrar alegría incluso en buenos momentos.', rev:true},
+  ]},
+  // APERTURA
+  {domain:'O', code:'O1', name:'Imaginación', items:[
+    {t:'Me gusta imaginar formas distintas de resolver un problema.', rev:false},
+    {t:'Disfruto pensar en posibilidades más allá de lo evidente.', rev:false},
+    {t:'Prefiero atenerme a lo práctico y concreto.', rev:true},
+    {t:'No dedico tiempo a imaginar escenarios hipotéticos.', rev:true},
+  ]},
+  {domain:'O', code:'O2', name:'Interés Artístico', items:[
+    {t:'Me interesan el arte, la música o la literatura.', rev:false},
+    {t:'Aprecio la creatividad en distintas formas de expresión.', rev:false},
+    {t:'Las actividades artísticas no me llaman la atención.', rev:true},
+    {t:'Rara vez busco experiencias culturales o artísticas.', rev:true},
+  ]},
+  {domain:'O', code:'O3', name:'Sensibilidad Emocional', items:[
+    {t:'Soy consciente de mis propias emociones y las de los demás.', rev:false},
+    {t:'Las experiencias emocionales de otros me impactan con facilidad.', rev:false},
+    {t:'Prefiero no involucrarme emocionalmente con los casos que atiendo.', rev:true},
+    {t:'Me cuesta identificar lo que estoy sintiendo.', rev:true},
+  ]},
+  {domain:'O', code:'O4', name:'Disposición al Cambio', items:[
+    {t:'Me adapto con facilidad a nuevos procedimientos o tecnologías.', rev:false},
+    {t:'Disfruto aprender formas distintas de hacer las cosas.', rev:false},
+    {t:'Prefiero seguir siempre el mismo método de trabajo.', rev:true},
+    {t:'Me resisto a cambiar rutinas ya establecidas.', rev:true},
+  ]},
+  {domain:'O', code:'O5', name:'Intelecto', items:[
+    {t:'Disfruto resolver problemas complejos.', rev:false},
+    {t:'Me gusta profundizar en temas técnicos de mi área.', rev:false},
+    {t:'Prefiero explicaciones simples sin entrar en detalle.', rev:true},
+    {t:'Evito temas que requieran mucho análisis.', rev:true},
+  ]},
+  {domain:'O', code:'O6', name:'Apertura a Valores', items:[
+    {t:'Estoy dispuesto/a a considerar puntos de vista distintos al mío.', rev:false},
+    {t:'Cuestiono normas cuando creo que pueden mejorarse.', rev:false},
+    {t:'Prefiero mantener las tradiciones sin cuestionarlas.', rev:true},
+    {t:'Me incomoda cuando alguien desafía las reglas establecidas.', rev:true},
+  ]},
+  // AMABILIDAD
+  {domain:'A', code:'A1', name:'Confianza', items:[
+    {t:'Confío en que mis compañeros hacen bien su trabajo.', rev:false},
+    {t:'Creo que la mayoría de las personas actúa de buena fe.', rev:false},
+    {t:'Me cuesta confiar en las intenciones de los demás.', rev:true},
+    {t:'Suelo dudar de la honestidad de otras personas.', rev:true},
+  ]},
+  {domain:'A', code:'A2', name:'Franqueza', items:[
+    {t:'Soy honesto/a incluso cuando la verdad es incómoda.', rev:false},
+    {t:'Comunico las cosas de forma directa y transparente.', rev:false},
+    {t:'A veces oculto información para evitar conflictos.', rev:true},
+    {t:'Prefiero decir lo que otros quieren oír.', rev:true},
+  ]},
+  {domain:'A', code:'A3', name:'Altruismo', items:[
+    {t:'Me gusta ayudar a mis compañeros aunque no sea mi responsabilidad.', rev:false},
+    {t:'Estoy dispuesto/a a ceder mi tiempo para apoyar a alguien más.', rev:false},
+    {t:'Prefiero enfocarme solo en mis propias tareas.', rev:true},
+    {t:'Rara vez ofrezco ayuda sin que me la pidan.', rev:true},
+  ]},
+  {domain:'A', code:'A4', name:'Cooperación', items:[
+    {t:'Prefiero resolver desacuerdos de forma colaborativa.', rev:false},
+    {t:'Cedo terreno cuando es necesario para mantener la armonía del equipo.', rev:false},
+    {t:'Prefiero imponer mi punto de vista antes que ceder.', rev:true},
+    {t:'Me cuesta ceder en una discusión aunque tenga sentido hacerlo.', rev:true},
+  ]},
+  {domain:'A', code:'A5', name:'Modestia', items:[
+    {t:'Reconozco mis errores sin dificultad.', rev:false},
+    {t:'No necesito ser el centro de reconocimiento por mi trabajo.', rev:false},
+    {t:'Me gusta que reconozcan públicamente mis logros.', rev:true},
+    {t:'Me cuesta admitir cuando me equivoco.', rev:true},
+  ]},
+  {domain:'A', code:'A6', name:'Empatía', items:[
+    {t:'Me pongo fácilmente en el lugar de un paciente o compañero.', rev:false},
+    {t:'Me preocupo genuinamente por el bienestar de los demás.', rev:false},
+    {t:'Me cuesta comprender lo que sienten otras personas.', rev:true},
+    {t:'Prefiero mantener distancia emocional ante el sufrimiento ajeno.', rev:true},
+  ]},
+  // RESPONSABILIDAD
+  {domain:'C', code:'C1', name:'Autoeficacia', items:[
+    {t:'Confío en mi capacidad para resolver los problemas que se presentan.', rev:false},
+    {t:'Me siento preparado/a para afrontar las exigencias de mi puesto.', rev:false},
+    {t:'Dudo de mi capacidad para manejar tareas complejas.', rev:true},
+    {t:'Me siento inseguro/a frente a responsabilidades nuevas.', rev:true},
+  ]},
+  {domain:'C', code:'C2', name:'Orden', items:[
+    {t:'Mantengo mi área de trabajo organizada.', rev:false},
+    {t:'Sigo un método claro para organizar mis tareas.', rev:false},
+    {t:'Con frecuencia pierdo el control del orden en mi trabajo.', rev:true},
+    {t:'Me cuesta mantener organizados mis pendientes.', rev:true},
+  ]},
+  {domain:'C', code:'C3', name:'Sentido del Deber', items:[
+    {t:'Cumplo mis compromisos aunque nadie los supervise.', rev:false},
+    {t:'Sigo los protocolos establecidos incluso bajo presión.', rev:false},
+    {t:'A veces paso por alto reglas si me parecen innecesarias.', rev:true},
+    {t:'Rara vez cumplo con obligaciones que no me convencen.', rev:true},
+  ]},
+  {domain:'C', code:'C4', name:'Orientación al Logro', items:[
+    {t:'Me esfuerzo por hacer mi trabajo cada vez mejor.', rev:false},
+    {t:'Me pongo metas claras y trabajo para alcanzarlas.', rev:false},
+    {t:'Me conformo con cumplir lo mínimo requerido.', rev:true},
+    {t:'Rara vez busco superar mis propios resultados.', rev:true},
+  ]},
+  {domain:'C', code:'C5', name:'Autodisciplina', items:[
+    {t:'Termino las tareas que empiezo aunque sean tediosas.', rev:false},
+    {t:'Mantengo el enfoque en mi trabajo incluso con distracciones.', rev:false},
+    {t:'Me cuesta terminar lo que empiezo.', rev:true},
+    {t:'Postergo tareas importantes con frecuencia.', rev:true},
+  ]},
+  {domain:'C', code:'C6', name:'Cautela', items:[
+    {t:'Pienso bien las consecuencias antes de tomar una decisión importante.', rev:false},
+    {t:'Evalúo distintas opciones antes de actuar en situaciones críticas.', rev:false},
+    {t:'Suelo actuar sin pensar mucho en las consecuencias.', rev:true},
+    {t:'Tomo decisiones apresuradas con frecuencia.', rev:true},
+  ]},
+];
+
+const DOMAIN_NAMES = {N:'Neuroticismo', E:'Extroversión', O:'Apertura', A:'Amabilidad', C:'Responsabilidad'};
+const DOMAIN_ORDER = ['N','E','O','A','C'];
+
+// Aplana a 120 ítems, agrupados por dominio (bloques de la prueba)
+let ITEMS = [];
+DOMAIN_ORDER.forEach(dom=>{
+  FACETS.filter(f=>f.domain===dom).forEach(f=>{
+    f.items.forEach((it,idx)=>{
+      ITEMS.push({id: ITEMS.length+1, domain: dom, facet: f.code, facetName: f.name, text: it.t, rev: it.rev});
+    });
+  });
+});
+
+/* ============================================================
+   BANCO SJT — 7 áreas x 2 escenarios. puntos: 2=mejor,1=aceptable,0=incorrecta
+   ============================================================ */
+const SJT_BANK = {
+  urgencias: {label:'Urgencias', scenarios:[
+    {situacion:'Un familiar de un paciente con dolor torácico (clasificado como urgente pero no crítico) comienza a gritar en la sala de espera. Hay otros pacientes aguardando.',
+     seguimiento:'Si la revaluación es normal pero el familiar sigue alterado, ¿cómo manejarías la situación?',
+     opciones:[
+      {l:'A', t:'Reclasificar al paciente como crítico para calmar al familiar.', p:0},
+      {l:'B', t:'Explicar los criterios de triaje y hacer una revaluación rápida de signos vitales en 5 minutos.', p:2},
+      {l:'C', t:'Llamar a seguridad para que el familiar se calme.', p:1},
+      {l:'D', t:'Ignorar al familiar y seguir con la priorización establecida.', p:0},
+     ]},
+    {situacion:'Un médico te pide tomar una muestra de sangre "ahora". Una enfermera te pide trasladar a un paciente crítico "ahora".',
+     seguimiento:'¿Cómo priorizarías si el médico insiste en que la muestra es urgente?',
+     opciones:[
+      {l:'A', t:'Obedecer al médico por jerarquía.', p:0},
+      {l:'B', t:'Trasladar al paciente crítico por riesgo vital.', p:1},
+      {l:'C', t:'Preguntar a la enfermera si el traslado puede esperar 2 minutos y avisar al médico.', p:2},
+      {l:'D', t:'Decir a ambos que coordinen entre ellos.', p:0},
+     ]},
+  ]},
+  hospitalizacion: {label:'Hospitalización', scenarios:[
+    {situacion:'En el cambio de turno, la enfermera saliente te dice que el paciente de la cama 3 "ya evacuó hoy", pero no hay registro.',
+     seguimiento:'Si la enfermera saliente ya se fue y no puedes contactarla, ¿qué harías?',
+     opciones:[
+      {l:'A', t:'Confiar en la información verbal.', p:0},
+      {l:'B', t:'Registrar directamente en el sistema como "según reporte verbal".', p:1},
+      {l:'C', t:'Anotar la falta de registro y pedir a la enfermera saliente que complete el expediente.', p:2},
+      {l:'D', t:'Reportar a la jefa de enfermería que la saliente no registró.', p:0},
+     ]},
+    {situacion:'Un paciente anciano llama repetidamente por cosas menores (agua, almohada). Tienes medicación atrasada de 3 pacientes.',
+     seguimiento:'¿Cómo manejarías si el paciente se enoja porque no lo atiendes de inmediato?',
+     opciones:[
+      {l:'A', t:'Atender todas las peticiones primero.', p:0},
+      {l:'B', t:'Decirle que espere 15 minutos.', p:0},
+      {l:'C', t:'Resolver todo rápido y decirle que volverás en 20 minutos tras la medicación.', p:2},
+      {l:'D', t:'Pedir a un colega que atienda al paciente mientras tú medicas.', p:1},
+     ]},
+  ]},
+  consulta_externa: {label:'Consulta Externa', scenarios:[
+    {situacion:'Un paciente sin cita previa dice que viajó 2 horas y pide pasar antes. Hay 8 pacientes con cita esperando.',
+     seguimiento:'¿Cómo reaccionarías si el paciente insiste en que su caso es urgente?',
+     opciones:[
+      {l:'A', t:'Dejarlo pasar por su situación.', p:0},
+      {l:'B', t:'Negarse y aplicar la regla estrictamente.', p:1},
+      {l:'C', t:'Explicar la situación y preguntar si tiene síntomas urgentes; si no, ofrecer esperar o reagendar.', p:2},
+      {l:'D', t:'Enviarlo a la ventanilla de quejas.', p:0},
+     ]},
+    {situacion:'Un paciente muestra un resultado de laboratorio de hace 3 meses y exige una nueva consulta porque "el resultado está mal".',
+     seguimiento:'¿Cómo documentarías este caso en el expediente?',
+     opciones:[
+      {l:'A', t:'Decirle que el resultado está vencido y necesita nueva orden.', p:1},
+      {l:'B', t:'Validar su preocupación, explicar que el resultado es antiguo y recomendar evaluación médica primero.', p:2},
+      {l:'C', t:'Llamar al médico para que decida.', p:0},
+      {l:'D', t:'Decirle que no es tu responsabilidad.', p:0},
+     ]},
+  ]},
+  quirofano: {label:'Quirófano / Esterilización', scenarios:[
+    {situacion:'Detectas un paquete de instrumental con indicador de esterilización que no cambió de color completamente. La cirugía es en 20 minutos.',
+     seguimiento:'¿Cómo comunicarías este incidente al equipo quirúrgico?',
+     opciones:[
+      {l:'A', t:'Usarlo porque "casi cambió".', p:0},
+      {l:'B', t:'Reportar y cambiar el paquete, marcando el defectuoso para revisión.', p:2},
+      {l:'C', t:'Esterilizarlo de nuevo aunque se retrase la cirugía.', p:1},
+      {l:'D', t:'Preguntar al cirujano si le parece aceptable.', p:0},
+     ]},
+    {situacion:'El cirujano pide un instrumento que no está en la mesa y que está en el quirófano de al lado.',
+     seguimiento:'¿Qué harías si el cirujano se molesta por la demora?',
+     opciones:[
+      {l:'A', t:'Ir a buscarlo directamente, dejando tu puesto.', p:0},
+      {l:'B', t:'Avisar a la enfermera circulante para que lo coordine, permaneciendo en tu puesto.', p:2},
+      {l:'C', t:'Negarte diciendo que no está en la mesa.', p:0},
+      {l:'D', t:'Pedir a otro que lo busque mientras observas.', p:1},
+     ]},
+  ]},
+  admision: {label:'Admisión / Archivo Clínico', scenarios:[
+    {situacion:'Un familiar quiere completar un trámite de un paciente dado de alta, pero no tiene autorización firmada. Dice ser su hijo y muestra su ID.',
+     seguimiento:'¿Cómo registrarías este intento de trámite en el sistema?',
+     opciones:[
+      {l:'A', t:'Realizar el trámite porque parece familiar.', p:0},
+      {l:'B', t:'Negarse y explicar que necesita autorización o presencia del paciente.', p:2},
+      {l:'C', t:'Realizar el trámite marcando "autorización pendiente".', p:1},
+      {l:'D', t:'Pedir a la jefa de enfermería que autorice.', p:0},
+     ]},
+    {situacion:'Encuentras dos expedientes con nombres similares (mismo apellido, nombre con una letra de diferencia), uno de consulta y otro de hospitalización.',
+     seguimiento:'¿Qué pasos seguirías para confirmar si son la misma persona?',
+     opciones:[
+      {l:'A', t:'Asumir que es la misma persona y fusionar.', p:0},
+      {l:'B', t:'Procesar por separado y anotar la posible relación para revisión.', p:2},
+      {l:'C', t:'Ignorar porque no es tu tarea.', p:0},
+      {l:'D', t:'Llamar al paciente para verificar.', p:1},
+     ]},
+  ]},
+  farmacia: {label:'Farmacia', scenarios:[
+    {situacion:'Una enfermera conocida y confiable pide una dosis de analgesia para un paciente con dolor agudo. Dice que el médico la firmará después.',
+     seguimiento:'¿Cómo documentarías esta situación en el sistema de farmacia?',
+     opciones:[
+      {l:'A', t:'Entregar porque es confiable.', p:0},
+      {l:'B', t:'Negarse sin receta.', p:0},
+      {l:'C', t:'Contactar al médico para confirmar la orden verbal, documentar y entregar.', p:2},
+      {l:'D', t:'Entregar pero pedir a la enfermera que firme responsiva.', p:1},
+     ]},
+    {situacion:'El inventario físico de un medicamento difiere en 3 cajas respecto al sistema. Han rotado 3 técnicos en la semana.',
+     seguimiento:'¿Qué medidas tomarías para evitar que esto vuelva a pasar?',
+     opciones:[
+      {l:'A', t:'Asumir que alguien se equivocó y no reportar.', p:0},
+      {l:'B', t:'Documentar la diferencia, reportar al supervisor y revisar registros de la semana.', p:2},
+      {l:'C', t:'Esperar al próximo inventario.', p:1},
+      {l:'D', t:'Ajustar el sistema manualmente para que coincida.', p:0},
+     ]},
+  ]},
+  gerencia: {label:'Gerencia / Administración', scenarios:[
+    {situacion:'Una enfermera veterana se queja de que otra "siempre llega tarde". Sabes que la otra está cuidando a un familiar enfermo.',
+     seguimiento:'¿Cómo abordarías este tema en una reunión de equipo sin violar la confidencialidad?',
+     opciones:[
+      {l:'A', t:'Amonestar directamente a la que llega tarde.', p:0},
+      {l:'B', t:'Hablar con ambas por separado, entender la situación y decidir si ajustar horario o mediar.', p:2},
+      {l:'C', t:'Decir a la que se queja que "tenga paciencia".', p:0},
+      {l:'D', t:'Reforzar la disciplina de puntualidad en reunión de equipo.', p:1},
+     ]},
+    {situacion:'Tu superior pide un "plan de optimización de personal" en 2 semanas. Tu equipo ya está al límite.',
+     seguimiento:'¿Cómo comunicarías a tu superior los riesgos de reducir el personal?',
+     opciones:[
+      {l:'A', t:'Presentar el plan de reducción solicitado tal cual.', p:0},
+      {l:'B', t:'Presentar el plan pero con datos de carga laboral y turnos que quedarían descubiertos.', p:2},
+      {l:'C', t:'Negarte diciendo que es imposible.', p:0},
+      {l:'D', t:'Presentar el plan y decir en privado al equipo que no estás de acuerdo.', p:1},
+     ]},
+  ]},
+  mantenimiento: {label:'Mantenimiento e infraestructura', scenarios:[
+    {situacion:'Una falla eléctrica activa la planta de emergencia, pero un área crítica reporta variaciones de voltaje.',seguimiento:'¿Cómo priorizarías la respuesta y el registro del incidente?',opciones:[{l:'A',t:'Esperar unos minutos para confirmar si se estabiliza.',p:0},{l:'B',t:'Activar el protocolo, avisar al área crítica y coordinar revisión técnica con trazabilidad del incidente.',p:2},{l:'C',t:'Reiniciar los equipos del área sin informar.',p:1},{l:'D',t:'Atender primero los reportes administrativos.',p:0}]},
+    {situacion:'Se detecta presión anormal en una línea de gases medicinales cerca de hospitalización.',seguimiento:'¿Qué harías antes de intentar cualquier reparación?',opciones:[{l:'A',t:'Ajustar la válvula y observar el resultado.',p:0},{l:'B',t:'Pedir a un compañero que lo revise cuando termine su turno.',p:1},{l:'C',t:'Aislar el riesgo conforme al protocolo, alertar a las áreas afectadas y escalar al responsable autorizado.',p:2},{l:'D',t:'Continuar operando mientras no haya una alarma audible.',p:0}]}
+  ]},
+  servicios_generales: {label:'Servicios generales / RPBI', scenarios:[
+    {situacion:'Encuentras una bolsa de RPBI con residuos mal clasificados en una zona de tránsito.',seguimiento:'¿Cuál es la respuesta más segura?',opciones:[{l:'A',t:'Moverla al almacén temporal sin revisarla.',p:0},{l:'B',t:'Aislar el área, usar el equipo correspondiente y activar el procedimiento de reclasificación y reporte.',p:2},{l:'C',t:'Dejar una nota para el siguiente turno.',p:1},{l:'D',t:'Vaciarla en un contenedor general.',p:0}]},
+    {situacion:'Falta material controlado al cerrar el turno y el registro no coincide con la entrega.',seguimiento:'¿Cómo procederías?',opciones:[{l:'A',t:'Corregir la cifra para cerrar el formato.',p:0},{l:'B',t:'Preguntar informalmente y esperar al día siguiente.',p:1},{l:'C',t:'Conservar la evidencia, documentar la diferencia y escalar conforme al control de inventario.',p:2},{l:'D',t:'Dividir la diferencia entre quienes trabajaron.',p:0}]}
+  ]},
+};
+
+/* ============================================================
+   ESTADO
+   ============================================================ */
+const state = {
+  answers: {},        // itemId -> 1-5
+  sjtAnswers: {},      // scenarioIndex -> letra elegida
+  controlAnswers: {},
+  block: 0,
+};
+
+let ACTIVE_ITEMS = ITEMS.slice();
+let DOMAIN_ITEM_BLOCKS = [ITEMS.slice(0,30),ITEMS.slice(30,60),ITEMS.slice(60,90),ITEMS.slice(90,120)];
+let ASSIGNED_PROFILE = null;
+const CONTROL_ITEMS = [
+  'Nunca he dicho una mentira en toda mi vida.',
+  'Siempre cumplo perfectamente todas mis promesas, sin excepción.',
+  'Jamás he cometido un error en el trabajo o en la escuela.',
+  'Nunca he sentido enojo hacia otra persona.',
+  'Siempre actúo correctamente, incluso cuando nadie puede observarme.'
+];
+let autosaveTimer = null;
+function saveLocal(){ try{localStorage.setItem('slh_ipip_'+ASSIGNMENT_TOKEN,JSON.stringify(state));}catch(e){} }
+function scheduleCloudSave(){
+  saveLocal(); clearTimeout(autosaveTimer);
+  autosaveTimer=setTimeout(()=>{
+    if(!ASSIGNMENT_TOKEN) return;
+    fetch(APPS_SCRIPT_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({__action:'progreso_guardar',token:ASSIGNMENT_TOKEN,progreso:{answers:state.answers,sjtAnswers:state.sjtAnswers,controlAnswers:state.controlAnswers,block:state.block}})}).catch(()=>{});
+  },1200);
+}
+
+/* ============================================================
+   NAVEGACIÓN
+   ============================================================ */
+function fmtFecha(){
+  const d = new Date();
+  return d.toLocaleDateString('es-MX', {year:'numeric', month:'long', day:'numeric'});
+}
+document.getElementById('f-fecha').value = fmtFecha();
+
+window.addEventListener('DOMContentLoaded', initAssignment);
+async function initAssignment(){
+  const status = document.getElementById('assignment-status');
+  const token = new URLSearchParams(location.search).get('t');
+  if(!token){
+    status.textContent = 'Para proteger la evaluación, abre el enlace individual enviado por Recursos Humanos.';
+    status.style.color = '#b42318';
+    return;
+  }
+  try{
+    const data = await fetch(APPS_SCRIPT_URL + '?action=assignment_info&t=' + encodeURIComponent(token)).then(r=>r.json());
+    if(!data.ok || !data.data || !/^IPIP(?:_|NEO)/.test(data.data.prueba_codigo || '')){
+      throw new Error((data && data.error) || 'El enlace no corresponde a esta prueba.');
+    }
+    ASSIGNMENT_TOKEN = token;
+    ASSIGNED_PROFILE = data.data.perfil;
+    if(!ASSIGNED_PROFILE) throw new Error('El enlace no contiene un perfil de evaluación válido.');
+    ACTIVE_ITEMS = ITEMS.filter(item => ASSIGNED_PROFILE.item_ids.includes(item.id));
+    const blockSize = ACTIVE_ITEMS.length === 120 ? 30 : 11;
+    DOMAIN_ITEM_BLOCKS = [];
+    for(let i=0;i<ACTIVE_ITEMS.length;i+=blockSize) DOMAIN_ITEM_BLOCKS.push(ACTIVE_ITEMS.slice(i,i+blockSize));
+    const areaSelect = document.getElementById('f-area');
+    areaSelect.innerHTML = '<option value="">Selecciona el módulo aplicable…</option>' + ASSIGNED_PROFILE.sjt_areas.map(key=>'<option value="'+key+'">'+SJT_BANK[key].label+'</option>').join('');
+    document.getElementById('f-nombre').value = data.data.nombre || '';
+    document.getElementById('f-puesto').value = data.data.vacante_nombre || '';
+    document.getElementById('btn-start').disabled = false;
+    const saved = data.data.progreso || (()=>{try{return JSON.parse(localStorage.getItem('slh_ipip_'+token)||'null')}catch(e){return null}})();
+    if(saved){ state.answers=saved.answers||{}; state.sjtAnswers=saved.sjtAnswers||{}; state.controlAnswers=saved.controlAnswers||{}; state.block=Math.min(DOMAIN_ITEM_BLOCKS.length-1,Number(saved.block)||0); }
+    status.textContent = 'Enlace verificado · ' + ASSIGNED_PROFILE.nombre + ' · ' + ASSIGNED_PROFILE.version + '. Selecciona el módulo SJT autorizado.';
+    status.style.color = '#16805c';
+  }catch(error){
+    status.textContent = error.message || 'No fue posible verificar el enlace.';
+    status.style.color = '#b42318';
+  }
+}
+
+function goToItems(){
+  const nombre = document.getElementById('f-nombre').value.trim();
+  const puesto = document.getElementById('f-puesto').value.trim();
+  const area = document.getElementById('f-area').value;
+  const evaluador = document.getElementById('f-evaluador').value.trim();
+  const consent = document.getElementById('privacy-consent').checked;
+  if(!ASSIGNMENT_TOKEN || !nombre || !puesto || !area || !evaluador || !consent){
+    alert('Completa nombre, puesto, área y evaluador antes de continuar.');
+    return;
+  }
+  document.getElementById('screen-intro').style.display='none';
+  document.getElementById('screen-items').style.display='block';
+  state.block = 0;
+  renderBlock();
+  window.scrollTo(0,0);
+}
+
+function renderBlock(){
+  const items = DOMAIN_ITEM_BLOCKS[state.block];
+  document.getElementById('domain-label').textContent = 'Bloque ' + (state.block+1) + ' de ' + DOMAIN_ITEM_BLOCKS.length;
+  const container = document.getElementById('items-container');
+  container.innerHTML = '';
+  items.forEach(item=>{
+    const div = document.createElement('div');
+    div.className = 'item';
+    const current = state.answers[item.id];
+    div.innerHTML = `
+      <div class="item-num">Reactivo ${ACTIVE_ITEMS.indexOf(item)+1} de ${ACTIVE_ITEMS.length}</div>
+      <p class="item-text">${item.text}</p>
+      <div class="likert" data-item="${item.id}">
+        ${[1,2,3,4,5].map(v=>`
+          <label class="opt ${current===v?'checked':''}">
+            <input type="radio" name="item-${item.id}" value="${v}" ${current===v?'checked':''} onchange="setAnswer(${item.id}, ${v})">
+            <span class="num">${v}</span>
+            <span>${likertLabel(v)}</span>
+          </label>`).join('')}
+      </div>
+    `;
+    container.appendChild(div);
+  });
+  updateProgress();
+  document.getElementById('btn-back-block').style.visibility = state.block===0 ? 'hidden' : 'visible';
+  document.getElementById('btn-next-block').textContent = state.block===DOMAIN_ITEM_BLOCKS.length-1 ? 'Continuar a escenarios SJT →' : 'Siguiente bloque →';
+}
+
+function likertLabel(v){
+  return {1:'Muy inexacta',2:'Moder. inexacta',3:'Neutral',4:'Moder. exacta',5:'Muy exacta'}[v];
+}
+
+function setAnswer(itemId, value){
+  state.answers[itemId] = value;
+  const wrap = document.querySelector(`.likert[data-item="${itemId}"]`);
+  wrap.querySelectorAll('.opt').forEach(o=>o.classList.remove('checked'));
+  wrap.querySelector(`input[value="${value}"]`).closest('.opt').classList.add('checked');
+  updateProgress();
+  scheduleCloudSave();
+}
+
+function updateProgress(){
+  const answered = Object.keys(state.answers).length;
+  document.getElementById('progress-count-items').textContent = `${answered} / ${ACTIVE_ITEMS.length} respondidas`;
+  document.getElementById('progress-text-items').textContent = `Bloque ${state.block+1} de ${DOMAIN_ITEM_BLOCKS.length}`;
+  document.getElementById('progress-fill-items').style.width = (answered/ACTIVE_ITEMS.length*100)+'%';
+}
+
+function currentBlockComplete(){
+  return DOMAIN_ITEM_BLOCKS[state.block].every(i => state.answers[i.id] !== undefined);
+}
+
+function nextBlock(){
+  if(!currentBlockComplete()){
+    alert('Responde todos los ítems de este bloque antes de continuar.');
+    return;
+  }
+  if(state.block < DOMAIN_ITEM_BLOCKS.length-1){
+    state.block++;
+    renderBlock();
+    window.scrollTo(0,0);
+  } else {
+    goToSjt();
+  }
+}
+function prevBlock(){
+  if(state.block>0){
+    state.block--;
+    renderBlock();
+    window.scrollTo(0,0);
+  }
+}
+
+function goToSjt(){
+  document.getElementById('screen-items').style.display='none';
+  document.getElementById('screen-sjt').style.display='block';
+  const area = document.getElementById('f-area').value;
+  document.getElementById('sjt-area-label').textContent = 'Área: ' + SJT_BANK[area].label;
+  renderSjt(area);
+  window.scrollTo(0,0);
+}
+function backToItemsFromSjt(){
+  document.getElementById('screen-sjt').style.display='none';
+  document.getElementById('screen-items').style.display='block';
+  state.block = DOMAIN_ITEM_BLOCKS.length-1;
+  renderBlock();
+  window.scrollTo(0,0);
+}
+
+function renderSjt(area){
+  const container = document.getElementById('sjt-container');
+  container.innerHTML = '';
+  SJT_BANK[area].scenarios.forEach((sc, idx)=>{
+    const box = document.createElement('div');
+    box.className = 'scenario-box';
+    const chosen = state.sjtAnswers[idx];
+    box.innerHTML = `
+      <div class="sit-label">ESCENARIO ${idx+1}</div>
+      <p style="margin:0 0 14px;font-size:14.5px;">${sc.situacion}</p>
+      <div class="sjt-opts" data-scenario="${idx}">
+        ${sc.opciones.map(o=>`
+          <label class="sjt-opt ${chosen===o.l?'checked':''}">
+            <input type="radio" name="sjt-${idx}" value="${o.l}" ${chosen===o.l?'checked':''} onchange="setSjt(${idx}, '${o.l}')">
+            <span class="sjt-letter">${o.l})</span>
+            <span>${o.t}</span>
+          </label>`).join('')}
+      </div>
+    `;
+    container.appendChild(box);
+  });
+  const controls = document.getElementById('control-container');
+  controls.innerHTML = CONTROL_ITEMS.map((text,idx)=>`<div class="item"><div class="item-num">Control ${idx+1} de 5</div><p class="item-text">${text}</p><div class="likert">${[1,2,3,4,5].map(v=>`<label class="opt ${state.controlAnswers[idx]===v?'checked':''}"><input type="radio" name="control-${idx}" value="${v}" ${state.controlAnswers[idx]===v?'checked':''} onchange="setControl(${idx},${v})"><span class="num">${v}</span><span>${likertLabel(v)}</span></label>`).join('')}</div></div>`).join('');
+}
+function setControl(idx,value){state.controlAnswers[idx]=value;scheduleCloudSave();renderSjt(document.getElementById('f-area').value);}
+
+function setSjt(idx, letra){
+  state.sjtAnswers[idx] = letra;
+  const wrap = document.querySelector(`.sjt-opts[data-scenario="${idx}"]`);
+  wrap.querySelectorAll('.sjt-opt').forEach(o=>o.classList.remove('checked'));
+  wrap.querySelector(`input[value="${letra}"]`).closest('.sjt-opt').classList.add('checked');
+  scheduleCloudSave();
+}
+
+/* ============================================================
+   CALIFICACIÓN
+   ============================================================ */
+function rangoDe(score){
+  if(score<=56) return 'bajo';
+  if(score<=87) return 'medio';
+  return 'alto';
+}
+function rangoLabel(r){
+  return {bajo:'Bajo', medio:'Medio', alto:'Alto'}[r];
+}
+
+function computeResults(){
+  // puntuación ajustada por ítem
+  const adjusted = {};
+  ITEMS.forEach(item=>{
+    const raw = state.answers[item.id];
+    adjusted[item.id] = item.rev ? (6-raw) : raw;
+  });
+  // por faceta
+  const facetScores = {};
+  FACETS.forEach(f=>{
+    const ids = ITEMS.filter(i=>i.facet===f.code).map(i=>i.id);
+    facetScores[f.code] = {name:f.name, domain:f.domain, score: ids.reduce((s,id)=>s+adjusted[id],0)};
+  });
+  // por dominio
+  const domainScores = {};
+  DOMAIN_ORDER.forEach(dom=>{
+    const facetsOfDomain = FACETS.filter(f=>f.domain===dom).map(f=>f.code);
+    const score = facetsOfDomain.reduce((s,fc)=>s+facetScores[fc].score,0);
+    domainScores[dom] = {score, rango: rangoDe(score)};
+  });
+
+  // banderas
+  const N = domainScores.N, E = domainScores.E, O = domainScores.O, A = domainScores.A, C = domainScores.C;
+  let flag = 'blanca';
+  if(C.rango==='bajo' && N.rango==='alto'){
+    flag = 'roja';
+  } else if(A.rango==='bajo'){
+    flag = 'amarilla';
+  } else if((N.rango==='alto' && A.rango==='alto') || (C.rango==='alto' && N.rango==='bajo')){
+    flag = 'verde';
+  } else if(DOMAIN_ORDER.every(d=>domainScores[d].rango==='medio')){
+    flag = 'blanca';
+  } else {
+    flag = 'blanca'; // sin banderas específicas -> decidir con entrevista
+  }
+
+  // SJT
+  const area = document.getElementById('f-area').value;
+  const scenarios = SJT_BANK[area].scenarios;
+  let sjtTotal = 0;
+  const sjtDetail = scenarios.map((sc,idx)=>{
+    const letra = state.sjtAnswers[idx];
+    const opt = sc.opciones.find(o=>o.l===letra);
+    const pts = opt ? opt.p : 0;
+    sjtTotal += pts;
+    return {idx, letra, pts, texto: opt?opt.t:'(sin respuesta)'};
+  });
+  let sjtInterp = sjtTotal===4 ? 'Excelente juicio situacional' : (sjtTotal>=2 ? 'Juicio aceptable' : 'Requiere capacitación o supervisión');
+
+  // decisión combinada (Tabla de Decisiones Rápidas)
+  const sjtAlto = sjtTotal >= 3;
+  let decision = '';
+  if(flag==='roja'){
+    decision = sjtAlto
+      ? 'Profundizar en entrevista. Usa las preguntas de seguimiento de los SJT y las preguntas sugeridas para Responsabilidad baja / Neuroticismo alto antes de decidir.'
+      : 'Rechazar o asignar a un rol no crítico. La combinación de bandera roja con juicio situacional bajo indica riesgo elevado para roles clínicos.';
+  } else if(flag==='amarilla'){
+    decision = sjtAlto
+      ? 'Evaluar para roles específicos, preferentemente sin contacto directo con pacientes (ej. archivo clínico, administración).'
+      : 'Capacitación o supervisión adicional antes de asignar el rol, dado el juicio situacional bajo combinado con Amabilidad baja.';
+  } else {
+    decision = sjtAlto
+      ? 'Sin banderas críticas y buen juicio situacional. Aprobar para contratación, confirmando con la entrevista final.'
+      : 'Sin banderas críticas, pero el juicio situacional es bajo: recomendable capacitación en juicio situacional antes o durante la inducción.';
+  }
+
+  return {domainScores, facetScores, flag, sjtTotal, sjtDetail, sjtInterp, decision, area};
+}
+
+/* ============================================================
+   RESULTADOS — render
+   ============================================================ */
+let lastResults = null;
+
+function finishTest(){
+  const area = document.getElementById('f-area').value;
+  const scenarios = SJT_BANK[area].scenarios;
+  if(scenarios.some((_,idx)=>!state.sjtAnswers[idx])){
+    alert('Responde ambos escenarios SJT antes de finalizar.');
+    return;
+  }
+  if(Object.keys(state.controlAnswers).length!==5){alert('Responde los cinco reactivos de control antes de finalizar.');return;}
+  document.getElementById('screen-sjt').style.display='none';
+  document.getElementById('screen-complete').style.display='block';
+  window.scrollTo(0,0);
+  saveResults();
+}
+
+const FLAG_META = {
+  roja:    {title:'Bandera roja', desc:'Responsabilidad baja + Neuroticismo alto. Profundizar en entrevista; no contratar para roles clínicos sin evaluación adicional.', cls:'flag-roja'},
+  amarilla:{title:'Bandera amarilla', desc:'Amabilidad baja. Evaluar para roles con contacto directo con pacientes.', cls:'flag-amarilla'},
+  verde:   {title:'Bandera verde', desc:'Perfil favorable: baja exposición al estrés bien tolerada o perfil ideal para responsabilidad clínica alta.', cls:'flag-verde'},
+  blanca:  {title:'Sin banderas', desc:'No se detectaron combinaciones de riesgo. Decidir con base en la entrevista.', cls:'flag-blanca'},
+};
+
+function renderResults(r){
+  const nombre = document.getElementById('f-nombre').value;
+  const puesto = document.getElementById('f-puesto').value;
+  document.getElementById('res-subtitle').textContent = `${nombre} — ${puesto} — Área: ${SJT_BANK[r.area].label}`;
+
+  const meta = FLAG_META[r.flag];
+  document.getElementById('res-flag-banner').innerHTML = `
+    <div class="flag-banner ${meta.cls}">
+      <div class="dot"></div>
+      <div><h3>${meta.title}</h3><p>${meta.desc}</p></div>
+    </div>`;
+
+  const domTable = document.getElementById('res-domains-table');
+  domTable.innerHTML = `
+    <tr><th>Dominio</th><th>Puntaje</th><th>Rango</th><th></th></tr>
+    ${DOMAIN_ORDER.map(dom=>{
+      const d = r.domainScores[dom];
+      const pct = Math.round((d.score-24)/(120-24)*100);
+      return `<tr>
+        <td>${DOMAIN_NAMES[dom]}</td>
+        <td>${d.score} / 120</td>
+        <td><span class="rango-pill rango-${d.rango}">${rangoLabel(d.rango)}</span></td>
+        <td><div class="bar-shell"><div class="bar-fill" style="width:${pct}%;"></div></div></td>
+      </tr>`;
+    }).join('')}
+  `;
+
+  const facetsDiv = document.getElementById('res-facets');
+  facetsDiv.innerHTML = DOMAIN_ORDER.map(dom=>{
+    const facetsOfDom = FACETS.filter(f=>f.domain===dom);
+    return `<div style="margin-bottom:14px;">
+      <div style="font-weight:700;font-size:12.5px;color:var(--navy-800);margin-bottom:4px;">${DOMAIN_NAMES[dom]}</div>
+      ${facetsOfDom.map(f=>`<div class="facet-row"><span>${f.code} · ${f.name}</span><span>${r.facetScores[f.code].score} / 20</span></div>`).join('')}
+    </div>`;
+  }).join('');
+
+  const sjtTable = document.getElementById('res-sjt-table');
+  sjtTable.innerHTML = `
+    <tr><th>Escenario</th><th>Opción elegida</th><th>Puntos</th></tr>
+    ${r.sjtDetail.map(d=>`<tr><td>Escenario ${d.idx+1}</td><td>${d.letra}) ${d.texto}</td><td>${d.pts} / 2</td></tr>`).join('')}
+    <tr><td><strong>Total</strong></td><td></td><td><strong>${r.sjtTotal} / 4</strong></td></tr>
+  `;
+  document.getElementById('res-sjt-interp').textContent = r.sjtInterp;
+  document.getElementById('res-decision-text').textContent = r.decision;
+}
+
+/* ============================================================
+   GUARDAR EN GOOGLE SHEETS
+   ============================================================ */
+function saveResults(){
+  const statusEl = document.getElementById('complete-status');
+  if(!APPS_SCRIPT_URL){
+    statusEl.className = 'status-msg status-err';
+    statusEl.textContent = 'No se configuró la URL de Google Apps Script (APPS_SCRIPT_URL) en este archivo. Copia los resultados manualmente o imprime el PDF.';
+    return;
+  }
+  const areaKey = document.getElementById('f-area').value;
+  const payload = {
+    __action: 'resultado_enviar',
+    token: ASSIGNMENT_TOKEN,
+    nombre: document.getElementById('f-nombre').value,
+    puesto: document.getElementById('f-puesto').value,
+    sede: document.getElementById('f-sede').value,
+    area: SJT_BANK[areaKey].label,
+    area_key: areaKey,
+    respuestas: state.answers,
+    sjt_respuestas: state.sjtAnswers,
+    control_respuestas: state.controlAnswers,
+    consentimiento: true,
+    consentimiento_fecha: new Date().toISOString(),
+    aviso_version: 'SLH-RH-PSICO-2026-09',
+    user_agent: navigator.userAgent
+  };
+  statusEl.className = 'status-msg status-pending';
+  statusEl.textContent = 'Guardando…';
+
+  fetch(APPS_SCRIPT_URL, {
+    method: 'POST',
+    headers: {'Content-Type': 'text/plain;charset=utf-8'},
+    body: JSON.stringify(payload)
+  })
+  .then(res=>res.json())
+  .then(data=>{
+    if(!data || !data.ok) throw new Error((data && data.error) || 'El servidor no confirmó el registro.');
+    statusEl.className = 'status-msg status-ok';
+    statusEl.textContent = '✓ Evaluación recibida. Ya puedes cerrar esta ventana.';
+    try{localStorage.removeItem('slh_ipip_'+ASSIGNMENT_TOKEN)}catch(e){}
+  })
+  .catch(err=>{
+    statusEl.className = 'status-msg status-err';
+    statusEl.textContent = 'No se pudo enviar. Conservamos el progreso en este dispositivo; revisa tu conexión y vuelve a intentarlo.';
+  });
+}
+</script>
+</body>
+</html>
