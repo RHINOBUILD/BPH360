@@ -157,10 +157,10 @@ footer b{color:var(--navy)}
 
   <section class="card" id="s6">
     <h2><span class="n">6.</span>Entrevistas telefónicas y grabaciones</h2>
-    <p>En algunos procesos podemos hacer una primera entrevista telefónica con un asistente de voz de inteligencia artificial. En ese caso:</p>
+    <p>En algunos procesos podemos hacer una primera entrevista por voz, desde tu navegador o por teléfono, con un asistente de inteligencia artificial. En ese caso:</p>
     <ul>
-      <li>al iniciar la llamada te diremos que hablas con un asistente de IA y que la llamada se graba, y te pediremos tu autorización;</li>
-      <li>si no aceptas, terminamos la llamada y te ofrecemos una entrevista con una persona, sin afectar tu proceso;</li>
+      <li>antes de iniciar y al comenzar la entrevista te diremos que hablas con un asistente de IA y que la entrevista se graba, y te pediremos tu autorización;</li>
+      <li>si no aceptas, terminamos la entrevista, eliminamos la grabación y te ofrecemos una entrevista con una persona, sin afectar tu proceso;</li>
       <li>la grabación y su transcripción se usan solo para evaluar tu postulación y las revisa personal de Capital Humano.</li>
     </ul>
   </section>
@@ -239,14 +239,14 @@ footer b{color:var(--navy)}
  * Lo que quede vacío aparece resaltado en amarillo en la página.
  * ========================================================= */
 const CONFIG = {
-  fecha:        '30 de octubre de 2026',
+  fecha:        '3 de noviembre de 2026',
   razonSocial:  'ST Josephs, S. de R.L. de C.V.',   // Razón social de la sociedad responsable
   domicilio:    'Ignacio Zaragoza S/N, Col. Centro, C.P. 23400, San José del Cabo, Baja California Sur',
   correo:       'capitalhumano@saintlukeshospitals.com',
   telefono:     '',   // Opcional
   mesesBanco:   '24', // Meses que se conserva el banco de talento
   sociedades:   "VIE Hospital de México, Hospital Sayulita, STL Loreto, 911 Bay Watch Ambulance, Lovalgo y Soc. Admra. y Apoyo Médico S.C.",
-  proveedorVoz: ''    // Fase 2: p. ej. 'Retell AI: llamadas de entrevista con asistente de voz.' Vacío = no se muestra.
+  proveedorVoz: '<b>Retell AI</b>: entrevistas por voz con asistente de inteligencia artificial (audio, grabación y transcripción).'
 };
 
 document.querySelectorAll('[data-cfg]').forEach(el => {
@@ -263,7 +263,7 @@ document.querySelectorAll('[data-cfg]').forEach(el => {
     const a = document.createElement('a'); a.href = 'mailto:' + v; a.textContent = v;
     el.textContent = ''; el.appendChild(a);
   } else {
-    el.textContent = txt;
+    if (k === 'proveedorVoz') el.innerHTML = txt; else el.textContent = txt;
   }
 });
 </script>

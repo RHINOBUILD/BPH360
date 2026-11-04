@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Entrevista en línea · Saint Luke's Hospitals</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0B2545;--navy2:#13315C;--gold:#C9A227;--gold-l:#F6EDCB;--bg:#F4F6FA;--ink:#1B2430;--mut:#5B6475;--line:#E2E6EE;--ok:#1E7B4F;--err:#B42318}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;font-family:Inter,system-ui,sans-serif;background:linear-gradient(160deg,var(--navy),var(--navy2));color:var(--ink);-webkit-font-smoothing:antialiased;display:flex;flex-direction:column;min-height:100%}
+header{color:#fff;padding:18px 16px 0;max-width:560px;width:100%;margin:0 auto;display:flex;align-items:center;gap:12px}
+.seal{width:40px;height:40px;border-radius:50%;border:2px solid var(--gold);display:grid;place-items:center;font-family:'Playfair Display',serif;color:var(--gold);font-weight:700;flex:none}
+header small{display:block;color:#C9D3E3;font-size:12.5px}
+main{flex:1;display:flex;align-items:flex-start;justify-content:center;padding:18px 16px 24px}
+.card{background:#fff;border-radius:18px;max-width:560px;width:100%;padding:26px 22px;border-top:5px solid var(--gold);box-shadow:0 20px 50px rgba(0,0,0,.25)}
+h1{font-family:'Playfair Display',serif;color:var(--navy);font-size:26px;line-height:1.2;margin:0 0 6px}
+.sub{color:var(--mut);margin:0 0 18px;line-height:1.5}
+.tag{display:inline-block;background:var(--gold-l);color:#6B5310;font-size:12.5px;font-weight:600;border-radius:99px;padding:4px 10px;margin:0 6px 6px 0}
+ul.tips{margin:14px 0 18px;padding:0;list-style:none;display:grid;gap:10px}
+ul.tips li{display:flex;gap:10px;align-items:flex-start;line-height:1.45;font-size:14.5px}
+ul.tips li span{flex:none;width:28px;height:28px;border-radius:50%;background:var(--bg);display:grid;place-items:center}
+.consent{background:var(--bg);border-radius:12px;padding:14px;font-size:13.5px;line-height:1.55;color:var(--ink);margin-bottom:16px}
+.consent a{color:var(--navy2)}
+.btn{width:100%;border:0;border-radius:12px;padding:15px 18px;font:inherit;font-weight:700;font-size:16px;cursor:pointer;background:var(--gold);color:var(--navy)}
+.btn:disabled{opacity:.6;cursor:wait}
+.btn.sec{background:#fff;color:var(--navy);border:1px solid var(--line);font-weight:600}
+.btn.end{background:var(--err);color:#fff}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}
+.center{text-align:center}
+.orb{width:150px;height:150px;border-radius:50%;margin:10px auto 18px;background:radial-gradient(circle at 35% 30%,#F3DC8C,var(--gold) 45%,#8C6E12);box-shadow:0 0 0 0 rgba(201,162,39,.55);animation:pulse 2.2s infinite}
+.orb.idle{animation:none;filter:grayscale(.6);opacity:.6}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(201,162,39,.5)}70%{box-shadow:0 0 0 28px rgba(201,162,39,0)}100%{box-shadow:0 0 0 0 rgba(201,162,39,0)}}
+@media (prefers-reduced-motion: reduce){.orb{animation:none}}
+.timer{font-variant-numeric:tabular-nums;color:var(--mut);font-size:14px}
+.big{font-size:44px;margin:4px 0 8px}
+.msg{border-radius:12px;padding:12px 14px;font-size:14px;line-height:1.5;margin-top:14px;display:none}
+.msg.err{display:block;background:#FDECEA;color:var(--err)}
+.spin{width:30px;height:30px;border:3px solid var(--line);border-top-color:var(--gold);border-radius:50%;animation:s 1s linear infinite;margin:20px auto}
+@keyframes s{to{transform:rotate(360deg)}}
+footer{text-align:center;color:#AFC0D8;font-size:12px;padding:0 16px 20px}
+footer b{color:#E9D58C}
+.hidden{display:none!important}
+</style>
+</head>
+<body>
+<header>
+  <div class="seal">SL</div>
+  <div><b>Saint Luke's Hospitals</b><small>Capital Humano · Entrevista en línea</small></div>
+</header>
+
+<main>
+  <section class="card" id="v-cargando"><div class="spin"></div><p class="center sub">Cargando tu invitación…</p></section>
+
+  <section class="card hidden" id="v-inicio">
+    <h1>Hola, <span id="nom"></span></h1>
+    <p class="sub">Esta es tu entrevista inicial para la vacante:</p>
+    <div><span class="tag" id="pue"></span><span class="tag" id="sed"></span></div>
+    <ul class="tips">
+      <li><span>⏱️</span><div><b>Dura unos 10 minutos.</b> Hablarás con Sofía, nuestra asistente virtual, por voz.</div></li>
+      <li><span>🎧</span><div>Busca un <b>lugar tranquilo</b> y, si puedes, usa audífonos.</div></li>
+      <li><span>🎙️</span><div>Al iniciar, tu navegador pedirá <b>permiso para usar el micrófono</b>. Acéptalo.</div></li>
+      <li><span>💬</span><div>Responde con naturalidad y con ejemplos reales de tu experiencia.</div></li>
+    </ul>
+    <div class="consent">
+      Sofía es una herramienta de <b>inteligencia artificial</b>. La entrevista <b>se graba y se transcribe</b> para que la revise el equipo de
+      Capital Humano; <b>ninguna decisión la toma la inteligencia artificial</b>. Si prefieres una entrevista con una persona, no inicies y responde
+      al correo de invitación: tu proceso no se verá afectado.
+      <span id="avisoLink"></span>
+      <div id="vence" style="margin-top:8px;color:var(--mut)"></div>
+    </div>
+    <button class="btn" id="bIniciar">Iniciar entrevista</button>
+    <div class="msg" id="msgInicio"></div>
+  </section>
+
+  <section class="card hidden center" id="v-llamada">
+    <div class="orb idle" id="orb"></div>
+    <h1 id="estadoTxt">Conectando…</h1>
+    <p class="sub" id="estadoSub">Acepta el permiso del micrófono si tu navegador lo pide.</p>
+    <div class="timer" id="timer">00:00</div>
+    <div class="row">
+      <button class="btn sec" id="bMute">🎙️ Silenciar</button>
+      <button class="btn end" id="bColgar">Terminar</button>
+    </div>
+    <div class="msg" id="msgLlamada"></div>
+  </section>
+
+  <section class="card hidden center" id="v-fin">
+    <div class="big">✅</div>
+    <h1>¡Gracias!</h1>
+    <p class="sub">Tu entrevista terminó. El equipo de Capital Humano la revisará y te dará seguimiento por correo o teléfono.</p>
+    <p class="sub" style="font-size:13px">Ya puedes cerrar esta página.</p>
+  </section>
+
+  <section class="card hidden center" id="v-aviso">
+    <div class="big" id="avIco">ℹ️</div>
+    <h1 id="avTit"></h1>
+    <p class="sub" id="avTxt"></p>
+  </section>
+</main>
+
+<footer>Saint Luke's Hospitals · Capital Humano · Creado por <b>RHINOBUILD</b></footer>
+
+<script src="retell-sdk-3.0.3.min.js"></script>
+<script>
+/* URL de la app web del ATS (Apps Script). */
+const API = 'https://script.google.com/macros/s/AKfycbzY_9Wb7GkB4hNJpe571PqTnNsvK7ZX5SmaYVm49Q621PD-zVgCxOkDzftVj__TD3Q9/exec';
+
+const $ = s => document.querySelector(s);
+const TOKEN = new URLSearchParams(location.search).get('t') || '';
+let call = null, t0 = 0, tick = null, muted = false, terminado = false;
+
+function vista(id) { ['cargando', 'inicio', 'llamada', 'fin', 'aviso'].forEach(v => $('#v-' + v).classList.toggle('hidden', v !== id)); }
+function aviso(ico, tit, txt) { $('#avIco').textContent = ico; $('#avTit').textContent = tit; $('#avTxt').textContent = txt; vista('aviso'); }
+function err(sel, t) { $(sel).className = 'msg err'; $(sel).textContent = t; }
+
+async function api(body) {
+  const r = await fetch(API, { method: 'POST', body: JSON.stringify(body) });
+  return r.json();
+}
+
+(async function init() {
+  if (!/^[a-f0-9]{40}$/.test(TOKEN)) return aviso('🔗', 'Enlace no válido', 'Revisa que hayas abierto el enlace completo de tu invitación.');
+  if (!navigator.mediaDevices || !window.RTCPeerConnection) {
+    return aviso('🌐', 'Navegador no compatible', 'Abre este enlace en Chrome, Safari o Edge actualizados, en tu celular o computadora.');
+  }
+  try {
+    const r = await api({ action: 'info', t: TOKEN });
+    if (!r.ok) return aviso('🔗', 'Enlace no válido', r.error || 'No encontramos esta invitación.');
+    if (r.estado === 'realizada') return aviso('✅', 'Entrevista realizada', 'Ya registramos tu entrevista. ¡Gracias! Te daremos seguimiento pronto.');
+    if (r.estado === 'expirada') return aviso('⌛', 'Invitación vencida', 'Esta invitación ya venció. Responde al correo de invitación para solicitar una nueva.');
+    if (r.estado === 'agotada') return aviso('⚠️', 'Intentos agotados', 'Se agotaron los intentos de esta invitación. Responde al correo para solicitar una nueva.');
+    $('#nom').textContent = r.nombre || '';
+    $('#pue').textContent = r.puesto || '';
+    $('#sed').textContent = r.sede ? '📍 ' + r.sede : '';
+    if (!r.sede) $('#sed').remove();
+    if (r.expira) $('#vence').textContent = 'Disponible hasta el ' + r.expira + '.';
+    if (r.aviso) $('#avisoLink').innerHTML = ' Consulta nuestro <a target="_blank" rel="noopener">aviso de privacidad</a>.', $('#avisoLink a').href = r.aviso;
+    vista('inicio');
+  } catch (e) {
+    aviso('📶', 'Sin conexión', 'No pudimos cargar tu invitación. Revisa tu internet y vuelve a abrir el enlace.');
+  }
+})();
+
+const client = new RetellSDK.RetellClient({
+  key: 'proxy',
+  // La única petición de control (crear la llamada) pasa por el servidor del ATS, que guarda la API key.
+  fetch: async (url) => {
+    const path = new URL(String(url)).pathname;
+    if (path !== '/v3/create-web-call') return new Response('', { status: 204 });
+    const r = await api({ action: 'webcall', t: TOKEN });
+    if (!r.body) return new Response(JSON.stringify({ message: r.error || 'No se pudo iniciar.' }), { status: 409, headers: { 'Content-Type': 'application/json' } });
+    return new Response(r.body, { status: r.status || 500, headers: { 'Content-Type': 'application/json' } });
+  }
+});
+
+$('#bIniciar').onclick = () => {
+  $('#bIniciar').disabled = true; $('#bIniciar').textContent = 'Preparando…';
+  $('#msgInicio').className = 'msg';
+  terminado = false;
+  vista('llamada');
+  call = client.createWebCall({
+    agent_id: 'servidor',
+    hooks: {
+      onStatus: s => {
+        if (s === 'live') {
+          $('#orb').classList.remove('idle');
+          $('#estadoTxt').textContent = 'Entrevista en curso';
+          $('#estadoSub').textContent = 'Habla con naturalidad. Sofía te escucha.';
+          t0 = Date.now(); clearInterval(tick);
+          tick = setInterval(() => { const s = Math.floor((Date.now() - t0) / 1000); $('#timer').textContent = String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0'); }, 500);
+          call.startAudioPlayback && call.startAudioPlayback().catch(() => {});
+        }
+      },
+      onEnd: () => fin(),
+      onError: e => {
+        const m = String((e && e.message) || e || '');
+        if (/permission|denied|notallowed/i.test(m)) volver('Necesitamos permiso para usar el micrófono. Actívalo en la configuración del navegador y vuelve a intentar.');
+        else if (!t0) volver(m && !/^\d{3}/.test(m) ? m : 'No pudimos conectar la entrevista. Revisa tu internet e inténtalo de nuevo.');
+        else err('#msgLlamada', 'Se perdió la conexión.');
+      }
+    }
+  });
+};
+
+function volver(t) {
+  terminado = true; clearInterval(tick); t0 = 0;
+  vista('inicio'); $('#bIniciar').disabled = false; $('#bIniciar').textContent = 'Intentar de nuevo';
+  err('#msgInicio', t);
+}
+
+function fin() {
+  if (terminado) return;
+  terminado = true; clearInterval(tick);
+  if (t0 && Date.now() - t0 > 30000) vista('fin');
+  else if (t0) volver('La entrevista terminó muy pronto. Si se cortó, puedes intentarlo de nuevo.');
+}
+
+$('#bColgar').onclick = async () => { try { await call.end(); } catch (e) {} fin(); };
+$('#bMute').onclick = () => {
+  if (!call) return;
+  muted = !muted; muted ? call.mute() : call.unmute();
+  $('#bMute').textContent = muted ? '🔇 Activar micrófono' : '🎙️ Silenciar';
+};
+window.addEventListener('beforeunload', e => { if (call && t0 && !terminado) { e.preventDefault(); e.returnValue = ''; } });
+</script>
+</body>
+</html>
