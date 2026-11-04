@@ -124,6 +124,9 @@ async function api(body) {
 
 (async function init() {
   if (!/^[a-f0-9]{40}$/.test(TOKEN)) return aviso('🔗', 'Enlace no válido', 'Revisa que hayas abierto el enlace completo de tu invitación.');
+  if (!window.RetellSDK || !RetellSDK.RetellClient) {
+    return aviso('⚙️', 'Servicio no disponible', 'No pudimos cargar el sistema de entrevistas. Inténtalo más tarde o responde al correo de invitación.');
+  }
   if (!navigator.mediaDevices || !window.RTCPeerConnection) {
     return aviso('🌐', 'Navegador no compatible', 'Abre este enlace en Chrome, Safari o Edge actualizados, en tu celular o computadora.');
   }
@@ -145,7 +148,7 @@ async function api(body) {
   }
 })();
 
-const client = new RetellSDK.RetellClient({
+const client = window.RetellSDK && new RetellSDK.RetellClient({
   key: 'proxy',
   // La única petición de control (crear la llamada) pasa por el servidor del ATS, que guarda la API key.
   fetch: async (url) => {
@@ -197,9 +200,15 @@ function fin() {
   terminado = true; clearInterval(tick);
   if (t0 && Date.now() - t0 > 30000) vista('fin');
   else if (t0) volver('La entrevista terminó muy pronto. Si se cortó, puedes intentarlo de nuevo.');
+  // Terminó sin llegar a conectar (onEnd sin onError): nunca dejar la pantalla en "Conectando…".
+  else volver('No pudimos conectar la entrevista. Revisa tu internet y el permiso del micrófono, e inténtalo de nuevo.');
 }
 
-$('#bColgar').onclick = async () => { try { await call.end(); } catch (e) {} fin(); };
+$('#bColgar').onclick = async () => {
+  if (t0 && Date.now() - t0 < 30000 && !confirm('¿Seguro que quieres terminar la entrevista?')) return;
+  try { await call.end(); } catch (e) {}
+  fin();
+};
 $('#bMute').onclick = () => {
   if (!call) return;
   muted = !muted; muted ? call.mute() : call.unmute();
