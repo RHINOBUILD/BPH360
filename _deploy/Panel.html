@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<base target="_top">
+<meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0B2545;--navy2:#13315C;--gold:#C9A227;--gold-l:#F6EDCB;--bg:#F4F6FA;--ink:#1B2430;--mut:#5B6475;--line:#E2E6EE;--ok:#1E7B4F;--ok-l:#E7F5EE;--warn:#9A6700;--warn-l:#FFF4D6;--err:#B42318;--err-l:#FDECEA}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,sans-serif;background:var(--bg);color:var(--ink);font-size:14px;-webkit-font-smoothing:antialiased}
+button{font:inherit;cursor:pointer}
+input,select,textarea{font:inherit;padding:9px 11px;border:1px solid var(--line);border-radius:9px;background:#fff;color:var(--ink);width:100%}
+textarea{resize:vertical;min-height:70px}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--gold);border-color:transparent}
+.btn{background:var(--navy);color:#fff;border:0;border-radius:9px;padding:9px 14px;font-weight:600;white-space:nowrap}
+.btn:hover{background:var(--navy2)}
+.btn.gold{background:var(--gold);color:var(--navy)}
+.btn.ghost{background:#fff;color:var(--navy);border:1px solid var(--line)}
+.btn.sm{padding:6px 10px;font-size:13px}
+.btn:disabled{opacity:.55;cursor:wait}
+.hidden{display:none!important}
+/* Login */
+#login{min-height:100vh;display:grid;place-items:center;padding:16px;background:linear-gradient(135deg,var(--navy),var(--navy2))}
+.lbox{background:#fff;border-radius:16px;padding:28px;max-width:380px;width:100%;border-top:5px solid var(--gold);display:grid;gap:14px}
+.lbox h1{font-family:'Playfair Display',serif;color:var(--navy);margin:0;font-size:26px}
+.lbox p{margin:0;color:var(--mut)}
+/* App */
+.top{background:var(--navy);color:#fff;border-bottom:4px solid var(--gold)}
+.topi{max-width:1400px;margin:0 auto;padding:12px 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.seal{width:36px;height:36px;border-radius:50%;border:2px solid var(--gold);display:grid;place-items:center;font-family:'Playfair Display',serif;color:var(--gold);font-weight:700}
+.top h2{margin:0;font-size:17px;font-family:'Playfair Display',serif}
+.top small{color:#C9D3E3}
+.top .sp{flex:1}
+.top a{color:#E9D58C;font-size:13px}
+.tabs{display:flex;gap:4px;max-width:1400px;margin:0 auto;padding:0 16px;overflow-x:auto}
+.tab{background:none;border:0;color:#C9D3E3;padding:10px 14px;border-bottom:3px solid transparent;font-weight:600}
+.tab.on{color:#fff;border-color:var(--gold)}
+.main{max-width:1400px;margin:0 auto;padding:16px}
+.bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+.bar>input,.bar>select{flex:1 1 200px;max-width:340px}
+.banner{background:var(--warn-l);color:var(--warn);border-radius:10px;padding:10px 14px;margin-bottom:14px}
+/* KPIs */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:14px}
+.kpi{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.kpi b{display:block;font-size:22px;color:var(--navy)}
+.kpi span{color:var(--mut);font-size:12.5px}
+/* Board */
+.board{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(250px,1fr);gap:12px;overflow-x:auto;padding-bottom:10px}
+.col{background:#E9EDF4;border-radius:12px;padding:10px;min-height:200px}
+.colh{display:flex;justify-content:space-between;align-items:center;font-weight:700;color:var(--navy);padding:2px 4px 10px}
+.colh span{background:#fff;border-radius:99px;padding:1px 9px;font-size:12px;color:var(--mut)}
+.cc{background:#fff;border-radius:10px;padding:11px 12px;margin-bottom:8px;border:1px solid var(--line);cursor:pointer;display:grid;gap:5px}
+.cc:hover{border-color:var(--gold)}
+.cc .n{font-weight:600;display:flex;justify-content:space-between;gap:8px}
+.cc .s{color:var(--mut);font-size:12.5px}
+.score{min-width:38px;text-align:center;border-radius:99px;padding:2px 8px;font-size:12px;font-weight:700}
+.sc-h{background:var(--ok-l);color:var(--ok)}.sc-m{background:var(--warn-l);color:var(--warn)}.sc-l{background:var(--err-l);color:var(--err)}.sc-p{background:#EEF1F6;color:var(--mut)}
+.flag{font-size:11.5px;color:var(--err);font-weight:600}
+/* Drawer */
+.ov{position:fixed;inset:0;background:rgba(11,37,69,.45);display:none;z-index:20}
+.ov.on{display:block}
+.drawer{position:absolute;right:0;top:0;bottom:0;width:min(640px,100%);background:#fff;overflow-y:auto;box-shadow:-10px 0 30px rgba(0,0,0,.15)}
+.dh{background:var(--navy);color:#fff;padding:16px 18px;border-bottom:4px solid var(--gold);position:sticky;top:0;z-index:2;display:flex;gap:12px;align-items:flex-start}
+.dh h3{margin:0;font-size:19px;font-family:'Playfair Display',serif}
+.dh small{color:#C9D3E3}
+.dh .x{margin-left:auto;background:none;border:0;color:#fff;font-size:26px;line-height:1}
+.ring{width:56px;height:56px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:17px;flex:none;background:#fff}
+.sec{padding:16px 18px;border-bottom:1px solid var(--line)}
+.sec h4{margin:0 0 10px;color:var(--navy);font-size:13px;text-transform:uppercase;letter-spacing:.06em}
+.kv{display:grid;grid-template-columns:120px 1fr;gap:6px 10px}
+.kv span{color:var(--mut)}
+.kv a{color:var(--navy2)}
+.acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--mut);font-weight:600;font-size:12px}
+.chip{display:inline-block;border-radius:99px;padding:2px 8px;font-size:11.5px;font-weight:700;white-space:nowrap}
+.c-Cumple{background:var(--ok-l);color:var(--ok)}.c-Parcial{background:var(--warn-l);color:var(--warn)}.c-No{background:var(--err-l);color:var(--err)}.c-Nm{background:#EEF1F6;color:var(--mut)}
+ul.l{margin:0;padding-left:18px;line-height:1.55}
+.three{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px}
+.three b{display:block;margin-bottom:4px;font-size:12.5px}
+.note{background:var(--bg);border-radius:10px;padding:10px 12px;color:var(--mut);font-size:12.5px;line-height:1.5}
+.alert{background:var(--err-l);color:var(--err);border-radius:10px;padding:10px 12px;margin-bottom:10px;font-weight:600}
+.notas{white-space:pre-wrap;background:var(--bg);border-radius:10px;padding:10px 12px;font-size:13px;line-height:1.5;margin-bottom:8px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media(max-width:560px){.g2{grid-template-columns:1fr}.kv{grid-template-columns:96px 1fr}}
+/* Talento / Vacantes */
+.card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:10px}
+.res{display:grid;gap:6px}
+.res .n{display:flex;gap:10px;justify-content:space-between;align-items:center;font-weight:600;font-size:15px}
+.res .m{color:var(--navy2);font-weight:500}
+.res .r{color:var(--mut);font-size:13px;line-height:1.5}
+.tbl{background:#fff;border:1px solid var(--line);border-radius:12px;overflow-x:auto}
+.form{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.form label{display:grid;gap:5px;font-weight:600;font-size:12.5px}
+.form .full{grid-column:1/-1}
+.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:var(--navy);color:#fff;padding:11px 18px;border-radius:10px;z-index:50;box-shadow:0 8px 22px rgba(0,0,0,.2);max-width:90vw}
+.toast.err{background:var(--err)}
+.spin{width:22px;height:22px;border:3px solid var(--line);border-top-color:var(--gold);border-radius:50%;animation:s 1s linear infinite;display:inline-block;vertical-align:middle;margin-right:8px}
+@keyframes s{to{transform:rotate(360deg)}}
+.empty{color:var(--mut);text-align:center;padding:30px}
+.btn.danger{background:#fff;color:var(--err);border:1px solid #F3C5C0}
+.btn.wa{background:#E7F5EE;color:#1E7B4F;border:1px solid #BFE3CF}
+.mic{display:inline-block;font-size:11.5px;font-weight:700;border-radius:99px;padding:2px 8px;background:#E8EEF7;color:var(--navy2)}
+details.tr{background:var(--bg);border-radius:10px;padding:10px 12px;margin-top:10px}
+details.tr summary{cursor:pointer;font-weight:600;color:var(--navy)}
+details.tr pre{white-space:pre-wrap;font:inherit;font-size:12.5px;line-height:1.55;max-height:320px;overflow:auto;margin:8px 0 0}
+.linkbox{display:flex;gap:6px;margin-top:8px}
+.linkbox input{font-size:12px}
+/* Métricas */
+.mgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px}
+.mcard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.mcard h3{margin:0 0 10px;font-size:14px;color:var(--navy)}
+.hb{display:grid;grid-template-columns:150px 1fr 44px;gap:8px;align-items:center;font-size:12.5px;margin-bottom:7px}
+.hb .tr2{background:#EEF1F6;border-radius:99px;height:12px;overflow:hidden}
+.hb .fill{height:100%;background:var(--navy2);border-radius:99px}
+.hb .fill.g{background:var(--gold)}
+.hb .lab{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink)}
+.hb b{text-align:right;color:var(--navy)}
+@media(max-width:560px){.hb{grid-template-columns:110px 1fr 40px}}
+/* Reporte imprimible */
+#reporte{display:none}
+@media print{
+  body{background:#fff}
+  body *{visibility:hidden}
+  #reporte,#reporte *{visibility:visible}
+  #reporte{display:block;position:absolute;left:0;top:0;width:100%;padding:0 6mm;color:#000;font-size:11.5pt}
+  #reporte h1{font-family:'Playfair Display',serif;font-size:18pt;margin:0 0 2mm}
+  #reporte h2{font-size:12pt;border-bottom:1.5px solid #C9A227;padding-bottom:1mm;margin:6mm 0 2mm}
+  #reporte table{font-size:10pt}
+  #reporte th,#reporte td{border-bottom:1px solid #ddd;padding:4px}
+  #reporte .pie{margin-top:8mm;font-size:9pt;color:#555}
+}
+footer{text-align:center;color:var(--mut);font-size:12.5px;padding:20px}
+footer b{color:var(--navy)}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<section id="login">
+  <form class="lbox" id="lf">
+    <div class="seal" style="width:48px;height:48px">SL</div>
+    <h1>Panel de Reclutamiento</h1>
+    <p>Capital Humano · Saint Luke's Hospitals</p>
+    <input id="lnom" placeholder="Tu nombre" autocomplete="name" required>
+    <input id="lpwd" type="password" placeholder="Contraseña" autocomplete="current-password" required>
+    <button class="btn gold" id="lbtn">Entrar</button>
+    <div id="lerr" style="color:var(--err)"></div>
+  </form>
+</section>
+
+<!-- APP -->
+<section id="app" class="hidden">
+  <div class="top">
+    <div class="topi">
+      <div class="seal">SL</div>
+      <div><h2>Reclutamiento y Selección</h2><small>Saint Luke's Hospitals · Capital Humano</small></div>
+      <div class="sp"></div>
+      <a href="<?= webUrl ?>" target="_blank">Ver portal público ↗</a>
+      <small id="who"></small>
+      <button class="btn ghost sm" onclick="salir()">Salir</button>
+    </div>
+    <div class="tabs">
+      <button class="tab on" data-t="tablero">Tablero</button>
+      <button class="tab" data-t="talento">Banco de talento</button>
+      <button class="tab" data-t="vacantes">Vacantes</button>
+      <button class="tab" data-t="metricas">Métricas</button>
+    </div>
+  </div>
+
+  <div class="main">
+    <div id="banIA" class="banner hidden">⚠️ La IA no está activa: falta <b>ANTHROPIC_API_KEY</b> en las Propiedades del script. Las postulaciones se guardan, pero no se generan fichas.</div>
+
+    <!-- TABLERO -->
+    <div id="v-tablero">
+      <div class="bar">
+        <select id="fVac"></select>
+        <input id="fTxt" type="search" placeholder="Buscar por nombre o ciudad…">
+        <button class="btn ghost" onclick="cargar()">↻ Actualizar</button>
+      </div>
+      <div class="kpis" id="kpis"></div>
+      <div class="board" id="board"></div>
+    </div>
+
+    <!-- TALENTO -->
+    <div id="v-talento" class="hidden">
+      <div class="card">
+        <b style="color:var(--navy)">Buscar en todo el banco de talento</b>
+        <p style="color:var(--mut);margin:6px 0 10px">Escribe el perfil como se lo pedirías a un colega. Ejemplo: <i>enfermeras con experiencia en UCI y BLS vigente que vivan en Los Cabos</i>.</p>
+        <div class="bar" style="margin:0"><input id="qTal" style="max-width:none;flex:1 1 300px" placeholder="¿Qué perfil buscas?"><button class="btn gold" id="bTal" onclick="buscarTal()">Buscar</button></div>
+      </div>
+      <div id="resTal"></div>
+    </div>
+
+    <!-- VACANTES -->
+    <div id="v-vacantes" class="hidden">
+      <div class="card">
+        <b style="color:var(--navy)" id="vfTit">Nueva vacante</b>
+        <form class="form" id="vf" style="margin-top:12px">
+          <input type="hidden" name="ID">
+          <label>Puesto<input name="Puesto" required></label>
+          <label>Sede<select name="Sede" id="vfSede" required></select></label>
+          <label>Entidad<input name="Entidad" placeholder="Saint Luke's Hospitals"></label>
+          <label>Área<input name="Area"></label>
+          <label>Rúbrica de evaluación<select name="RubricaID" id="vfRub" required></select></label>
+          <label>Jornada<input name="Jornada" placeholder="Tiempo completo · turnos rotativos"></label>
+          <label>Estatus<select name="Estatus"><option>Abierta</option><option>Pausada</option><option>Cerrada</option></select></label>
+          <label>Responsable<input name="Responsable"></label>
+          <label class="full">Descripción (se publica)<textarea name="Descripcion"></textarea></label>
+          <label class="full">Requisitos (se publican)<textarea name="Requisitos"></textarea></label>
+          <div class="full acts" style="margin:0"><button class="btn gold" id="vfBtn">Guardar vacante</button><button type="button" class="btn ghost" onclick="limpiarVac()">Limpiar</button></div>
+        </form>
+        <p class="note" style="margin:12px 0 0">Las rúbricas se crean y editan en la pestaña <b>Rubricas</b> de la hoja de cálculo (una fila por criterio, con su peso y si es obligatorio). <a id="lnkHoja" target="_blank">Abrir hoja ↗</a></p>
+      </div>
+      <div class="tbl"><table id="tVac"></table></div>
+    </div>
+
+    <!-- MÉTRICAS -->
+    <div id="v-metricas" class="hidden">
+      <div class="bar" style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px">
+        <select id="mPer" style="max-width:220px"><option value="30">Últimos 30 días</option><option value="90" selected>Últimos 90 días</option><option value="365">Último año</option><option value="0">Todo</option></select>
+        <select id="mVac" style="max-width:340px"></select>
+      </div>
+      <div class="kpis" id="mKpis"></div>
+      <div class="mgrid" id="mGrid"></div>
+    </div>
+  </div>
+  <footer>Creado por <b>RHINOBUILD</b></footer>
+</section>
+
+<!-- DRAWER -->
+<div class="ov" id="ov"><aside class="drawer" id="drawer"></aside></div>
+<div id="reporte"></div>
+
+<script>
+let TOKEN = null, USER = '', D = null, ABIERTO = null, E = { porPost: {}, config: {} };
+const $ = s => document.querySelector(s);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fecha = iso => { if (!iso) return ''; const d = new Date(iso); return isNaN(d) ? iso : d.toLocaleDateString('es-MX', { day: '2-digit', month: 'short', year: 'numeric' }); };
+const scls = p => p === '' || p == null ? 'sc-p' : p >= 75 ? 'sc-h' : p >= 50 ? 'sc-m' : 'sc-l';
+const chipCls = c => ({ 'Cumple': 'c-Cumple', 'Parcial': 'c-Parcial', 'No cumple': 'c-No' }[c] || 'c-Nm');
+
+function store(k, v) { try { v === undefined ? sessionStorage.removeItem(k) : sessionStorage.setItem(k, v); } catch (e) {} }
+function load(k) { try { return sessionStorage.getItem(k); } catch (e) { return null; } }
+
+function call(fn, ...args) {
+  return new Promise((res, rej) => {
+    google.script.run.withSuccessHandler(res).withFailureHandler(e => {
+      const m = String((e && e.message) || e);
+      if (m.includes('SESION_EXPIRADA')) { toast('Tu sesión expiró. Vuelve a entrar.', true); salir(); }
+      rej(new Error(m));
+    })[fn](TOKEN, ...args);
+  });
+}
+function toast(t, err) {
+  const el = document.createElement('div'); el.className = 'toast' + (err ? ' err' : ''); el.textContent = t;
+  document.body.appendChild(el); setTimeout(() => el.remove(), 4200);
+}
+
+/* ---------- Sesión ---------- */
+$('#lf').addEventListener('submit', e => {
+  e.preventDefault();
+  $('#lbtn').disabled = true; $('#lerr').textContent = '';
+  google.script.run.withSuccessHandler(r => {
+    TOKEN = r.token; USER = r.nombre; store('ats_tok', TOKEN); store('ats_user', USER); entrar();
+  }).withFailureHandler(err => { $('#lbtn').disabled = false; $('#lerr').textContent = err.message; })
+    .panelLogin($('#lnom').value, $('#lpwd').value);
+});
+function entrar() { $('#login').classList.add('hidden'); $('#app').classList.remove('hidden'); $('#who').textContent = USER; cargar(); }
+function salir() { store('ats_tok'); store('ats_user'); TOKEN = null; $('#app').classList.add('hidden'); $('#login').classList.remove('hidden'); $('#lbtn').disabled = false; cerrarDrawer(); }
+(function () { const t = load('ats_tok'); if (t) { TOKEN = t; USER = load('ats_user') || ''; entrar(); } })();
+
+/* ---------- Tabs ---------- */
+document.querySelectorAll('.tab').forEach(b => b.onclick = () => {
+  document.querySelectorAll('.tab').forEach(x => x.classList.toggle('on', x === b));
+  ['tablero', 'talento', 'vacantes', 'metricas'].forEach(t => $('#v-' + t).classList.toggle('hidden', t !== b.dataset.t));
+  if (b.dataset.t === 'metricas') metricas();
+});
+
+/* ---------- Carga ---------- */
+async function cargar() {
+  $('#board').innerHTML = '<div class="empty"><span class="spin"></span>Cargando…</div>';
+  try {
+    D = await call('panelDatos');
+    try { E = await call('panelEntrevistas'); } catch (err) { E = { porPost: {}, config: {} }; }
+    $('#banIA').classList.toggle('hidden', D.config.iaActiva);
+    $('#lnkHoja').href = D.config.hoja;
+    const sel = $('#fVac'), prev = sel.value;
+    sel.innerHTML = '<option value="">Todas las vacantes</option>' + D.vacantes.map(v =>
+      `<option value="${esc(v.ID)}">${esc(v.Puesto)} · ${esc(v.Sede)}${v.Estatus !== 'Abierta' ? ' (' + esc(v.Estatus) + ')' : ''}</option>`).join('');
+    sel.value = prev;
+    $('#vfSede').innerHTML = D.sedes.map(s => `<option>${esc(s)}</option>`).join('');
+    $('#vfRub').innerHTML = D.rubricas.map(r => `<option value="${esc(r.id)}">${esc(r.id)} — ${esc(r.puesto)}</option>`).join('');
+    const mv = $('#mVac'), mprev = mv.value;
+    mv.innerHTML = '<option value="">Todas las vacantes</option>' + D.vacantes.map(v => `<option value="${esc(v.ID)}">${esc(v.Puesto)} · ${esc(v.Sede)}</option>`).join('');
+    mv.value = mprev;
+    tablero(); tablaVac();
+    if (!$('#v-metricas').classList.contains('hidden')) metricas();
+    if (ABIERTO) abrir(ABIERTO);
+  } catch (e) { $('#board').innerHTML = `<div class="empty">${esc(e.message)}</div>`; }
+}
+$('#fVac').onchange = tablero;
+$('#fTxt').oninput = tablero;
+
+function filtradas() {
+  const v = $('#fVac').value, q = $('#fTxt').value.trim().toLowerCase();
+  return D.postulaciones.filter(p => (!v || p.VacanteID === v) &&
+    (!q || ((p.Candidato.Nombre || '') + ' ' + (p.Candidato.Ciudad || '')).toLowerCase().includes(q)));
+}
+
+function tablero() {
+  if (!D) return;
+  const ps = filtradas();
+  const cuenta = e => ps.filter(p => p.Etapa === e).length;
+  const pend = ps.filter(p => p.EstadoFicha === 'Pendiente').length;
+  const conPunt = ps.filter(p => p.PuntajeIA !== '' && p.PuntajeIA != null);
+  const prom = conPunt.length ? Math.round(conPunt.reduce((a, p) => a + Number(p.PuntajeIA), 0) / conPunt.length) : '—';
+  $('#kpis').innerHTML = [
+    [ps.length, 'Postulaciones'], [cuenta('Nuevo'), 'Por revisar'], [cuenta('Evaluación') + cuenta('Entrevista'), 'En proceso'],
+    [cuenta('Seleccionado'), 'Seleccionados'], [prom, 'Puntaje IA promedio'], [pend, 'Fichas en análisis']
+  ].map(k => `<div class="kpi"><b>${k[0]}</b><span>${k[1]}</span></div>`).join('');
+
+  $('#board').innerHTML = D.etapas.map(et => {
+    const items = ps.filter(p => p.Etapa === et).sort((a, b) => (Number(b.PuntajeIA) || -1) - (Number(a.PuntajeIA) || -1));
+    return `<div class="col"><div class="colh">${esc(et)}<span>${items.length}</span></div>${items.map(card).join('') || '<div class="s" style="color:var(--mut);padding:6px">—</div>'}</div>`;
+  }).join('');
+}
+
+function card(p) {
+  const f = p.Ficha || {};
+  const score = p.EstadoFicha === 'Lista' ? p.PuntajeIA : p.EstadoFicha === 'Error' ? '!' : '…';
+  const falt = f.obligatoriosFaltantes && f.obligatoriosFaltantes.length;
+  return `<div class="cc" onclick="abrir('${esc(p.ID)}')">
+    <div class="n"><span>${esc(p.Candidato.Nombre)}</span><span class="score ${p.EstadoFicha === 'Lista' ? scls(p.PuntajeIA) : 'sc-p'}">${esc(score)}</span></div>
+    <div class="s">${esc(p.Puesto)} · ${esc(p.Sede)}</div>
+    <div class="s">${esc(p.Candidato.Ciudad)} · ${esc(p.Fuente)} · ${fecha(p.Fecha)}</div>
+    ${falt ? `<div class="flag">⚠ Requisito obligatorio sin cumplir</div>` : ''}
+    ${entBadge(p.ID)}
+  </div>`;
+}
+
+/* ---------- Drawer ---------- */
+function abrir(id) {
+  const p = D.postulaciones.find(x => x.ID === id); if (!p) return cerrarDrawer();
+  ABIERTO = id;
+  const c = p.Candidato, f = p.Ficha || {};
+  const tel = String(c.Telefono || '').replace(/\D/g, '');
+  const wa = tel ? 'https://wa.me/' + (tel.length === 10 ? '52' + tel : tel) : '';
+
+  let ficha;
+  if (p.EstadoFicha === 'Lista') {
+    ficha = `
+      ${f.obligatoriosFaltantes && f.obligatoriosFaltantes.length ? `<div class="alert">⚠ Requisito obligatorio sin evidencia: ${f.obligatoriosFaltantes.map(esc).join(', ')}</div>` : ''}
+      <p style="margin:0 0 12px;line-height:1.55">${esc(f.resumen)}</p>
+      <table><tr><th>Criterio</th><th>Peso</th><th>Resultado</th><th>Evidencia</th></tr>
+      ${(f.desglose || []).map(d => `<tr><td>${esc(d.criterio)}${d.obligatorio ? ' <b style="color:var(--err)">*</b>' : ''}</td><td>${d.peso}</td><td><span class="chip ${chipCls(d.cumple)}">${esc(d.cumple)}</span></td><td>${esc(d.evidencia)}</td></tr>`).join('')}
+      </table>
+      <div class="three" style="margin-top:14px">
+        <div><b style="color:var(--ok)">Fortalezas</b><ul class="l">${(f.fortalezas || []).map(x => `<li>${esc(x)}</li>`).join('') || '<li>—</li>'}</ul></div>
+        <div><b style="color:var(--warn)">Faltantes</b><ul class="l">${(f.faltantes || []).map(x => `<li>${esc(x)}</li>`).join('') || '<li>—</li>'}</ul></div>
+        <div><b style="color:var(--err)">Por verificar</b><ul class="l">${(f.alertas || []).map(x => `<li>${esc(x)}</li>`).join('') || '<li>—</li>'}</ul></div>
+      </div>
+      ${(f.preguntas || []).length ? `<div style="margin-top:14px"><b style="font-size:12.5px">Preguntas sugeridas para la entrevista</b><ol class="l" style="padding-left:20px">${f.preguntas.map(x => `<li>${esc(x)}</li>`).join('')}</ol></div>` : ''}
+      <p class="note" style="margin-top:12px">Ficha generada por IA el ${esc(f.generada)} como apoyo a la decisión. El puntaje se calcula con la rúbrica; la decisión final corresponde a Capital Humano y al jefe del área.</p>`;
+  } else if (p.EstadoFicha === 'Error') {
+    ficha = `<div class="alert">No se pudo analizar el CV: ${esc(f.error || 'error desconocido')}</div>`;
+  } else {
+    ficha = `<p style="color:var(--mut)"><span class="spin"></span>El CV está en fila de análisis (se procesa cada 5 minutos).</p>`;
+  }
+
+  $('#drawer').innerHTML = `
+    <div class="dh">
+      <div class="ring ${p.EstadoFicha === 'Lista' ? scls(p.PuntajeIA) : 'sc-p'}">${p.EstadoFicha === 'Lista' ? p.PuntajeIA : '—'}</div>
+      <div><h3>${esc(c.Nombre)}</h3><small>${esc(p.Puesto)} · ${esc(p.Sede)} · Etapa: <b style="color:#E9D58C">${esc(p.Etapa)}</b></small></div>
+      <button class="x" onclick="cerrarDrawer()" aria-label="Cerrar">×</button>
+    </div>
+    <div class="sec">
+      <h4>Contacto</h4>
+      <div class="kv">
+        <span>Correo</span><a href="mailto:${esc(c.Email)}">${esc(c.Email)}</a>
+        <span>Teléfono</span><span style="color:var(--ink)">${esc(c.Telefono)} ${wa ? `· <a href="${wa}" target="_blank">WhatsApp ↗</a>` : ''}</span>
+        <span>Ciudad</span><span style="color:var(--ink)">${esc(c.Ciudad)}</span>
+        <span>Cédula</span><span style="color:var(--ink)">${esc(c.Cedula) || '—'} ${c.Cedula ? '<i style="color:var(--mut)">(verificar en el Registro Nacional de Profesionistas)</i>' : ''}</span>
+        <span>Banco de talento</span><span style="color:var(--ink)">${c.BancoTalento === 'No' ? '<b style="color:var(--err)">No autorizó</b> · no contactar para otras vacantes' : 'Autorizado'}</span>
+        <span>Fuente</span><span style="color:var(--ink)">${esc(p.Fuente)}</span>
+        <span>Postulación</span><span style="color:var(--ink)">${fecha(p.Fecha)} · ${esc(p.ID)}</span>
+      </div>
+      <div class="acts"><a class="btn ghost sm" href="${esc(c.CV_URL)}" target="_blank" style="text-decoration:none">📄 Ver CV</a>
+      <button class="btn ghost sm" id="bRegen" onclick="regen('${esc(p.ID)}')">${p.EstadoFicha === 'Lista' ? '↻ Regenerar ficha IA' : '▶ Analizar ahora'}</button>
+      <button class="btn ghost sm" onclick="imprimir('${esc(p.ID)}')">🖨 Reporte</button></div>
+      ${wa ? `<div class="acts">${plantillasWA(p).map(t => `<a class="btn wa sm" style="text-decoration:none" target="_blank" href="${wa}?text=${encodeURIComponent(t[1])}">💬 ${esc(t[0])}</a>`).join('')}</div>` : ''}
+    </div>
+    <div class="sec"><h4>Ficha IA</h4>${ficha}</div>
+    <div class="sec"><h4>Entrevista por voz (IA)</h4>${seccionEntrevista(p)}</div>
+    <div class="sec">
+      <h4>Mover de etapa</h4>
+      <div class="g2"><select id="selEt">${D.etapas.map(e => `<option ${e === p.Etapa ? 'selected' : ''}>${esc(e)}</option>`).join('')}</select>
+      <button class="btn" id="bMov" onclick="mover('${esc(p.ID)}')">Aplicar</button></div>
+      <label id="lblNot" style="display:flex;gap:8px;align-items:center;margin-top:10px;font-size:13px"><input type="checkbox" id="chkNot" checked style="width:auto"> <span id="txtNot"></span></label>
+    </div>
+    <div class="sec">
+      <h4>Evaluaciones</h4>
+      ${p.Evaluaciones.length ? `<table><tr><th>Prueba</th><th>Resultado</th><th>Interpretación</th><th>Capturó</th></tr>${p.Evaluaciones.map(e => `<tr><td>${esc(e.Prueba)}<br><small style="color:var(--mut)">${fecha(e.Fecha)}</small></td><td><b>${esc(e.Resultado)}</b></td><td>${esc(e.Interpretacion)}</td><td>${esc(e.CapturadoPor)}</td></tr>`).join('')}</table>` : '<p style="color:var(--mut);margin:0 0 10px">Sin evaluaciones capturadas.</p>'}
+      <div class="g2" style="margin-top:10px"><select id="evP">${D.pruebas.map(x => `<option>${esc(x)}</option>`).join('')}</select><input id="evR" placeholder="Resultado (ej. 82 / Apto)"></div>
+      <textarea id="evI" placeholder="Interpretación breve (opcional)" style="margin-top:8px;min-height:50px"></textarea>
+      <div class="acts"><button class="btn sm" onclick="guardarEv('${esc(p.ID)}')">Guardar evaluación</button></div>
+    </div>
+    <div class="sec" style="border:0">
+      <h4>Notas del proceso</h4>
+      ${p.Notas ? `<div class="notas">${esc(p.Notas)}</div>` : ''}
+      <textarea id="nota" placeholder="Agregar nota (entrevista, referencias, acuerdos)…"></textarea>
+      <div class="acts"><button class="btn sm" onclick="nota('${esc(p.ID)}')">Agregar nota</button></div>
+    </div>
+    <div class="sec" style="border:0;padding-top:0">
+      <button class="btn danger sm" onclick="cancelarDatos('${esc(c.ID)}')">Eliminar datos del candidato (derecho de cancelación)</button>
+    </div>`;
+  $('#ov').classList.add('on');
+  $('#selEt').onchange = notifUI; notifUI();
+}
+function notifUI() {
+  const e = $('#selEt').value;
+  const txt = { 'Evaluación': 'Enviar por correo las ligas de evaluación', 'Descartado': 'Enviar correo de agradecimiento al candidato' }[e];
+  $('#lblNot').style.display = txt ? 'flex' : 'none';
+  if (txt) $('#txtNot').textContent = txt;
+}
+function cerrarDrawer() { $('#ov').classList.remove('on'); ABIERTO = null; }
+$('#ov').addEventListener('click', e => { if (e.target.id === 'ov') cerrarDrawer(); });
+
+async function mover(id) {
+  const et = $('#selEt').value, notif = $('#lblNot').style.display !== 'none' && $('#chkNot').checked;
+  $('#bMov').disabled = true;
+  try { const r = await call('moverEtapa', id, et, notif); toast('Etapa actualizada' + (r.correo ? ' · ' + r.correo : '')); await cargar(); }
+  catch (e) { toast(e.message, true); $('#bMov').disabled = false; }
+}
+async function regen(id) {
+  const b = $('#bRegen'); b.disabled = true; b.innerHTML = '<span class="spin"></span>Analizando CV…';
+  try { await call('regenerarFicha', id); toast('Ficha IA lista'); }
+  catch (e) { toast(e.message, true); }
+  await cargar();
+}
+async function guardarEv(id) {
+  try { await call('registrarEvaluacion', id, { prueba: $('#evP').value, resultado: $('#evR').value, interpretacion: $('#evI').value }); toast('Evaluación guardada'); await cargar(); }
+  catch (e) { toast(e.message, true); }
+}
+async function nota(id) {
+  try { await call('agregarNota', id, $('#nota').value); toast('Nota agregada'); await cargar(); }
+  catch (e) { toast(e.message, true); }
+}
+
+/* ---------- Banco de talento ---------- */
+async function buscarTal() {
+  const q = $('#qTal').value.trim(); if (!q) return;
+  $('#bTal').disabled = true;
+  $('#resTal').innerHTML = '<div class="empty"><span class="spin"></span>Buscando en el banco de talento…</div>';
+  try {
+    const r = await call('buscarTalento', q);
+    $('#resTal').innerHTML = r.resultados.length ? r.resultados.map(x => `
+      <div class="card res">
+        <div class="n"><span>${esc(x.nombre)} <small style="color:var(--mut);font-weight:400">· ${esc(x.ciudad)}</small></span><span class="score ${scls(x.relevancia)}">${esc(x.relevancia)}</span></div>
+        <div class="m">${esc(x.motivo)}</div>
+        <div class="r">${esc(x.resumen)}</div>
+        <div class="r">Última postulación: ${esc(x.ultimoPuesto) || '—'} (${esc(x.ultimaEtapa) || '—'}) · ${esc(x.email)} · ${esc(x.telefono)}</div>
+        ${x.ultimaPostulacion ? `<div><button class="btn ghost sm" onclick="abrir('${esc(x.ultimaPostulacion)}')">Ver ficha</button></div>` : ''}
+      </div>`).join('') : `<div class="empty">${esc(r.nota || 'Sin coincidencias para esa búsqueda.')}</div>`;
+  } catch (e) { $('#resTal').innerHTML = `<div class="empty">${esc(e.message)}</div>`; }
+  $('#bTal').disabled = false;
+}
+$('#qTal').addEventListener('keydown', e => { if (e.key === 'Enter') buscarTal(); });
+
+/* ---------- Vacantes ---------- */
+function tablaVac() {
+  const n = id => D.postulaciones.filter(p => p.VacanteID === id).length;
+  $('#tVac').innerHTML = '<tr><th>ID</th><th>Puesto</th><th>Sede</th><th>Rúbrica</th><th>Estatus</th><th>Postulaciones</th><th>Apertura</th><th></th></tr>' +
+    D.vacantes.map(v => `<tr><td>${esc(v.ID)}</td><td><b>${esc(v.Puesto)}</b></td><td>${esc(v.Sede)}</td><td>${esc(v.RubricaID)}</td>
+      <td><span class="chip ${v.Estatus === 'Abierta' ? 'c-Cumple' : v.Estatus === 'Pausada' ? 'c-Parcial' : 'c-Nm'}">${esc(v.Estatus)}</span></td>
+      <td>${n(v.ID)}</td><td>${fecha(v.FechaApertura)}</td><td><button class="btn ghost sm" onclick="editarVac('${esc(v.ID)}')">Editar</button></td></tr>`).join('');
+}
+function editarVac(id) {
+  const v = D.vacantes.find(x => x.ID === id), f = $('#vf');
+  Object.keys(v).forEach(k => { if (f.elements[k]) f.elements[k].value = v[k] || ''; });
+  $('#vfTit').textContent = 'Editar ' + v.ID;
+  f.scrollIntoView({ behavior: 'smooth' });
+}
+function limpiarVac() { $('#vf').reset(); $('#vf').elements.ID.value = ''; $('#vfTit').textContent = 'Nueva vacante'; }
+$('#vf').addEventListener('submit', async e => {
+  e.preventDefault();
+  const v = Object.fromEntries(new FormData($('#vf')));
+  $('#vfBtn').disabled = true;
+  try { await call('guardarVacante', v); toast('Vacante guardada'); limpiarVac(); await cargar(); }
+  catch (err) { toast(err.message, true); }
+  $('#vfBtn').disabled = false;
+});
+
+/* ---------- Entrevista por voz (Fase 2) ---------- */
+const LINKS = {};
+const ENT_CHIP = { 'Evaluada': 'c-Cumple', 'EnCurso': 'c-Parcial', 'Invitado': 'c-Parcial', 'NoRealizada': 'c-Nm', 'Expirada': 'c-Nm', 'SinConsentimiento': 'c-No', 'Error': 'c-No' };
+const ENT_TXT = { 'Evaluada': 'Evaluada', 'EnCurso': 'En curso / procesando', 'Invitado': 'Invitación enviada', 'NoRealizada': 'No realizada (puede reintentar)', 'Expirada': 'Vencida', 'SinConsentimiento': 'Sin consentimiento', 'Error': 'Error' };
+const VAL_CHIP = { 'Sólida': 'c-Cumple', 'Adecuada': 'c-Parcial', 'Débil': 'c-No', 'Sin evidencia': 'c-Nm' };
+
+function entsDe(id) { return (E.porPost[id] || []).slice().sort((a, b) => String(b.Fecha).localeCompare(String(a.Fecha))); }
+function evaluadaDe(id) { return entsDe(id).find(e => e.Estado === 'Evaluada'); }
+function entBadge(id) {
+  const ev = evaluadaDe(id), ul = entsDe(id)[0];
+  if (ev) return `<div class="s"><span class="mic">🎙 Entrevista IA · ${esc(ev.Puntaje === '' ? '—' : ev.Puntaje)}</span></div>`;
+  if (ul && (ul.Estado === 'Invitado' || ul.Estado === 'EnCurso')) return `<div class="s"><span class="mic" style="background:var(--warn-l);color:var(--warn)">🎙 ${esc(ENT_TXT[ul.Estado])}</span></div>`;
+  return '';
+}
+
+function seccionEntrevista(p) {
+  const ents = entsDe(p.ID), ul = ents[0], ev = evaluadaDe(p.ID);
+  let h = '';
+  if (!E.config.vozActiva) {
+    h += `<p class="note" style="margin:0 0 10px">La entrevista por voz aún no está activa: falta agregar <b>RETELL_API_KEY</b> y ejecutar <b>crearAgenteRetell()</b> en Apps Script.</p>`;
+  }
+  if (ul) {
+    h += `<div class="kv" style="margin-bottom:8px"><span>Estado</span><span><span class="chip ${ENT_CHIP[ul.Estado] || 'c-Nm'}">${esc(ENT_TXT[ul.Estado] || ul.Estado)}</span></span>
+      <span>Modalidad</span><span style="color:var(--ink)">${esc(ul.Modo)} · intentos ${esc(ul.Intentos || 0)}</span>
+      ${ul.Expira && ul.Estado === 'Invitado' ? `<span>Vence</span><span style="color:var(--ink)">${fecha(ul.Expira)}</span>` : ''}</div>`;
+  }
+  if (LINKS[p.ID]) {
+    const L = LINKS[p.ID], tel = String(p.Candidato.Telefono || '').replace(/\D/g, '');
+    const wa = tel ? 'https://wa.me/' + (tel.length === 10 ? '52' + tel : tel) + '?text=' + encodeURIComponent(L.whatsapp) : '';
+    h += `<div class="linkbox"><input readonly value="${esc(L.link)}" onclick="this.select()"><button class="btn ghost sm" onclick="copiar('${esc(L.link)}')">Copiar</button>
+      ${wa ? `<a class="btn wa sm" style="text-decoration:none" target="_blank" href="${wa}">💬 WhatsApp</a>` : ''}</div>
+      <p class="note" style="margin:6px 0 0">Vence el ${esc(L.limite)}. Generar una nueva invitación anula la anterior.</p>`;
+  }
+  h += `<div class="acts">
+    <button class="btn sm" id="bInv" onclick="invitar('${esc(p.ID)}', true)" ${E.config.vozActiva ? '' : 'disabled'}>✉️ Invitar por correo</button>
+    <button class="btn ghost sm" id="bLiga" onclick="invitar('${esc(p.ID)}', false)" ${E.config.vozActiva ? '' : 'disabled'}>🔗 Solo generar liga</button>
+    ${E.config.telefono ? `<button class="btn ghost sm" id="bTel" onclick="llamar('${esc(p.ID)}')">📞 Llamar ahora</button>` : ''}
+  </div>`;
+  if (ev) h += detalleEntrevista(ev);
+  else if (ul && ul.Estado === 'SinConsentimiento') h += `<p class="note" style="margin-top:10px">La persona no autorizó la entrevista grabada. Se eliminaron la grabación y la transcripción; ofrécele una entrevista con una persona.</p>`;
+  return h;
+}
+
+function detalleEntrevista(e) {
+  const v = e.Evaluacion || {};
+  const lista = (arr, color, tit) => `<div><b style="color:${color}">${tit}</b><ul class="l">${(arr || []).map(x => `<li>${esc(x)}</li>`).join('') || '<li>—</li>'}</ul></div>`;
+  return `<div style="margin-top:12px;border-top:1px solid var(--line);padding-top:12px">
+    <div style="display:flex;gap:12px;align-items:center;margin-bottom:10px">
+      <div class="ring ${scls(e.Puntaje === '' ? '' : Number(e.Puntaje))}" style="width:46px;height:46px;font-size:15px;border:1px solid var(--line)">${esc(e.Puntaje === '' ? '—' : e.Puntaje)}</div>
+      <div><b>Entrevista del ${fecha(e.Inicio || e.Fecha)}</b><br><small style="color:var(--mut)">${Math.round((Number(e.DuracionSeg) || 0) / 60)} min · ${esc(e.Modo)}${e.GrabacionURL ? ` · <a href="${esc(e.GrabacionURL)}" target="_blank">▶ Grabación</a>` : ''}</small></div>
+    </div>
+    <p style="margin:0 0 10px;line-height:1.55">${esc(v.resumen)}</p>
+    <table><tr><th>Competencia</th><th>Valoración</th><th>Evidencia</th></tr>
+      ${(v.competencias || []).map(c => `<tr><td>${esc(c.competencia)}</td><td><span class="chip ${VAL_CHIP[c.valoracion] || 'c-Nm'}">${esc(c.valoracion)}</span></td><td>${esc(c.evidencia)}</td></tr>`).join('')}
+    </table>
+    <div class="three" style="margin-top:12px">
+      ${lista(v.fortalezas, 'var(--ok)', 'Fortalezas')}${lista(v.a_profundizar, 'var(--warn)', 'A profundizar en persona')}${lista(v.alertas, 'var(--err)', 'Alertas')}
+    </div>
+    ${v.disponibilidad ? `<p style="margin:10px 0 0"><b style="font-size:12.5px">Disponibilidad:</b> ${esc(v.disponibilidad)}</p>` : ''}
+    ${(v.respuestas || []).length ? `<details class="tr"><summary>Síntesis de respuestas</summary><ol class="l" style="padding-left:20px;margin-top:8px">${v.respuestas.map(r => `<li><b>${esc(r.pregunta)}</b><br>${esc(r.sintesis)}</li>`).join('')}</ol></details>` : ''}
+    ${e.Transcripcion ? `<details class="tr"><summary>Transcripción completa</summary><pre>${esc(e.Transcripcion)}</pre></details>` : ''}
+    <div class="acts"><button class="btn ghost sm" onclick="reevaluar('${esc(e.ID)}', this)">↻ Reevaluar entrevista</button></div>
+    <p class="note" style="margin-top:8px">Evaluación generada por IA el ${esc(v.generada || '')} como apoyo. Confírmala en la entrevista presencial.</p>
+  </div>`;
+}
+
+async function invitar(id, correo) {
+  const b = $(correo ? '#bInv' : '#bLiga'); if (b) { b.disabled = true; b.textContent = 'Generando…'; }
+  try {
+    const r = await call('invitarEntrevista', id, correo);
+    LINKS[id] = r;
+    toast(correo ? 'Invitación enviada por correo' : 'Liga generada');
+    await cargar();
+  } catch (e) { toast(e.message, true); if (b) b.disabled = false; }
+}
+async function llamar(id) {
+  if (!confirm('¿Llamar ahora al candidato con la asistente de voz?')) return;
+  const b = $('#bTel'); if (b) b.disabled = true;
+  try { await call('llamarCandidato', id); toast('Llamada iniciada. El resultado aparecerá en unos minutos.'); await cargar(); }
+  catch (e) { toast(e.message, true); if (b) b.disabled = false; }
+}
+async function reevaluar(entId, b) {
+  b.disabled = true; b.innerHTML = '<span class="spin"></span>Evaluando…';
+  try { await call('reevaluarEntrevista', entId); toast('Entrevista reevaluada'); } catch (e) { toast(e.message, true); }
+  await cargar();
+}
+function copiar(t) {
+  try { navigator.clipboard.writeText(t).then(() => toast('Liga copiada'), () => toast('Selecciona la liga y cópiala manualmente', true)); }
+  catch (e) { toast('Selecciona la liga y cópiala manualmente', true); }
+}
+
+/* ---------- WhatsApp ---------- */
+function plantillasWA(p) {
+  const n = String(p.Candidato.Nombre || '').split(' ')[0], firma = '\n\nCapital Humano · Saint Luke\'s Hospitals';
+  const t = [
+    ['Recepción', `Hola ${n}, recibimos tu postulación para ${p.Puesto} en ${p.Sede}. Estamos revisando tu perfil y te contactaremos pronto.` + firma],
+    ['Agendar entrevista', `Hola ${n}, nos gustaría agendar una entrevista presencial para la vacante de ${p.Puesto}. ¿Qué día y horario te acomodan esta semana?` + firma],
+    ['Solicitar documentos', `Hola ${n}, para continuar con tu proceso de ${p.Puesto}, por favor envíanos en PDF: identificación oficial, comprobante de domicilio, título y cédula profesional, y certificaciones vigentes.` + firma]
+  ];
+  const ligas = [D.config.urlBph, D.config.urlIpip].filter(Boolean);
+  if (ligas.length) t.splice(1, 0, ['Evaluaciones', `Hola ${n}, tu perfil para ${p.Puesto} avanzó. El siguiente paso es responder estas evaluaciones en línea, en un lugar tranquilo y usando el correo con el que te postulaste:\n${ligas.join('\n')}` + firma]);
+  return t;
+}
+
+/* ---------- Reporte imprimible ---------- */
+function imprimir(id) {
+  const p = D.postulaciones.find(x => x.ID === id); if (!p) return;
+  const c = p.Candidato, f = p.Ficha || {}, ev = evaluadaDe(id), v = (ev && ev.Evaluacion) || {};
+  const hoy = new Date().toLocaleDateString('es-MX', { day: '2-digit', month: 'long', year: 'numeric' });
+  $('#reporte').innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;border-bottom:3px solid #0B2545;padding-bottom:3mm;margin-bottom:4mm">
+      <div><b>Saint Luke's Hospitals · Capital Humano</b><br><small>Reporte de candidato · Confidencial</small></div><small>${hoy}</small></div>
+    <h1>${esc(c.Nombre)}</h1>
+    <div>${esc(p.Puesto)} · ${esc(p.Sede)} · Etapa: <b>${esc(p.Etapa)}</b></div>
+    <h2>Datos de la postulación</h2>
+    <table><tr><td>Correo</td><td>${esc(c.Email)}</td><td>Teléfono</td><td>${esc(c.Telefono)}</td></tr>
+      <tr><td>Ciudad</td><td>${esc(c.Ciudad)}</td><td>Cédula</td><td>${esc(c.Cedula) || '—'}</td></tr>
+      <tr><td>Fuente</td><td>${esc(p.Fuente)}</td><td>Postulación</td><td>${fecha(p.Fecha)} · ${esc(p.ID)}</td></tr></table>
+    <h2>Análisis del CV (IA) · ${p.EstadoFicha === 'Lista' ? esc(p.PuntajeIA) + '/100' : 'sin ficha'}</h2>
+    ${f.resumen ? `<p>${esc(f.resumen)}</p>` : ''}
+    ${(f.desglose || []).length ? `<table><tr><th>Criterio</th><th>Peso</th><th>Resultado</th><th>Evidencia</th></tr>${f.desglose.map(d => `<tr><td>${esc(d.criterio)}${d.obligatorio ? ' *' : ''}</td><td>${d.peso}</td><td>${esc(d.cumple)}</td><td>${esc(d.evidencia)}</td></tr>`).join('')}</table>` : ''}
+    ${(f.alertas || []).length ? `<p><b>Por verificar:</b> ${f.alertas.map(esc).join(' · ')}</p>` : ''}
+    <h2>Evaluaciones</h2>
+    ${p.Evaluaciones.length ? `<table><tr><th>Prueba</th><th>Resultado</th><th>Interpretación</th><th>Fecha</th></tr>${p.Evaluaciones.map(e => `<tr><td>${esc(e.Prueba)}</td><td>${esc(e.Resultado)}</td><td>${esc(e.Interpretacion)}</td><td>${fecha(e.Fecha)}</td></tr>`).join('')}</table>` : '<p>Sin evaluaciones capturadas.</p>'}
+    <h2>Entrevista por voz (IA)${ev ? ' · ' + esc(ev.Puntaje) + '/100' : ''}</h2>
+    ${ev ? `<p>${esc(v.resumen)}</p><table><tr><th>Competencia</th><th>Valoración</th><th>Evidencia</th></tr>${(v.competencias || []).map(x => `<tr><td>${esc(x.competencia)}</td><td>${esc(x.valoracion)}</td><td>${esc(x.evidencia)}</td></tr>`).join('')}</table>
+      ${(v.a_profundizar || []).length ? `<p><b>A profundizar:</b> ${v.a_profundizar.map(esc).join(' · ')}</p>` : ''}` : '<p>Sin entrevista por voz.</p>'}
+    <h2>Notas del proceso</h2>
+    <p style="white-space:pre-wrap">${esc(p.Notas) || '—'}</p>
+    <div class="pie">Los análisis generados con inteligencia artificial son apoyo a la decisión y no la sustituyen. La decisión de contratación corresponde a Capital Humano y al jefe del área. Documento confidencial con datos personales: trátese conforme al aviso de privacidad.</div>`;
+  setTimeout(() => window.print(), 50);
+}
+
+/* ---------- Derecho de cancelación ---------- */
+async function cancelarDatos(candId) {
+  if (!confirm('Esto elimina el CV, la ficha, las entrevistas y los datos de contacto de este candidato en todas sus postulaciones. Úsalo solo cuando el titular lo solicite. ¿Continuar?')) return;
+  try { await call('cancelarDatosCandidato', candId); toast('Datos del candidato eliminados'); cerrarDrawer(); await cargar(); }
+  catch (e) { toast(e.message, true); }
+}
+
+/* ---------- Métricas ---------- */
+$('#mPer').onchange = () => metricas();
+$('#mVac').onchange = () => metricas();
+function hbars(titulo, filas, gold, nota) {
+  const max = Math.max(1, ...filas.map(f => f[1]));
+  return `<div class="mcard"><h3>${titulo}</h3>${filas.length ? filas.map(f => `<div class="hb"><span class="lab" title="${esc(f[0])}">${esc(f[0])}</span><span class="tr2"><span class="fill ${gold ? 'g' : ''}" style="display:block;width:${Math.round(f[1] / max * 100)}%"></span></span><b>${esc(f[2] != null ? f[2] : f[1])}</b></div>`).join('') : '<p class="note" style="margin:0">Sin datos en este periodo.</p>'}${nota ? `<p class="note" style="margin:8px 0 0">${nota}</p>` : ''}</div>`;
+}
+function metricas() {
+  if (!D) return;
+  const dias = Number($('#mPer').value), vac = $('#mVac').value, desde = dias ? Date.now() - dias * 86400000 : 0;
+  const ps = D.postulaciones.filter(p => (!vac || p.VacanteID === vac) && new Date(p.Fecha).getTime() >= desde && p.Candidato.Nombre !== '[Datos eliminados]');
+  const cnt = (arr, k) => { const m = {}; arr.forEach(x => { const v = k(x) || '—'; m[v] = (m[v] || 0) + 1; }); return m; };
+  const sel = ps.filter(p => p.Etapa === 'Seleccionado');
+  const diasSel = sel.map(p => (new Date(p.Actualizado) - new Date(p.Fecha)) / 86400000).filter(x => x >= 0);
+  const prom = a => a.length ? Math.round(a.reduce((s, x) => s + x, 0) / a.length) : '—';
+  const conP = ps.filter(p => p.EstadoFicha === 'Lista');
+  const evs = ps.map(p => evaluadaDe(p.ID)).filter(Boolean);
+  $('#mKpis').innerHTML = [
+    [ps.length, 'Postulaciones'], [sel.length, 'Seleccionados'],
+    [ps.length ? Math.round(sel.length / ps.length * 100) + '%' : '—', 'Tasa de selección'],
+    [prom(diasSel), 'Días promedio a selección'],
+    [prom(conP.map(p => Number(p.PuntajeIA))), 'Puntaje CV promedio'],
+    [evs.length, 'Entrevistas IA evaluadas']
+  ].map(k => `<div class="kpi"><b>${k[0]}</b><span>${k[1]}</span></div>`).join('');
+
+  const etapas = cnt(ps, p => p.Etapa);
+  const fuentes = cnt(ps, p => p.Fuente), fSel = cnt(sel, p => p.Fuente);
+  const sedes = cnt(ps, p => p.Sede);
+  const porEtapaPunt = ['Seleccionado', 'Descartado', 'Entrevista', 'Evaluación', 'Filtrado', 'Nuevo'].map(et => {
+    const a = conP.filter(p => p.Etapa === et).map(p => Number(p.PuntajeIA));
+    return [et, a.length ? prom(a) : 0, a.length ? prom(a) + ' (' + a.length + ')' : '—'];
+  }).filter(r => r[2] !== '—');
+  const meses = [];
+  for (let i = 5; i >= 0; i--) { const d = new Date(); d.setDate(1); d.setMonth(d.getMonth() - i); meses.push([d.getFullYear(), d.getMonth()]); }
+  const porMes = meses.map(([y, m]) => {
+    const n = D.postulaciones.filter(p => (!vac || p.VacanteID === vac) && new Date(p.Fecha).getFullYear() === y && new Date(p.Fecha).getMonth() === m).length;
+    return [new Date(y, m, 1).toLocaleDateString('es-MX', { month: 'short', year: '2-digit' }), n];
+  });
+  const oblig = conP.filter(p => p.Ficha && (p.Ficha.obligatoriosFaltantes || []).length).length;
+  const sortDesc = o => Object.entries(o).sort((a, b) => b[1] - a[1]);
+
+  $('#mGrid').innerHTML =
+    hbars('Distribución por etapa', D.etapas.map(e => [e, etapas[e] || 0])) +
+    hbars('Postulaciones por fuente', sortDesc(fuentes).map(([k, v]) => [k, v, v + (fSel[k] ? ' · ' + fSel[k] + ' sel.' : '')]), false, 'Junto al total se muestran los seleccionados de cada fuente: indica qué canal trae mejores perfiles, no solo más.') +
+    hbars('Postulaciones por sede', sortDesc(sedes).map(([k, v]) => [k, v])) +
+    hbars('Puntaje de CV promedio por etapa', porEtapaPunt, true, 'Si los seleccionados no tienen mejor puntaje que los descartados, conviene revisar los pesos de la rúbrica.') +
+    hbars('Postulaciones por mes (últimos 6)', porMes) +
+    hbars('Cumplimiento de requisitos obligatorios', conP.length ? [['Cumplen', conP.length - oblig], ['No cumplen', oblig]] : [], true, conP.length ? Math.round(oblig / conP.length * 100) + '% de los CV analizados no acreditan algún requisito obligatorio: revisa si la vacante se está anunciando en los canales correctos.' : '');
+}
+</script>
+</body>
+</html>
