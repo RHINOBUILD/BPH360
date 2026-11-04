@@ -651,8 +651,11 @@ function verificarFase2() {
     chk(r.getResponseCode() === 200, 'Página pública ' + url, 'no responde (' + r.getResponseCode() + '); súbela a GitHub Pages');
     if (r.getResponseCode() === 200) {
       const api = (html.match(/const API = '([^']+)'/) || [])[1];
-      chk(!!api && api === ScriptApp.getService().getUrl(), 'La página apunta a esta app web',
-        'en entrevista.html, la constante API debe ser ' + ScriptApp.getService().getUrl() + ' (actual: ' + api + ')');
+      // Desde el editor getUrl() devuelve la URL /dev; en ese caso basta con que la página use una implementación /exec.
+      const svc = ScriptApp.getService().getUrl() || '';
+      const apiOk = !!api && (/\/dev$/.test(svc) ? /\/exec$/.test(api) : api === svc);
+      chk(apiOk, 'La página apunta a la app web (' + (String(api).split('/s/')[1] || '').slice(0, 12) + '…/exec)',
+        'en entrevista.html, la constante API debe ser la URL /exec de la implementación activa (actual: ' + api + ')');
       const sdk = (html.match(/<script src="([^"]*retell[^"]*)"/i) || [])[1];
       if (sdk) {
         const s = UrlFetchApp.fetch(URL_(url, sdk), { muteHttpExceptions: true });
