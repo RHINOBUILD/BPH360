@@ -15,6 +15,8 @@
  *   MESES_BANCO         (meses que se conserva el banco de talento; por defecto 24)
  */
 
+// IMPORTANTE: en el editor, Fase2.gs debe ir DEBAJO de Código.gs (Apps Script carga los archivos en ese orden).
+if (typeof HOJAS === 'undefined') throw new Error('Fase2.gs se cargó antes que Código.gs: muévelo abajo en la lista de archivos.');
 HOJAS.Entrevistas = ['ID', 'Fecha', 'PostulacionID', 'Token', 'Estado', 'Modo', 'CallID', 'Intentos',
   'Inicio', 'DuracionSeg', 'Transcripcion', 'GrabacionURL', 'EvaluacionIA', 'PuntajeEntrevista',
   'Expira', 'CreadoPor', 'Actualizado'];
@@ -140,7 +142,7 @@ function invitarEntrevista(tok, postId, enviarCorreo) {
   const v = buscar_('Vacantes', p.VacanteID);
 
   // Una sola invitación vigente por postulación.
-  leer_('Entrevistas').filter(e => e.PostulacionID === postId && (e.Estado === 'Invitado' || e.Estado === 'NoRealizada'))
+  leer_('Entrevistas').filter(e => e.PostulacionID === postId && (e.Estado === 'Invitado' || e.Estado === 'NoRealizada' || (e.Estado === 'Error' && !String(e.Transcripcion || '').trim())))
     .forEach(e => actualizar_('Entrevistas', e._row, { Estado: 'Expirada', Actualizado: new Date() }));
 
   const horas = Number(prop_('ENTREVISTA_HORAS', '72')) || 72;
@@ -215,13 +217,14 @@ function panelEntrevistas(tok) {
       Evaluacion: ev, Puntaje: e.PuntajeEntrevista, Expira: e.Expira, CreadoPor: e.CreadoPor
     });
   });
-  return {
+  // google.script.run no acepta objetos Date en la respuesta (llega null): se serializa a ISO.
+  return JSON.parse(JSON.stringify({
     porPost,
     config: {
       vozActiva: !!(prop_('RETELL_API_KEY') && prop_('RETELL_AGENT_ID')),
       telefono: !!prop_('RETELL_FROM_NUMBER')
     }
-  };
+  }));
 }
 
 function reevaluarEntrevista(tok, entId) {
@@ -290,6 +293,8 @@ function liberarSiNoConecto_(e) {
 function disponible_(e) {
   if (e.Estado === 'Evaluada' || e.Estado === 'EnCurso') return 'realizada';
   if (e.Estado === 'SinConsentimiento') return 'realizada';
+  // Un error al EVALUAR (ya hay transcripción) no obliga a la persona a repetir la entrevista.
+  if (e.Estado === 'Error' && String(e.Transcripcion || '').trim()) return 'realizada';
   if (e.Estado === 'Expirada' || (e.Expira && new Date(e.Expira) < new Date())) return 'expirada';
   if (Number(e.Intentos || 0) >= ENT.MAX_INTENTOS) return 'agotada';
   if (e.Estado === 'Invitado' || e.Estado === 'NoRealizada' || e.Estado === 'Error') return 'disponible';
@@ -367,9 +372,16 @@ function procesarEntrevistas() {
         actualizar_('Entrevistas', e._row, { Estado: 'Expirada', Actualizado: new Date() });
       } else if (e.Estado === 'EnCurso' && e.CallID) {
         revisarLlamada_(e);
+      } else if (e.Estado === 'Error' && String(e.Transcripcion || '').trim() && reintentosEval_(e) < 3) {
+        // La llamada sí se hizo pero falló la evaluación (p. ej. la API de IA no respondió): se reintenta.
+        evaluarEntrevista_(e);
       }
     } catch (err) {
-      actualizar_('Entrevistas', e._row, { Estado: 'Error', EvaluacionIA: JSON.stringify({ error: String(err.message || err) }), Actualizado: new Date() });
+      actualizar_('Entrevistas', e._row, {
+        Estado: 'Error',
+        EvaluacionIA: JSON.stringify({ error: String(err.message || err), reintentos: reintentosEval_(e) + 1 }),
+        Actualizado: new Date()
+      });
     }
   });
 }
@@ -597,6 +609,67 @@ function retell_(method, path, body) {
   const code = res.getResponseCode(), txt = res.getContentText();
   if (code < 200 || code >= 300) throw new Error('Retell (' + code + '): ' + txt.slice(0, 300));
   return txt ? JSON.parse(txt) : {};
+}
+
+function reintentosEval_(e) {
+  try { return Number((JSON.parse(e.EvaluacionIA || '{}').reintentos) || 0); } catch (x) { return 0; }
+}
+
+/**
+ * Diagnóstico: ejecútalo desde el editor y revisa el registro.
+ * Comprueba propiedades, hoja Entrevistas, disparadores, el asistente en Retell y la URL pública.
+ */
+function verificarFase2() {
+  const ok = [], mal = [];
+  const chk = (cond, txt, ayuda) => (cond ? ok : mal).push(cond ? txt : txt + ' → ' + ayuda);
+
+  ['ANTHROPIC_API_KEY', 'RETELL_API_KEY', 'RETELL_AGENT_ID', 'CV_FOLDER_ID'].forEach(k =>
+    chk(!!prop_(k), 'Propiedad ' + k, 'agrégala en Configuración del proyecto › Propiedades del script'));
+  chk(!!prop_('AVISO_PRIVACIDAD_URL'), 'Propiedad AVISO_PRIVACIDAD_URL', 'recomendada: la página de entrevista enlaza el aviso de privacidad');
+
+  const sh = ss_().getSheetByName('Entrevistas');
+  chk(!!sh, 'Hoja Entrevistas', 'ejecuta setupFase2()');
+  if (sh) {
+    const enc = sh.getRange(1, 1, 1, HOJAS.Entrevistas.length).getValues()[0];
+    chk(enc.join('|') === HOJAS.Entrevistas.join('|'), 'Encabezados de Entrevistas', 'ejecuta setupFase2() para reescribirlos');
+  }
+  const trig = ScriptApp.getProjectTriggers().map(t => t.getHandlerFunction());
+  chk(trig.indexOf('procesarEntrevistas') >= 0, 'Disparador procesarEntrevistas (cada 5 min)', 'ejecuta setupFase2()');
+  chk(trig.indexOf('depuracionMensual_') >= 0, 'Depuración mensual', 'opcional: ejecuta activarDepuracionMensual()');
+
+  if (prop_('RETELL_API_KEY') && prop_('RETELL_AGENT_ID')) {
+    try {
+      const a = retell_('get', '/get-agent/' + encodeURIComponent(prop_('RETELL_AGENT_ID')));
+      chk(true, 'Asistente Retell: ' + (a.agent_name || a.agent_id) + ' · voz ' + a.voice_id + ' · idioma ' + a.language);
+    } catch (x) { chk(false, 'Asistente Retell', 'no se encontró (' + x.message + '); ejecuta crearAgenteRetell()'); }
+  }
+
+  const url = prop_('URL_ENTREVISTA', ENT.URL_DEFECTO);
+  try {
+    const r = UrlFetchApp.fetch(url, { muteHttpExceptions: true, followRedirects: true });
+    const html = r.getContentText();
+    chk(r.getResponseCode() === 200, 'Página pública ' + url, 'no responde (' + r.getResponseCode() + '); súbela a GitHub Pages');
+    if (r.getResponseCode() === 200) {
+      const api = (html.match(/const API = '([^']+)'/) || [])[1];
+      chk(!!api && api === ScriptApp.getService().getUrl(), 'La página apunta a esta app web',
+        'en entrevista.html, la constante API debe ser ' + ScriptApp.getService().getUrl() + ' (actual: ' + api + ')');
+      const sdk = (html.match(/<script src="([^"]*retell[^"]*)"/i) || [])[1];
+      if (sdk) {
+        const s = UrlFetchApp.fetch(URL_(url, sdk), { muteHttpExceptions: true });
+        chk(s.getResponseCode() === 200, 'SDK de Retell (' + sdk + ')', 'no está publicado junto a entrevista.html');
+      }
+    }
+  } catch (x) { chk(false, 'Página pública', x.message); }
+
+  Logger.log('✅ ' + ok.length + ' correcto(s):\n  ' + ok.join('\n  '));
+  Logger.log(mal.length ? '⚠️ ' + mal.length + ' pendiente(s):\n  ' + mal.join('\n  ') : 'Todo listo para entrevistas por voz.');
+  return mal.length;
+}
+
+/** Une una URL base con una ruta relativa (Apps Script no tiene la clase URL). */
+function URL_(base, rel) {
+  if (/^https?:\/\//i.test(rel)) return rel;
+  return base.replace(/[?#].*$/, '').replace(/[^\/]*$/, '') + rel.replace(/^\.\//, '');
 }
 
 function configVozOk_() {

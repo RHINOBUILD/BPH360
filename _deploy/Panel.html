@@ -284,7 +284,7 @@ async function cargar() {
   $('#board').innerHTML = '<div class="empty"><span class="spin"></span>Cargando…</div>';
   try {
     D = await call('panelDatos');
-    try { E = await call('panelEntrevistas'); } catch (err) { E = { porPost: {}, config: {} }; }
+    try { E = (await call('panelEntrevistas')) || { porPost: {}, config: {} }; } catch (err) { E = { porPost: {}, config: {} }; }
     $('#banIA').classList.toggle('hidden', D.config.iaActiva);
     $('#lnkHoja').href = D.config.hoja;
     const sel = $('#fVac'), prev = sel.value;
@@ -532,6 +532,13 @@ function seccionEntrevista(p) {
     ${E.config.telefono ? `<button class="btn ghost sm" id="bTel" onclick="llamar('${esc(p.ID)}')">📞 Llamar ahora</button>` : ''}
   </div>`;
   if (ev) h += detalleEntrevista(ev);
+  else if (ul && ul.Estado === 'Error') {
+    let det = ''; try { det = (ul.Evaluacion && ul.Evaluacion.error) || ''; } catch (x) {}
+    h += `<div class="alert" style="margin-top:10px">No se pudo procesar la entrevista${det ? ': ' + esc(det) : ''}.</div>`;
+    if (ul.Transcripcion) h += `<p class="note" style="margin:0">La llamada sí se realizó; el sistema reintenta la evaluación automáticamente (hasta 3 veces). También puedes reevaluarla ahora.</p>
+      <details class="tr"><summary>Transcripción completa</summary><pre>${esc(ul.Transcripcion)}</pre></details>
+      <div class="acts"><button class="btn ghost sm" onclick="reevaluar('${esc(ul.ID)}', this)">↻ Reevaluar entrevista</button></div>`;
+  }
   else if (ul && ul.Estado === 'SinConsentimiento') h += `<p class="note" style="margin-top:10px">La persona no autorizó la entrevista grabada. Se eliminaron la grabación y la transcripción; ofrécele una entrevista con una persona.</p>`;
   return h;
 }
