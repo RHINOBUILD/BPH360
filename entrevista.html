@@ -1,220 +1,412 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Entrevista en línea · Saint Luke's Hospitals</title>
+<meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
 <style>
-:root{--navy:#0B2545;--navy2:#13315C;--gold:#C9A227;--gold-l:#F6EDCB;--bg:#F4F6FA;--ink:#1B2430;--mut:#5B6475;--line:#E2E6EE;--ok:#1E7B4F;--err:#B42318}
+:root{--navy:#0B2545;--navy2:#13315C;--gold:#C9A227;--gold-l:#F6EFD6;--ink:#1B2430;--mut:#5B6475;--line:#E2E6EE;--bg:#F4F6FA;--ok:#1E7A4C;--err:#B3261E;--warn:#9A6700}
 *{box-sizing:border-box}
-html,body{height:100%}
-body{margin:0;font-family:Inter,system-ui,sans-serif;background:linear-gradient(160deg,var(--navy),var(--navy2));color:var(--ink);-webkit-font-smoothing:antialiased;display:flex;flex-direction:column;min-height:100%}
-header{color:#fff;padding:18px 16px 0;max-width:560px;width:100%;margin:0 auto;display:flex;align-items:center;gap:12px}
-.seal{width:40px;height:40px;border-radius:50%;border:2px solid var(--gold);display:grid;place-items:center;font-family:'Playfair Display',serif;color:var(--gold);font-weight:700;flex:none}
-header small{display:block;color:#C9D3E3;font-size:12.5px}
-main{flex:1;display:flex;align-items:flex-start;justify-content:center;padding:18px 16px 24px}
-.card{background:#fff;border-radius:18px;max-width:560px;width:100%;padding:26px 22px;border-top:5px solid var(--gold);box-shadow:0 20px 50px rgba(0,0,0,.25)}
-h1{font-family:'Playfair Display',serif;color:var(--navy);font-size:26px;line-height:1.2;margin:0 0 6px}
-.sub{color:var(--mut);margin:0 0 18px;line-height:1.5}
-.tag{display:inline-block;background:var(--gold-l);color:#6B5310;font-size:12.5px;font-weight:600;border-radius:99px;padding:4px 10px;margin:0 6px 6px 0}
-ul.tips{margin:14px 0 18px;padding:0;list-style:none;display:grid;gap:10px}
-ul.tips li{display:flex;gap:10px;align-items:flex-start;line-height:1.45;font-size:14.5px}
-ul.tips li span{flex:none;width:28px;height:28px;border-radius:50%;background:var(--bg);display:grid;place-items:center}
-.consent{background:var(--bg);border-radius:12px;padding:14px;font-size:13.5px;line-height:1.55;color:var(--ink);margin-bottom:16px}
-.consent a{color:var(--navy2)}
-.btn{width:100%;border:0;border-radius:12px;padding:15px 18px;font:inherit;font-weight:700;font-size:16px;cursor:pointer;background:var(--gold);color:var(--navy)}
-.btn:disabled{opacity:.6;cursor:wait}
-.btn.sec{background:#fff;color:var(--navy);border:1px solid var(--line);font-weight:600}
-.btn.end{background:var(--err);color:#fff}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}
-.center{text-align:center}
-.orb{width:150px;height:150px;border-radius:50%;margin:10px auto 18px;background:radial-gradient(circle at 35% 30%,#F3DC8C,var(--gold) 45%,#8C6E12);box-shadow:0 0 0 0 rgba(201,162,39,.55);animation:pulse 2.2s infinite}
-.orb.idle{animation:none;filter:grayscale(.6);opacity:.6}
-@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(201,162,39,.5)}70%{box-shadow:0 0 0 28px rgba(201,162,39,0)}100%{box-shadow:0 0 0 0 rgba(201,162,39,0)}}
-@media (prefers-reduced-motion: reduce){.orb{animation:none}}
-.timer{font-variant-numeric:tabular-nums;color:var(--mut);font-size:14px}
-.big{font-size:44px;margin:4px 0 8px}
-.msg{border-radius:12px;padding:12px 14px;font-size:14px;line-height:1.5;margin-top:14px;display:none}
-.msg.err{display:block;background:#FDECEA;color:var(--err)}
-.spin{width:30px;height:30px;border:3px solid var(--line);border-top-color:var(--gold);border-radius:50%;animation:s 1s linear infinite;margin:20px auto}
-@keyframes s{to{transform:rotate(360deg)}}
-footer{text-align:center;color:#AFC0D8;font-size:12px;padding:0 16px 20px}
-footer b{color:#E9D58C}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+header{background:var(--navy);color:#fff;border-bottom:4px solid var(--gold);padding:14px 16px}
+header .w{max-width:760px;margin:auto;display:flex;align-items:center;gap:12px}
+.seal{width:40px;height:40px;border-radius:50%;border:2px solid var(--gold);display:grid;place-items:center;color:var(--gold);font:600 15px 'Playfair Display',serif;flex:none}
+header h1{font:600 18px 'Playfair Display',serif;margin:0}
+header small{color:#C9D3E3}
+main{max-width:760px;margin:18px auto;padding:0 16px}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px;box-shadow:0 1px 2px rgba(11,37,69,.05)}
+h2{font:600 22px 'Playfair Display',serif;color:var(--navy);margin:0 0 6px}
+p{margin:0 0 12px}
+.mut{color:var(--mut)}
+ul.req{padding-left:20px;margin:6px 0 16px}ul.req li{margin:4px 0}
+.consent{display:flex;gap:10px;align-items:flex-start;background:var(--gold-l);border-radius:10px;padding:12px 14px;margin:14px 0;font-size:14px}
+.consent input{margin-top:4px;width:18px;height:18px;flex:none;accent-color:var(--navy)}
+.btn{appearance:none;border:0;border-radius:10px;padding:12px 20px;font:600 15px Inter,sans-serif;cursor:pointer;background:var(--navy);color:#fff}
+.btn.gold{background:var(--gold);color:var(--navy)}
+.btn.ghost{background:#fff;color:var(--navy);border:1px solid var(--line)}
+.btn.red{background:var(--err)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.alert{background:#FDECEA;color:var(--err);border-radius:10px;padding:12px 14px;margin:12px 0;font-size:14px}
+.info{background:#EAF1FB;color:var(--navy2);border-radius:10px;padding:12px 14px;margin:12px 0;font-size:14px}
 .hidden{display:none!important}
+/* llamada */
+.call{display:grid;grid-template-rows:auto 1fr auto;gap:14px;min-height:calc(100vh - 140px)}
+.top{display:flex;align-items:center;gap:14px}
+.av{width:64px;height:64px;border-radius:50%;background:var(--navy);color:var(--gold);display:grid;place-items:center;font:600 26px 'Playfair Display',serif;position:relative;flex:none}
+.av::after{content:'';position:absolute;inset:-6px;border-radius:50%;border:3px solid transparent}
+.st-hablando .av::after{border-color:var(--gold);animation:pulse 1.2s infinite}
+.st-escuchando .av::after{border-color:#2E7D32;animation:pulse 1.6s infinite}
+.st-pensando .av::after{border-color:var(--line);border-top-color:var(--navy);animation:spin 1s linear infinite}
+@keyframes pulse{0%{transform:scale(.95);opacity:1}100%{transform:scale(1.15);opacity:0}}
+@keyframes spin{to{transform:rotate(360deg)}}
+.top b{display:block;font-size:16px;color:var(--navy)}
+.estado{font-size:13px;color:var(--mut)}
+.timer{margin-left:auto;font-variant-numeric:tabular-nums;color:var(--mut);font-size:14px}
+.log{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;overflow-y:auto;max-height:52vh;min-height:220px}
+.msg{max-width:85%;padding:10px 13px;border-radius:12px;margin:6px 0;font-size:14.5px}
+.msg.a{background:var(--bg);border-top-left-radius:4px}
+.msg.u{background:var(--navy);color:#fff;margin-left:auto;border-top-right-radius:4px}
+.msg.i{background:#fff;border:1px dashed #9AA6BA;color:var(--mut);margin-left:auto}
+.ctrl{display:flex;flex-direction:column;gap:10px}
+.mic{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--mut)}
+.lvl{flex:1;height:6px;background:var(--line);border-radius:3px;overflow:hidden}.lvl i{display:block;height:100%;width:0;background:#2E7D32;transition:width .1s}
+textarea{width:100%;min-height:80px;border:1px solid var(--line);border-radius:10px;padding:10px 12px;font:15px Inter,sans-serif;resize:vertical}
+footer{text-align:center;color:var(--mut);font-size:12.5px;padding:18px}
+@media (max-width:520px){.card{padding:18px}.btn{flex:1 1 auto}.log{max-height:46vh}}
 </style>
 </head>
 <body>
-<header>
-  <div class="seal">SL</div>
-  <div><b>Saint Luke's Hospitals</b><small>Capital Humano · Entrevista en línea</small></div>
-</header>
+<header><div class="w"><div class="seal">SL</div><div><h1>Saint Luke's Hospitals</h1><small>Capital Humano · Entrevista en línea</small></div></div></header>
 
 <main>
-  <section class="card" id="v-cargando"><div class="spin"></div><p class="center sub">Cargando tu invitación…</p></section>
+  <!-- Cargando / mensajes -->
+  <div id="vMsg" class="card"><p class="mut">Cargando tu entrevista…</p></div>
 
-  <section class="card hidden" id="v-inicio">
-    <h1>Hola, <span id="nom"></span></h1>
-    <p class="sub">Esta es tu entrevista inicial para la vacante:</p>
-    <div><span class="tag" id="pue"></span><span class="tag" id="sed"></span></div>
-    <ul class="tips">
-      <li><span>⏱️</span><div><b>Dura unos 10 minutos.</b> Hablarás con Sofía, nuestra asistente virtual, por voz.</div></li>
-      <li><span>🎧</span><div>Busca un <b>lugar tranquilo</b> y, si puedes, usa audífonos.</div></li>
-      <li><span>🎙️</span><div>Al iniciar, tu navegador pedirá <b>permiso para usar el micrófono</b>. Acéptalo.</div></li>
-      <li><span>💬</span><div>Responde con naturalidad y con ejemplos reales de tu experiencia.</div></li>
+  <!-- Bienvenida -->
+  <div id="vIni" class="card hidden">
+    <h2 id="tHola">Hola</h2>
+    <p>Te invitamos a una entrevista inicial para <b id="tPuesto"></b>. La hace <b>Sofía</b>, nuestra asistente virtual de inteligencia artificial, y dura unos <b>10 minutos</b>.</p>
+    <p class="mut" style="margin-bottom:4px">Antes de empezar:</p>
+    <ul class="req">
+      <li>Busca un lugar tranquilo; con audífonos se escucha mejor.</li>
+      <li>Usa <b>Google Chrome, Edge o Safari</b> y permite el uso del micrófono cuando te lo pida.</li>
+      <li>Sofía hace una pregunta a la vez. Cuando termines de responder, haz una pausa o pulsa <b>“Terminé de responder”</b>.</li>
+      <li>Si se corta, vuelve a abrir esta misma liga y podrás continuar.</li>
     </ul>
-    <div class="consent">
-      Sofía es una herramienta de <b>inteligencia artificial</b>. La entrevista <b>se graba y se transcribe</b> para que la revise el equipo de
-      Capital Humano; <b>ninguna decisión la toma la inteligencia artificial</b>. Si prefieres una entrevista con una persona, no inicies y responde
-      al correo de invitación: tu proceso no se verá afectado.
-      <span id="avisoLink"></span>
-      <div id="vence" style="margin-top:8px;color:var(--mut)"></div>
+    <div id="noVoz" class="info hidden">Tu navegador no permite reconocer voz. Abre esta liga en Google Chrome, Edge o Safari, o haz la entrevista <b>por escrito</b> aquí mismo.</div>
+    <label class="consent"><input type="checkbox" id="chk"><span>Entiendo que hablaré con una asistente de IA, que la entrevista se <b>transcribe</b> para que la revise Capital Humano y que ninguna decisión la toma la IA. Leí el <a id="lnkAviso" target="_blank" rel="noopener">aviso de privacidad</a>. Si prefiero una entrevista con una persona, puedo responder al correo de invitación.</span></label>
+    <div class="acts">
+      <button class="btn gold" id="bVoz" disabled>🎙 Iniciar entrevista por voz</button>
+      <button class="btn ghost" id="bTxt" disabled>✍️ Hacerla por escrito</button>
     </div>
-    <button class="btn" id="bIniciar">Iniciar entrevista</button>
-    <div class="msg" id="msgInicio"></div>
-  </section>
+    <p class="mut" id="tExp" style="font-size:13px;margin:12px 0 0"></p>
+  </div>
 
-  <section class="card hidden center" id="v-llamada">
-    <div class="orb idle" id="orb"></div>
-    <h1 id="estadoTxt">Conectando…</h1>
-    <p class="sub" id="estadoSub">Acepta el permiso del micrófono si tu navegador lo pide.</p>
-    <div class="timer" id="timer">00:00</div>
-    <div class="row">
-      <button class="btn sec" id="bMute">🎙️ Silenciar</button>
-      <button class="btn end" id="bColgar">Terminar</button>
+  <!-- Llamada -->
+  <div id="vCall" class="call hidden">
+    <div class="top" id="top">
+      <div class="av">S</div>
+      <div><b>Sofía · Asistente de Capital Humano</b><span class="estado" id="est">Conectando…</span></div>
+      <div class="timer" id="tmr">00:00</div>
     </div>
-    <div class="msg" id="msgLlamada"></div>
-  </section>
-
-  <section class="card hidden center" id="v-fin">
-    <div class="big">✅</div>
-    <h1>¡Gracias!</h1>
-    <p class="sub">Tu entrevista terminó. El equipo de Capital Humano la revisará y te dará seguimiento por correo o teléfono.</p>
-    <p class="sub" style="font-size:13px">Ya puedes cerrar esta página.</p>
-  </section>
-
-  <section class="card hidden center" id="v-aviso">
-    <div class="big" id="avIco">ℹ️</div>
-    <h1 id="avTit"></h1>
-    <p class="sub" id="avTxt"></p>
-  </section>
+    <div class="log" id="log" aria-live="polite"></div>
+    <div class="ctrl">
+      <div id="cVoz" class="ctrl">
+        <div class="mic"><span>🎙</span><div class="lvl"><i id="lvl"></i></div></div>
+        <div class="acts" style="margin:0">
+          <button class="btn gold" id="bListo" disabled>✔ Terminé de responder</button>
+          <button class="btn ghost" id="bRep" disabled>↻ Repetir pregunta</button>
+          <button class="btn ghost" id="bAEsc">✍️ Escribir</button>
+          <button class="btn red" id="bColgar">Terminar</button>
+        </div>
+      </div>
+      <div id="cTxt" class="ctrl hidden">
+        <textarea id="txt" placeholder="Escribe tu respuesta…" maxlength="1500"></textarea>
+        <div class="acts" style="margin:0">
+          <button class="btn gold" id="bEnviar" disabled>Enviar respuesta</button>
+          <button class="btn ghost" id="bSonido">🔊 Voz de Sofía: sí</button>
+          <button class="btn red" id="bColgar2">Terminar</button>
+        </div>
+      </div>
+      <div id="err" class="alert hidden"></div>
+    </div>
+  </div>
 </main>
-
 <footer>Saint Luke's Hospitals · Capital Humano · Creado por <b>RHINOBUILD</b></footer>
 
-<script src="retell-sdk-3.0.3.min.js"></script>
 <script>
-/* URL de la app web del ATS (Apps Script). */
+/* ==========================================================
+ * CONFIGURACIÓN — la constante API debe ser la URL /exec de la app web del ATS
+ * ========================================================== */
 const API = 'https://script.google.com/macros/s/AKfycbzY_9Wb7GkB4hNJpe571PqTnNsvK7ZX5SmaYVm49Q621PD-zVgCxOkDzftVj__TD3Q9/exec';
+const CONFIG = {
+  motor: 'propio',          // entrevistadora propia RHINOBUILD (sin Retell)
+  idioma: 'es-MX',
+  silencioMs: 2600,         // pausa que se toma como "terminé de responder"
+  sinRespuestaMs: 30000,    // si no habla en este tiempo, Sofía pregunta si la escucha
+  velocidadVoz: 1.03
+};
 
 const $ = s => document.querySelector(s);
-const TOKEN = new URLSearchParams(location.search).get('t') || '';
-let call = null, t0 = 0, tick = null, muted = false, terminado = false;
+const T = new URLSearchParams(location.search).get('t') || '';
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+const TTS = 'speechSynthesis' in window;
+let INFO = null, MODO = 'voz', N = 0, ULTIMA = '', FIN = false, ACTIVA = false, vozSofia = true, silencios = 0;
+let rec = null, escuchando = false, acumulado = '', tSilencio = null, tSinResp = null, t0 = 0, tmr = null;
+let audioCtx = null, analyser = null, micStream = null;
 
-function vista(id) { ['cargando', 'inicio', 'llamada', 'fin', 'aviso'].forEach(v => $('#v-' + v).classList.toggle('hidden', v !== id)); }
-function aviso(ico, tit, txt) { $('#avIco').textContent = ico; $('#avTit').textContent = tit; $('#avTxt').textContent = txt; vista('aviso'); }
-function err(sel, t) { $(sel).className = 'msg err'; $(sel).textContent = t; }
-
-async function api(body) {
-  const r = await fetch(API, { method: 'POST', body: JSON.stringify(body) });
-  return r.json();
+/* ---------------- Red ---------------- */
+async function api(body, intentos = 3) {
+  let ultimo;
+  for (let i = 0; i < intentos; i++) {
+    try {
+      const r = await fetch(API, { method: 'POST', body: JSON.stringify(Object.assign({ t: T }, body)) });
+      const j = await r.json();
+      if (j.ok || !j.reintentar) return j;
+      ultimo = j;
+    } catch (e) { ultimo = { ok: false, error: 'Sin conexión. Revisa tu internet.' }; }
+    await new Promise(res => setTimeout(res, 1500 * (i + 1)));
+  }
+  return ultimo;
 }
 
-(async function init() {
-  if (!/^[a-f0-9]{40}$/.test(TOKEN)) return aviso('🔗', 'Enlace no válido', 'Revisa que hayas abierto el enlace completo de tu invitación.');
-  if (!window.RetellSDK || !RetellSDK.RetellClient) {
-    return aviso('⚙️', 'Servicio no disponible', 'No pudimos cargar el sistema de entrevistas. Inténtalo más tarde o responde al correo de invitación.');
-  }
-  if (!navigator.mediaDevices || !window.RTCPeerConnection) {
-    return aviso('🌐', 'Navegador no compatible', 'Abre este enlace en Chrome, Safari o Edge actualizados, en tu celular o computadora.');
-  }
-  try {
-    const r = await api({ action: 'info', t: TOKEN });
-    if (!r.ok) return aviso('🔗', 'Enlace no válido', r.error || 'No encontramos esta invitación.');
-    if (r.estado === 'realizada') return aviso('✅', 'Entrevista realizada', 'Ya registramos tu entrevista. ¡Gracias! Te daremos seguimiento pronto.');
-    if (r.estado === 'expirada') return aviso('⌛', 'Invitación vencida', 'Esta invitación ya venció. Responde al correo de invitación para solicitar una nueva.');
-    if (r.estado === 'agotada') return aviso('⚠️', 'Intentos agotados', 'Se agotaron los intentos de esta invitación. Responde al correo para solicitar una nueva.');
-    $('#nom').textContent = r.nombre || '';
-    $('#pue').textContent = r.puesto || '';
-    $('#sed').textContent = r.sede ? '📍 ' + r.sede : '';
-    if (!r.sede) $('#sed').remove();
-    if (r.expira) $('#vence').textContent = 'Disponible hasta el ' + r.expira + '.';
-    if (r.aviso) $('#avisoLink').innerHTML = ' Consulta nuestro <a target="_blank" rel="noopener">aviso de privacidad</a>.', $('#avisoLink a').href = r.aviso;
-    vista('inicio');
-  } catch (e) {
-    aviso('📶', 'Sin conexión', 'No pudimos cargar tu invitación. Revisa tu internet y vuelve a abrir el enlace.');
-  }
-})();
+/* ---------------- Pantallas ---------------- */
+function mensaje(html) { ['vIni', 'vCall'].forEach(v => $('#' + v).classList.add('hidden')); $('#vMsg').classList.remove('hidden'); $('#vMsg').innerHTML = html; }
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
-const client = window.RetellSDK && new RetellSDK.RetellClient({
-  key: 'proxy',
-  // La única petición de control (crear la llamada) pasa por el servidor del ATS, que guarda la API key.
-  fetch: async (url) => {
-    const path = new URL(String(url)).pathname;
-    if (path !== '/v3/create-web-call') return new Response('', { status: 204 });
-    const r = await api({ action: 'webcall', t: TOKEN });
-    if (!r.body) return new Response(JSON.stringify({ message: r.error || 'No se pudo iniciar.' }), { status: 409, headers: { 'Content-Type': 'application/json' } });
-    return new Response(r.body, { status: r.status || 500, headers: { 'Content-Type': 'application/json' } });
-  }
-});
+async function inicio() {
+  if (!/^[a-f0-9]{40}$/.test(T)) return mensaje('<h2>Liga no válida</h2><p>Revisa que hayas abierto la liga completa que te enviamos.</p>');
+  const r = await api({ action: 'info' });
+  if (!r || !r.ok) return mensaje('<h2>No pudimos abrir tu entrevista</h2><p>' + esc(r && r.error || 'Intenta de nuevo en unos minutos.') + '</p>');
+  INFO = r;
+  if (r.estado === 'realizada') return mensaje('<h2>¡Gracias, ' + esc(r.nombre) + '!</h2><p>Tu entrevista ya quedó registrada. Capital Humano la revisará y te dará seguimiento por correo o teléfono.</p>');
+  if (r.estado === 'expirada') return mensaje('<h2>Esta invitación ya venció</h2><p>Responde al correo de invitación y con gusto te enviamos una nueva.</p>');
+  if (r.estado === 'agotada') return mensaje('<h2>Se agotaron los intentos</h2><p>Responde al correo de invitación y te enviamos una nueva liga.</p>');
+  if (!r.vozActiva) return mensaje('<h2>Entrevista no disponible por el momento</h2><p>Intenta más tarde o responde al correo de invitación.</p>');
 
-$('#bIniciar').onclick = () => {
-  $('#bIniciar').disabled = true; $('#bIniciar').textContent = 'Preparando…';
-  $('#msgInicio').className = 'msg';
-  terminado = false;
-  vista('llamada');
-  call = client.createWebCall({
-    agent_id: 'servidor',
-    hooks: {
-      onStatus: s => {
-        if (s === 'live') {
-          $('#orb').classList.remove('idle');
-          $('#estadoTxt').textContent = 'Entrevista en curso';
-          $('#estadoSub').textContent = 'Habla con naturalidad. Sofía te escucha.';
-          t0 = Date.now(); clearInterval(tick);
-          tick = setInterval(() => { const s = Math.floor((Date.now() - t0) / 1000); $('#timer').textContent = String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0'); }, 500);
-          call.startAudioPlayback && call.startAudioPlayback().catch(() => {});
-        }
-      },
-      onEnd: () => fin(),
-      onError: e => {
-        const m = String((e && e.message) || e || '');
-        if (/permission|denied|notallowed/i.test(m)) volver('Necesitamos permiso para usar el micrófono. Actívalo en la configuración del navegador y vuelve a intentar.');
-        else if (!t0) volver(m && !/^\d{3}/.test(m) ? m : 'No pudimos conectar la entrevista. Revisa tu internet e inténtalo de nuevo.');
-        else err('#msgLlamada', 'Se perdió la conexión.');
-      }
+  $('#vMsg').classList.add('hidden'); $('#vIni').classList.remove('hidden');
+  $('#tHola').textContent = (r.estado === 'encurso' ? 'Hola de nuevo, ' : 'Hola, ') + r.nombre;
+  $('#tPuesto').textContent = r.puesto + (r.sede ? ' en ' + r.sede : '');
+  $('#lnkAviso').href = r.aviso;
+  $('#tExp').textContent = r.expira ? 'Puedes hacerla antes del ' + r.expira + '.' : '';
+  if (r.estado === 'encurso') {
+    $('#bVoz').textContent = '🎙 Continuar mi entrevista';
+    $('#bTxt').textContent = '✍️ Continuar por escrito';
+  }
+  if (!SR) { $('#noVoz').classList.remove('hidden'); $('#bVoz').classList.add('hidden'); }
+  $('#chk').onchange = () => { $('#bVoz').disabled = $('#bTxt').disabled = !$('#chk').checked; };
+  $('#bVoz').onclick = () => empezar('voz');
+  $('#bTxt').onclick = () => empezar('texto');
+}
+
+/* ---------------- Inicio de la entrevista ---------------- */
+async function empezar(modo) {
+  $('#bVoz').disabled = $('#bTxt').disabled = true;
+  MODO = modo;
+  if (TTS) { try { const u = new SpeechSynthesisUtterance(' '); u.volume = 0; speechSynthesis.speak(u); } catch (e) {} } // desbloquea la voz en iPhone
+  if (modo === 'voz') {
+    try {
+      micStream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true } });
+      medidor(micStream);
+    } catch (e) {
+      $('#bVoz').disabled = $('#bTxt').disabled = false;
+      return alerta('No pudimos usar tu micrófono. Permite el acceso en la barra de direcciones (ícono de candado o de micrófono) y vuelve a intentarlo, o haz la entrevista por escrito.', true);
     }
-  });
-};
+  }
+  const r = await api({ action: 'iniciar', modo });
+  if (!r || !r.ok) { $('#bVoz').disabled = $('#bTxt').disabled = false; return alerta((r && r.error) || 'No se pudo iniciar.', true); }
 
-function volver(t) {
-  terminado = true; clearInterval(tick); t0 = 0;
-  vista('inicio'); $('#bIniciar').disabled = false; $('#bIniciar').textContent = 'Intentar de nuevo';
-  err('#msgInicio', t);
+  $('#vIni').classList.add('hidden'); $('#vCall').classList.remove('hidden');
+  ponerModo(modo);
+  ACTIVA = true; t0 = Date.now(); tmr = setInterval(reloj, 1000);
+  window.addEventListener('beforeunload', avisoSalir);
+
+  let decir;
+  if (r.reanudar) {
+    (r.historial || []).forEach(h => burbuja(h.rol === 'assistant' ? 'a' : 'u', h.texto));
+    N = (r.historial || []).filter(h => h.rol === 'user').length;
+    const ult = (r.historial || []).filter(h => h.rol === 'assistant').pop();
+    decir = 'Continuemos. ' + (ult ? ult.texto : '');
+  } else {
+    decir = r.mensaje;
+  }
+  ULTIMA = decir;
+  if (r.reanudar) burbuja('a', 'Continuemos donde nos quedamos.'); else burbuja('a', decir);
+  hablar(decir, despuesDeHablar);
 }
 
-function fin() {
-  if (terminado) return;
-  terminado = true; clearInterval(tick);
-  if (t0 && Date.now() - t0 > 30000) vista('fin');
-  else if (t0) volver('La entrevista terminó muy pronto. Si se cortó, puedes intentarlo de nuevo.');
-  // Terminó sin llegar a conectar (onEnd sin onError): nunca dejar la pantalla en "Conectando…".
-  else volver('No pudimos conectar la entrevista. Revisa tu internet y el permiso del micrófono, e inténtalo de nuevo.');
+function ponerModo(m) {
+  MODO = m;
+  $('#cVoz').classList.toggle('hidden', m !== 'voz');
+  $('#cTxt').classList.toggle('hidden', m === 'voz');
+  if (m !== 'voz') detenerEscucha();
 }
 
-$('#bColgar').onclick = async () => {
-  if (t0 && Date.now() - t0 < 30000 && !confirm('¿Seguro que quieres terminar la entrevista?')) return;
-  try { await call.end(); } catch (e) {}
-  fin();
-};
-$('#bMute').onclick = () => {
-  if (!call) return;
-  muted = !muted; muted ? call.mute() : call.unmute();
-  $('#bMute').textContent = muted ? '🔇 Activar micrófono' : '🎙️ Silenciar';
-};
-window.addEventListener('beforeunload', e => { if (call && t0 && !terminado) { e.preventDefault(); e.returnValue = ''; } });
+/* ---------------- Voz de Sofía (síntesis del navegador) ---------------- */
+let VOZ = null;
+function elegirVoz() {
+  if (!TTS) return;
+  const vs = speechSynthesis.getVoices().filter(v => /^es/i.test(v.lang));
+  const pref = [/es[-_]MX/i, /es[-_]US/i, /es[-_]419/i, /es/i];
+  for (const re of pref) {
+    const cand = vs.filter(v => re.test(v.lang));
+    if (cand.length) { VOZ = cand.find(v => /female|mujer|paulina|sabina|dalia|helena|monica|google/i.test(v.name)) || cand[0]; return; }
+  }
+}
+if (TTS) { elegirVoz(); speechSynthesis.onvoiceschanged = elegirVoz; }
+
+function hablar(texto, alTerminar) {
+  estado('hablando', 'Sofía está hablando…');
+  if (!TTS || !vozSofia) { setTimeout(alTerminar, 300); return; }
+  speechSynthesis.cancel();
+  // Frases cortas: Chrome corta las locuciones largas.
+  const partes = String(texto).match(/[^.!?¿¡]+[.!?]*|[¿¡][^?!]+[?!]/g) || [texto];
+  let i = 0, terminado = false;
+  const fin = () => { if (terminado) return; terminado = true; clearTimeout(guardia); alTerminar && alTerminar(); };
+  const guardia = setTimeout(fin, texto.length * 90 + 4000); // por si el navegador nunca avisa que terminó
+  const sig = () => {
+    if (i >= partes.length) return fin();
+    const u = new SpeechSynthesisUtterance(partes[i++].trim());
+    u.lang = CONFIG.idioma; if (VOZ) u.voice = VOZ; u.rate = CONFIG.velocidadVoz;
+    u.onend = sig; u.onerror = sig;
+    try { speechSynthesis.speak(u); } catch (e) { fin(); }
+  };
+  sig();
+}
+
+function despuesDeHablar() {
+  $('#bRep').disabled = false;
+  if (FIN) return terminar('fin');
+  if (MODO === 'voz') escuchar(); else { estado('escuchando', 'Escribe tu respuesta'); $('#bEnviar').disabled = false; $('#txt').focus(); }
+}
+
+/* ---------------- Escucha (reconocimiento de voz del navegador) ---------------- */
+function escuchar() {
+  if (!ACTIVA || !SR) return;
+  acumulado = ''; quitarInterino();
+  escuchando = true;
+  estado('escuchando', 'Te escucho… responde con calma');
+  $('#bListo').disabled = false;
+  clearTimeout(tSinResp);
+  tSinResp = setTimeout(() => { if (escuchando && !acumulado.trim()) enviar('(sin respuesta)'); }, CONFIG.sinRespuestaMs);
+  arrancarRec();
+}
+
+function arrancarRec() {
+  if (!escuchando) return;
+  rec = new SR();
+  rec.lang = CONFIG.idioma; rec.continuous = true; rec.interimResults = true; rec.maxAlternatives = 1;
+  let finalesDeEstaSesion = '';
+  rec.onresult = ev => {
+    let interino = '';
+    finalesDeEstaSesion = '';
+    for (let i = 0; i < ev.results.length; i++) {
+      if (ev.results[i].isFinal) finalesDeEstaSesion += ev.results[i][0].transcript + ' ';
+      else interino += ev.results[i][0].transcript;
+    }
+    interinoUI((acumulado + finalesDeEstaSesion + interino).trim());
+    clearTimeout(tSilencio);
+    tSilencio = setTimeout(() => { if (escuchando && (acumulado + finalesDeEstaSesion + interino).trim()) enviar(); }, CONFIG.silencioMs);
+    rec._finales = finalesDeEstaSesion; rec._interino = interino;
+  };
+  rec.onerror = ev => {
+    if (ev.error === 'not-allowed' || ev.error === 'service-not-allowed') {
+      escuchando = false; alerta('El navegador bloqueó el micrófono. Permítelo y pulsa “Escribir” para continuar por escrito si no se puede.', true);
+    } else if (ev.error === 'network') {
+      escuchando = false; alerta('El reconocimiento de voz perdió conexión. Puedes continuar por escrito.', true); ponerModo('texto'); despuesDeHablar();
+    }
+  };
+  rec.onend = () => {
+    // Chrome y Safari cortan la escucha solos; se guarda lo dicho y se reanuda.
+    if (rec) acumulado += (rec._finales || '') + (rec._interino ? rec._interino + ' ' : '');
+    if (escuchando) setTimeout(arrancarRec, 150);
+  };
+  try { rec.start(); } catch (e) { setTimeout(arrancarRec, 400); }
+}
+
+function detenerEscucha() {
+  escuchando = false;
+  clearTimeout(tSilencio); clearTimeout(tSinResp);
+  $('#bListo').disabled = true;
+  if (rec) { const r = rec; rec = null; try { acumulado += (r._finales || '') + (r._interino ? r._interino + ' ' : ''); r.onend = null; r.abort(); } catch (e) {} }
+}
+
+/* ---------------- Turnos ---------------- */
+async function enviar(forzado, esReintento) {
+  if (FIN || !ACTIVA) return;
+  let texto;
+  if (MODO === 'voz') { detenerEscucha(); texto = forzado || acumulado.trim(); }
+  else { texto = forzado || $('#txt').value.trim(); if (!texto) return; $('#txt').value = ''; $('#bEnviar').disabled = true; }
+  quitarInterino();
+  if (!texto) { if (MODO === 'voz') return escuchar(); return; }
+  if (texto === '(sin respuesta)') {
+    // Tres silencios seguidos: la persona ya no está; se cierra con lo que haya.
+    if (++silencios >= 3) return terminar('inactividad');
+  } else { silencios = 0; if (!esReintento) burbuja('u', texto); }
+  N++;
+  estado('pensando', 'Sofía está pensando…');
+  $('#bRep').disabled = true;
+  const r = await api({ action: 'turno', texto, n: N });
+  if (!r || !r.ok) {
+    if (r && /ya se realizó|venció|agotaron/.test(r.error || '')) { FIN = true; return terminar('fin'); }
+    N--;
+    alerta((r && r.error) || 'No pudimos enviar tu respuesta.', false, () => enviar(texto, true));
+    return;
+  }
+  ocultarAlerta();
+  ULTIMA = r.mensaje;
+  FIN = !!r.fin;
+  burbuja('a', r.mensaje);
+  hablar(r.mensaje, despuesDeHablar);
+}
+
+async function terminar(motivo) {
+  if (!ACTIVA) return;
+  ACTIVA = false; FIN = true;
+  detenerEscucha(); clearInterval(tmr);
+  window.removeEventListener('beforeunload', avisoSalir);
+  if (micStream) micStream.getTracks().forEach(t => t.stop());
+  estado('', 'Entrevista terminada');
+  // Se manda sin esperar: el servidor evalúa la entrevista aunque la persona cierre la página.
+  try { fetch(API, { method: 'POST', body: JSON.stringify({ t: T, action: 'finalizar', motivo }), keepalive: true }); } catch (e) {}
+  const pocas = N < 3 && motivo !== 'fin';
+  setTimeout(() => mensaje(pocas
+    ? '<h2>Entrevista interrumpida</h2><p>No alcanzamos a completar la entrevista. Si fue un error, vuelve a abrir tu liga para intentarlo de nuevo.</p>'
+    : '<h2>¡Gracias, ' + esc(INFO.nombre) + '!</h2><p>Tu entrevista quedó registrada. Capital Humano la revisará y te dará seguimiento por correo o teléfono.</p><p class="mut">Ya puedes cerrar esta página.</p>'), 600);
+}
+
+/* ---------------- UI ---------------- */
+function burbuja(tipo, texto) {
+  const d = document.createElement('div'); d.className = 'msg ' + tipo; d.textContent = texto;
+  $('#log').appendChild(d); $('#log').scrollTop = $('#log').scrollHeight;
+}
+function interinoUI(t) {
+  let d = $('#log .msg.i');
+  if (!t) return quitarInterino();
+  if (!d) { d = document.createElement('div'); d.className = 'msg i'; $('#log').appendChild(d); }
+  d.textContent = t; $('#log').scrollTop = $('#log').scrollHeight;
+}
+function quitarInterino() { const d = $('#log .msg.i'); if (d) d.remove(); }
+function estado(cls, txt) { $('#vCall').className = 'call' + (cls ? ' st-' + cls : ''); $('#est').textContent = txt; }
+function reloj() { const s = Math.floor((Date.now() - t0) / 1000); $('#tmr').textContent = String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0'); }
+function avisoSalir(e) { e.preventDefault(); e.returnValue = ''; }
+function alerta(txt, fijo, reintentar) {
+  const el = $('#vCall').classList.contains('hidden') ? null : $('#err');
+  if (!el) { const a = document.createElement('div'); a.className = 'alert'; a.textContent = txt; $('#vIni').appendChild(a); setTimeout(() => a.remove(), 9000); return; }
+  el.innerHTML = esc(txt) + (reintentar ? ' <button class="btn ghost" style="padding:6px 12px;margin-left:8px" id="bRe">Reintentar</button>' : '');
+  el.classList.remove('hidden');
+  if (reintentar) $('#bRe').onclick = () => { ocultarAlerta(); reintentar(); };
+}
+function ocultarAlerta() { $('#err').classList.add('hidden'); }
+function medidor(stream) {
+  try {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    analyser = audioCtx.createAnalyser(); analyser.fftSize = 256;
+    audioCtx.createMediaStreamSource(stream).connect(analyser);
+    const buf = new Uint8Array(analyser.frequencyBinCount);
+    (function loop() {
+      analyser.getByteFrequencyData(buf);
+      const v = buf.reduce((a, b) => a + b, 0) / buf.length;
+      $('#lvl').style.width = (escuchando ? Math.min(100, v * 1.6) : 0) + '%';
+      requestAnimationFrame(loop);
+    })();
+  } catch (e) {}
+}
+
+$('#bListo').onclick = () => enviar();
+$('#bRep').onclick = () => { if (!ULTIMA) return; detenerEscucha(); hablar(ULTIMA, despuesDeHablar); };
+$('#bAEsc').onclick = () => { detenerEscucha(); ponerModo('texto'); estado('escuchando', 'Escribe tu respuesta'); $('#bEnviar').disabled = false; $('#txt').focus(); };
+$('#bEnviar').onclick = () => enviar();
+$('#txt').addEventListener('keydown', e => { if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) enviar(); });
+$('#bSonido').onclick = () => { vozSofia = !vozSofia; if (!vozSofia && TTS) speechSynthesis.cancel(); $('#bSonido').textContent = '🔊 Voz de Sofía: ' + (vozSofia ? 'sí' : 'no'); };
+const colgar = () => { if (confirm('¿Quieres terminar la entrevista ahora?')) { if (TTS) speechSynthesis.cancel(); terminar('colgo'); } };
+$('#bColgar').onclick = colgar; $('#bColgar2').onclick = colgar;
+
+inicio();
 </script>
 </body>
 </html>
