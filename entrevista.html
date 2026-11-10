@@ -34,7 +34,7 @@ ul.req{padding-left:20px;margin:6px 0 16px}ul.req li{margin:4px 0}
 .info{background:#EAF1FB;color:var(--navy2);border-radius:10px;padding:12px 14px;margin:12px 0;font-size:14px}
 .hidden{display:none!important}
 /* llamada */
-.call{display:grid;grid-template-rows:auto 1fr auto;gap:14px;min-height:calc(100vh - 140px)}
+.call{display:grid;grid-template-rows:auto auto 1fr auto;gap:14px;min-height:calc(100vh - 140px)}
 .top{display:flex;align-items:center;gap:14px}
 .av{width:64px;height:64px;border-radius:50%;background:var(--navy);color:var(--gold);display:grid;place-items:center;font:600 26px 'Playfair Display',serif;position:relative;flex:none}
 .av::after{content:'';position:absolute;inset:-6px;border-radius:50%;border:3px solid transparent}
@@ -46,6 +46,7 @@ ul.req{padding-left:20px;margin:6px 0 16px}ul.req li{margin:4px 0}
 .top b{display:block;font-size:16px;color:var(--navy)}
 .estado{font-size:13px;color:var(--mut)}
 .timer{margin-left:auto;font-variant-numeric:tabular-nums;color:var(--mut);font-size:14px}
+.prog{height:6px;background:var(--line);border-radius:3px;overflow:hidden;margin-top:-4px}.prog i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold),#E3C566);transition:width .6s}
 .log{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;overflow-y:auto;max-height:52vh;min-height:220px}
 .msg{max-width:85%;padding:10px 13px;border-radius:12px;margin:6px 0;font-size:14.5px}
 .msg.a{background:var(--bg);border-top-left-radius:4px}
@@ -93,6 +94,7 @@ footer{text-align:center;color:var(--mut);font-size:12.5px;padding:18px}
       <div><b>Sofía · Asistente de Capital Humano</b><span class="estado" id="est">Conectando…</span></div>
       <div class="timer" id="tmr">00:00</div>
     </div>
+    <div class="prog" id="prog" title="Avance de la entrevista"><i id="progBar"></i></div>
     <div class="log" id="log" aria-live="polite"></div>
     <div class="ctrl">
       <div id="cVoz" class="ctrl">
@@ -215,6 +217,7 @@ async function empezar(modo) {
     decir = r.mensaje;
   }
   ULTIMA = decir;
+  avance(r.progreso);
   if (r.reanudar) burbuja('a', 'Continuemos donde nos quedamos.'); else burbuja('a', decir);
   hablar(decir, despuesDeHablar);
 }
@@ -340,6 +343,7 @@ async function enviar(forzado, esReintento) {
   ocultarAlerta();
   ULTIMA = r.mensaje;
   FIN = !!r.fin;
+  avance(r.fin ? 100 : r.progreso);
   burbuja('a', r.mensaje);
   hablar(r.mensaje, despuesDeHablar);
 }
@@ -372,6 +376,7 @@ function interinoUI(t) {
 }
 function quitarInterino() { const d = $('#log .msg.i'); if (d) d.remove(); }
 function estado(cls, txt) { $('#vCall').className = 'call' + (cls ? ' st-' + cls : ''); $('#est').textContent = txt; }
+function avance(p) { if (typeof p === 'number') $('#progBar').style.width = Math.max(3, Math.min(100, p)) + '%'; }
 function reloj() { const s = Math.floor((Date.now() - t0) / 1000); $('#tmr').textContent = String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0'); }
 function avisoSalir(e) { e.preventDefault(); e.returnValue = ''; }
 function alerta(txt, fijo, reintentar) {
