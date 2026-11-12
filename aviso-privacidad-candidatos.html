@@ -78,7 +78,7 @@ footer b{color:var(--navy)}
       <li><a href="#s3">Datos sensibles</a></li>
       <li><a href="#s4">Finalidades</a></li>
       <li><a href="#s5">Inteligencia artificial</a></li>
-      <li><a href="#s6">Entrevistas telefónicas y grabaciones</a></li>
+      <li><a href="#s6">Entrevistas con asistente de inteligencia artificial</a></li>
       <li><a href="#s7">Proveedores que nos apoyan</a></li>
       <li><a href="#s8">Transferencias</a></li>
       <li><a href="#s9">Conservación</a></li>
@@ -106,7 +106,7 @@ footer b{color:var(--navy)}
       <tr><td>Laborales</td><td>Experiencia, empleos anteriores, puestos, funciones, referencias laborales y disponibilidad.</td></tr>
       <tr><td>Contenido de tu CV</td><td>La información que decidas incluir en tu currículum.</td></tr>
       <tr><td>Resultados del proceso</td><td>Resultados de evaluaciones de competencias, psicométricas y técnicas; notas de entrevistas; la ficha de análisis de tu CV.</td></tr>
-      <tr><td>Voz (solo si aplica)</td><td>Grabación y transcripción de entrevistas telefónicas, en los términos de la sección 6.</td></tr>
+      <tr><td>Entrevista con IA (solo si aplica)</td><td>Transcripción escrita de la entrevista con el asistente de inteligencia artificial, en los términos de la sección 6. No grabamos el audio.</td></tr>
       <tr><td>Registro de la postulación</td><td>Fecha, vacante, medio por el que te enteraste y aceptación de este aviso.</td></tr>
     </table></div>
     <p>Los resultados de tus evaluaciones psicométricas son <b>confidenciales</b>. Solo los conoce el personal de Capital Humano que interviene en tu proceso y el jefe del área de la vacante, y se usan exclusivamente para fines de selección.</p>
@@ -156,12 +156,13 @@ footer b{color:var(--navy)}
   </section>
 
   <section class="card" id="s6">
-    <h2><span class="n">6.</span>Entrevistas telefónicas y grabaciones</h2>
-    <p>En algunos procesos podemos hacer una primera entrevista por voz, desde tu navegador o por teléfono, con un asistente de inteligencia artificial. En ese caso:</p>
+    <h2><span class="n">6.</span>Entrevistas con asistente de inteligencia artificial</h2>
+    <p>En algunos procesos podemos invitarte a una primera entrevista con un asistente de inteligencia artificial, desde tu navegador, por voz o por escrito. En ese caso:</p>
     <ul>
-      <li>antes de iniciar y al comenzar la entrevista te diremos que hablas con un asistente de IA y que la entrevista se graba, y te pediremos tu autorización;</li>
-      <li>si no aceptas, terminamos la entrevista, eliminamos la grabación y te ofrecemos una entrevista con una persona, sin afectar tu proceso;</li>
-      <li>la grabación y su transcripción se usan solo para evaluar tu postulación y las revisa personal de Capital Humano.</li>
+      <li>antes de iniciar y al comenzar la entrevista te diremos que hablas con un asistente de IA y que la conversación se guarda por escrito, y te pediremos tu autorización;</li>
+      <li><b>no grabamos el audio</b>: guardamos solo la transcripción escrita. Si eliges la modalidad de voz, el reconocimiento de voz lo hace tu navegador (por ejemplo, Google Chrome o Safari), que puede procesar tu voz en los servidores de su proveedor para convertirla en texto;</li>
+      <li>si no aceptas, terminamos la entrevista, eliminamos lo registrado y te ofrecemos una entrevista con una persona, sin afectar tu proceso;</li>
+      <li>la transcripción se usa solo para evaluar tu postulación y la revisa personal de Capital Humano. El asistente no toma decisiones sobre tu candidatura.</li>
     </ul>
   </section>
 
@@ -170,7 +171,7 @@ footer b{color:var(--navy)}
     <p>Para tratar tus datos nos apoyamos en proveedores tecnológicos que actúan por nuestra cuenta, solo siguiendo nuestras instrucciones y con obligaciones de confidencialidad y seguridad. Algunos alojan la información en servidores ubicados fuera de México:</p>
     <ul>
       <li><b>Google</b> (Google Workspace): almacenamiento de postulaciones y CVs, y envío de correos.</li>
-      <li><b>Anthropic</b> (API de Claude): análisis de CVs con inteligencia artificial. De acuerdo con sus condiciones comerciales, no usa los datos enviados a través de su API para entrenar sus modelos.</li>
+      <li><b>Anthropic</b> (API de Claude): análisis de CVs y conducción y evaluación de la entrevista con inteligencia artificial. De acuerdo con sus condiciones comerciales, no usa los datos enviados a través de su API para entrenar sus modelos.</li>
       <li><span data-cfg="proveedorVoz"></span></li>
     </ul>
   </section>
@@ -216,7 +217,7 @@ footer b{color:var(--navy)}
 
   <section class="card" id="s12">
     <h2><span class="n">12.</span>Tecnologías de rastreo</h2>
-    <p>Nuestro portal de vacantes no usa cookies publicitarias ni de rastreo propias. La plataforma en la que está alojado (Google) puede usar cookies técnicas necesarias para su funcionamiento y seguridad, conforme a sus propias políticas.</p>
+    <p>Nuestra página de vacantes (rhinobuild.github.io/vacantes, alojada en GitHub Pages) no usa cookies publicitarias ni de rastreo. Solo guarda en tu navegador, mientras dura tu visita, el medio por el que llegaste (por ejemplo, WhatsApp o un cartel con código QR), para saber qué canales de difusión funcionan; no guarda datos personales. La página carga tipografías e íconos de Google Fonts y cdnjs, y tu postulación se envía a nuestros sistemas en Google, que pueden usar cookies técnicas necesarias para su funcionamiento y seguridad, conforme a sus propias políticas.</p>
   </section>
 
   <section class="card" id="s13">
@@ -239,14 +240,14 @@ footer b{color:var(--navy)}
  * Lo que quede vacío aparece resaltado en amarillo en la página.
  * ========================================================= */
 const CONFIG = {
-  fecha:        '3 de noviembre de 2026',
+  fecha:        '12 de noviembre de 2026',
   razonSocial:  'ST Josephs, S. de R.L. de C.V.',   // Razón social de la sociedad responsable
   domicilio:    'Ignacio Zaragoza S/N, Col. Centro, C.P. 23400, San José del Cabo, Baja California Sur',
   correo:       'capitalhumano@saintlukeshospitals.com',
   telefono:     '',   // Opcional
   mesesBanco:   '24', // Meses que se conserva el banco de talento
   sociedades:   "VIE Hospital de México, Hospital Sayulita, STL Loreto, 911 Bay Watch Ambulance, Lovalgo y Soc. Admra. y Apoyo Médico S.C.",
-  proveedorVoz: '<b>Retell AI</b>: entrevistas por voz con asistente de inteligencia artificial (audio, grabación y transcripción).'
+  proveedorVoz: ''   // Ya no se usa un proveedor externo de voz: la entrevista es propia y no se graba audio
 };
 
 document.querySelectorAll('[data-cfg]').forEach(el => {
